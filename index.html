@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harkamal Deep Singh | Business Analyst & Marketing Professional</title>
+    <meta name="description" content="Portfolio of Harkamal Deep Singh - Top-ranked BBA student specializing in Marketing, Data Analysis, and Business Strategy">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --terminal-green: #00ff41;
+            --terminal-blue: #00d9ff;
+            --bg-black: #000000;
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-dim: #606060;
+            --border: #00ff41;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ::selection {
+            background: var(--terminal-green);
+            color: var(--bg-black);
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+            background: var(--bg-black);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            font-weight: 400;
+            font-size: 15px;
+        }
+
+        /* CRT Effect */
+        .crt::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .crt {
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.98; }
+            50% { opacity: 1; }
+            100% { opacity: 0.98; }
+        }
+
+        /* Grid Background */
+        .terminal-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px);
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--terminal-green);
+            letter-spacing: 2px;
+        }
+
+        .logo::before {
+            content: 'root@hds:~$ ';
+            color: var(--terminal-blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--terminal-green);
+        }
+
+        .nav-links a::before {
+            content: '[ ';
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a::after {
+            content: ' ]';
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a:hover::after {
+            opacity: 1;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 3rem 0 5rem;
+        }
+
+        .hero-ascii {
+            font-size: 2.5rem;
+            color: var(--terminal-green);
+            margin-bottom: 2rem;
+            font-weight: 700;
+            letter-spacing: 8px;
+            opacity: 0.9;
+        }
+
+        .system-info {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .command-line {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .command-line .prompt {
+            color: var(--terminal-blue);
+        }
+
+        .command-line .command {
+            color: var(--terminal-green);
+        }
+
+        h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -3px;
+            text-transform: uppercase;
+        }
+
+        .role {
+            font-size: 1.6rem;
+            color: var(--terminal-green);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .role::before {
+            content: '> ';
+            color: var(--terminal-blue);
+        }
+
+        .bio {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin-bottom: 3rem;
+            line-height: 1.9;
+        }
+
+        /* Terminal Box */
+        .terminal-box {
+            background: rgba(0, 255, 65, 0.05);
+            border: 2px solid var(--terminal-green);
+            padding: 2.5rem;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .terminal-box::before {
+            content: 'SYSTEM_STATS.exe';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--bg-black);
+            padding: 0 10px;
+            font-size: 0.75rem;
+            color: var(--terminal-green);
+            letter-spacing: 1px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--terminal-green);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            background: transparent;
+            border: 2px solid var(--terminal-green);
+            color: var(--terminal-green);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--terminal-green);
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn:hover {
+            color: var(--bg-black);
+        }
+
+        .btn-primary {
+            background: var(--terminal-green);
+            color: var(--bg-black);
+        }
+
+        .btn-primary::before {
+            background: var(--bg-black);
+        }
+
+        .btn-primary:hover {
+            color: var(--terminal-green);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 0;
+            border-top: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-size: 0.8rem;
+            color: var(--terminal-blue);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .section-tag::before {
+            content: '// ';
+        }
+
+        h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+        }
+
+        /* Skills */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .skill-block {
+            background: rgba(0, 255, 65, 0.03);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .skill-block:hover {
+            border-color: var(--terminal-green);
+            background: rgba(0, 255, 65, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .skill-block h3 {
+            font-size: 1rem;
+            color: var(--terminal-green);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .skill-block h3::before {
+            content: '> ';
+            color: var(--terminal-blue);
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 0.6rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+            transition: all 0.2s;
+        }
+
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+
+        .skill-list li::before {
+            content: '└─ ';
+            color: var(--terminal-green);
+        }
+
+        .skill-list li:hover {
+            color: var(--terminal-green);
+            padding-left: 10px;
+        }
+
+        /* Projects */
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+
+        .project {
+            background: rgba(0, 255, 65, 0.03);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 2.5rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .project::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--terminal-green);
+            transition: width 0.3s;
+        }
+
+        .project:hover::before {
+            width: 100%;
+        }
+
+        .project:hover {
+            border-color: var(--terminal-green);
+            background: rgba(0, 255, 65, 0.08);
+        }
+
+        .project-meta {
+            font-size: 0.8rem;
+            color: var(--terminal-blue);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .project h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .tech-tag {
+            padding: 0.4rem 1rem;
+            background: transparent;
+            border: 1px solid var(--terminal-green);
+            color: var(--terminal-green);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .tech-tag:hover {
+            background: var(--terminal-green);
+            color: var(--bg-black);
+        }
+
+        /* Education Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 4rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--terminal-green), transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.1);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -4.5rem;
+            top: 0.5rem;
+            width: 14px;
+            height: 14px;
+            background: var(--terminal-green);
+            border: 3px solid var(--bg-black);
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(0, 255, 65, 0.3);
+        }
+
+        .timeline-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-institution {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--terminal-blue);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-achievements {
+            list-style: none;
+        }
+
+        .timeline-achievements li {
+            color: var(--text-secondary);
+            margin: 0.5rem 0;
+        }
+
+        .timeline-achievements li::before {
+            content: '▸ ';
+            color: var(--terminal-green);
+        }
+
+        /* Certifications */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cert {
+            background: rgba(0, 255, 65, 0.03);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .cert:hover {
+            border-color: var(--terminal-green);
+            background: rgba(0, 255, 65, 0.08);
+            transform: translateX(10px);
+        }
+
+        .cert-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .cert-issuer {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .cert-issuer::before {
+            content: '└─ ';
+            color: var(--terminal-green);
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+        }
+
+        .contact-item {
+            background: rgba(0, 255, 65, 0.03);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover {
+            border-color: var(--terminal-green);
+            background: rgba(0, 255, 65, 0.08);
+        }
+
+        .contact-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .contact-value {
+            font-size: 1.1rem;
+            color: var(--terminal-green);
+            word-break: break-all;
+        }
+
+        .contact-value a {
+            color: var(--terminal-green);
+            text-decoration: none;
+        }
+
+        .contact-value a:hover {
+            color: var(--terminal-blue);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        footer p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .footer-line {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--terminal-green);
+        }
+
+        /* Download Notification */
+        .download-notify {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-black);
+            border: 2px solid var(--terminal-green);
+            padding: 1.5rem 2rem;
+            color: var(--terminal-green);
+            font-weight: 600;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
+        }
+
+        .download-notify.active {
+            display: block;
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-row,
+            .skills-container,
+            .projects-container,
+            .cert-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 0 1.5rem;
+            }
+        }
+
+        /* Cursor Blink */
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="crt">
+    <div class="terminal-grid"></div>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <div class="logo">HDS</div>
+            <ul class="nav-links">
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#skills">SKILLS</a></li>
+                <li><a href="#projects">PROJECTS</a></li>
+                <li><a href="#education">EDUCATION</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-ascii">HELLO_WORLD</div>
+
+            <div class="system-info">SYSTEM: PORTFOLIO_v2.0 | STATUS: ONLINE | LOCATION: Greater_Noida, India</div>
+            <div class="command-line"><span class="prompt">user@portfolio:~$</span> <span class="command">cat profile.txt</span><span class="blink">▌</span></div>
+
+            <h1>HARKAMAL<br>DEEP SINGH</h1>
+            <div class="role">Business Analyst | Marketing Strategist | Data Analyst</div>
+            <p class="bio">
+                Top-ranked BBA student with expertise in marketing analytics, digital payment systems, and business strategy. 
+                Combining analytical rigor with hands-on experience in data-driven decision making to solve complex business challenges 
+                at the intersection of technology and commerce.
+            </p>
+
+            <div class="terminal-box">
+                <div class="stats-row">
+                    <div class="stat">
+                        <div class="stat-value">9.3</div>
+                        <div class="stat-label">CGPA</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">#01</div>
+                        <div class="stat-label">RANK</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">05+</div>
+                        <div class="stat-label">CERTS</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">94.7%</div>
+                        <div class="stat-label">CLASS XII</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="https://drive.google.com/uc?export=download&id=1wOO11EmowR66rMWnV6szgDec-pkIDWpc" class="btn btn-primary" id="resumeBtn">Download Resume</a>
+                <a href="#contact" class="btn">Get In Touch</a>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section id="about">
+            <div class="section-header">
+                <div class="section-tag">INIT_ABOUT.SH</div>
+                <h2>SYSTEM OVERVIEW</h2>
+                <p class="section-desc">
+                    Disciplined and high-performing business student from Army Institute of Management and Technology. 
+                    Specializing in bridging the gap between business operations and technology through analytical thinking, 
+                    data-driven insights, and strategic execution in enterprise environments.
+                </p>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills">
+            <div class="section-header">
+                <div class="section-tag">LOAD_SKILLS.EXE</div>
+                <h2>TECHNICAL STACK</h2>
+            </div>
+
+            <div class="skills-container">
+                <div class="skill-block">
+                    <h3>Technical</h3>
+                    <ul class="skill-list">
+                        <li>Microsoft Excel (Advanced)</li>
+                        <li>Data Analysis & Visualization</li>
+                        <li>PowerPoint Presentations</li>
+                        <li>Digital Payment Systems</li>
+                        <li>Cybersecurity Fundamentals</li>
+                    </ul>
+                </div>
+
+                <div class="skill-block">
+                    <h3>Business</h3>
+                    <ul class="skill-list">
+                        <li>Market Research & Analysis</li>
+                        <li>CRM Systems</li>
+                        <li>Financial Services Domain</li>
+                        <li>Business Process Analysis</li>
+                        <li>Process Documentation</li>
+                    </ul>
+                </div>
+
+                <div class="skill-block">
+                    <h3>Core Abilities</h3>
+                    <ul class="skill-list">
+                        <li>Analytical Thinking</li>
+                        <li>Strategic Communication</li>
+                        <li>Public Speaking</li>
+                        <li>Team Collaboration</li>
+                        <li>Attention to Detail</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects">
+            <div class="section-header">
+                <div class="section-tag">EXEC_PROJECTS.BAT</div>
+                <h2>RESEARCH ARCHIVE</h2>
+            </div>
+
+            <div class="projects-container">
+                <div class="project">
+                    <div class="project-meta">PROJECT_001 | JAN_2025 - MAY_2025</div>
+                    <h3>Digital Payment Impact Analysis</h3>
+                    <p class="project-desc">
+                        Conducted comprehensive analysis of consumer adoption patterns across digital payment platforms in India. 
+                        Interpreted transaction behavior and spending trends using structured datasets. Applied Excel-based 
+                        statistical analysis to extract actionable business insights and strategic recommendations.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Excel</span>
+                        <span class="tech-tag">Data Analysis</span>
+                        <span class="tech-tag">Market Research</span>
+                    </div>
+                </div>
+
+                <div class="project">
+                    <div class="project-meta">PROJECT_002 | JAN_2024 - MAY_2024</div>
+                    <h3>Social Media Usage Pattern Analysis</h3>
+                    <p class="project-desc">
+                        Investigated correlation between social media engagement and academic performance through primary research 
+                        methodology. Designed questionnaires, executed data collection, and performed statistical interpretation. 
+                        Delivered findings with practical implications for digital behavior management.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Survey Design</span>
+                        <span class="tech-tag">Statistical Analysis</span>
+                        <span class="tech-tag">Research</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section id="education">
+            <div class="section-header">
+                <div class="section-tag">FETCH_EDUCATION.SQL</div>
+                <h2>ACADEMIC TIMELINE</h2>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Bachelor of Business Administration (BBA)</h3>
+                    <div class="timeline-institution">Army Institute of Management and Technology, Greater Noida</div>
+                    <div class="timeline-date">2023 - PRESENT</div>
+                    <ul class="timeline-achievements">
+                        <li>Specialization: Marketing Analytics</li>
+                        <li>Performance: Rank 1st in College</li>
+                        <li>CGPA: 9.3/10</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Class XII (Commerce Stream)</h3>
+                    <div class="timeline-institution">Army Public School, Unchi Bassi</div>
+                    <div class="timeline-date">2022 - 2023</div>
+                    <ul class="timeline-achievements">
+                        <li>Performance: 94.7% (Stream Topper)</li>
+                        <li>Subjects: Accountancy, Business Studies, Economics, English</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Class X</h3>
+                    <div class="timeline-institution">Army Public School, Unchi Bassi</div>
+                    <div class="timeline-date">2021 - 2022</div>
+                    <ul class="timeline-achievements">
+                        <li>Performance: 88%</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications -->
+        <section>
+            <div class="section-header">
+                <div class="section-tag">LIST_CERTIFICATIONS.PY</div>
+                <h2>CREDENTIALS</h2>
+            </div>
+
+            <div class="cert-grid">
+                <div class="cert">
+                    <div class="cert-name">Integrated Marketing Communication</div>
+                    <div class="cert-issuer">NPTEL – IIT Kharagpur | April 2025</div>
+                </div>
+
+                <div class="cert">
+                    <div class="cert-name">Certified Professional in Banking, Finance, and Insurance</div>
+                    <div class="cert-issuer">Bajaj Finserv & UpGrad | 2025</div>
+                </div>
+
+                <div class="cert">
+                    <div class="cert-name">Business Development: From Start to Scale</div>
+                    <div class="cert-issuer">NPTEL – IIT Madras | April 2024</div>
+                </div>
+
+                <div class="cert">
+                    <div class="cert-name">IBM Cybersecurity Fundamentals</div>
+                    <div class="cert-issuer">IBM | 2024</div>
+                </div>
+
+                <div class="cert">
+                    <div class="cert-name">Microsoft Office Specialist: Excel Associate</div>
+                    <div class="cert-issuer">Microsoft | 2024</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact">
+            <div class="section-header">
+                <div class="section-tag">OPEN_COMMUNICATION_CHANNEL</div>
+                <h2>ESTABLISH CONNECTION</h2>
+                <p class="section-desc">
+                    System ready to receive incoming transmissions. Multiple communication protocols available. 
+                    Select preferred method to initiate contact sequence.
+                </p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-label">Email Protocol</div>
+                    <div class="contact-value">
+                        <a href="mailto:mr.harkamal1426@gmail.com">mr.harkamal1426@gmail.com</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-label">Voice Channel</div>
+                    <div class="contact-value">
+                        <a href="tel:+916283370364">+91 6283370364</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-label">LinkedIn Node</div>
+                    <div class="contact-value">
+                        <a href="https://linkedin.com/in/harkamal-deep-singh-021a1528a" target="_blank">/in/harkamal-deep-singh</a>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-label">Geolocation</div>
+                    <div class="contact-value">Greater Noida, India</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 HARKAMAL DEEP SINGH. ALL RIGHTS RESERVED.</p>
+            <p class="footer-line">root@hds:~$ exit | SYSTEM_BUILD_v2.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Download Notification -->
+    <div class="download-notify" id="downloadNotify">
+        > RESUME_DOWNLOAD_INITIATED
+    </div>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Resume download notification
+        const resumeBtn = document.getElementById('resumeBtn');
+        const downloadNotify = document.getElementById('downloadNotify');
+
+        resumeBtn.addEventListener('click', function() {
+            downloadNotify.classList.add('active');
+            setTimeout(() => {
+                downloadNotify.classList.remove('active');
+            }, 3000);
+        });
+
+        // Terminal typing effect
+        const commandText = document.querySelector('.command');
+        if (commandText) {
+            const text = commandText.textContent;
+            commandText.textContent = '';
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    commandText.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 100);
+                }
+            }
+            
+            setTimeout(type, 500);
+        }
+    </script>
+</body>
+</html>
