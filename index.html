@@ -753,8 +753,11 @@
             padding: 3rem 0;
             text-align: center;
             margin-top: 5rem;
+            position: relative; /* Added fix for visibility layering */
+            z-index: 10;
+            background: var(--bg-black);
         }
-        footer p { color: var(--text-primary); font-size: 0.9rem; }
+        footer p { color: var(--text-dim); font-size: 0.9rem; }
         .footer-line { margin-top: 1rem; font-size: 0.8rem; color: var(--terminal-green); }
 
         /* Download Notification */
@@ -1160,7 +1163,6 @@
         // --- MR. ROBOT STYLE BOOT SEQUENCE ---
         const bootScreen = document.getElementById('boot-screen');
         const bootLogContainer = document.getElementById('boot-log-container');
-        const mainContainer = document.querySelector('.container');
         
         const bootLogs = [
             { text: "Linux version 6.5.0-generic (buildd@lcy02-amd64-001)", time: 0 },
@@ -1221,7 +1223,12 @@
             
             setTimeout(() => {
                 bootScreen.style.display = 'none';
-                mainContainer.classList.add('visible');
+                
+                // FIXED: Target all container elements to ensure footer is also shown
+                document.querySelectorAll('.container').forEach(container => {
+                    container.classList.add('visible');
+                });
+                
                 startTextCycle();
             }, 500);
         }
@@ -1282,3 +1289,4 @@
     </script>
 </body>
 </html>
+
