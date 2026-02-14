@@ -169,29 +169,88 @@
             z-index: 1;
         }
 
-        /* Navigation */
-        nav {
-            padding: 2.5rem 0;
+        /* --- TOP HACKER STATUS BAR --- */
+        .hacker-header {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.95);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            color: #a0a0a0;
+            padding: 0.5rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
-            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        /* Scanline texture for header */
+        .hacker-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 1px,
+                rgba(0, 255, 65, 0.05) 1px,
+                rgba(0, 255, 65, 0.05) 2px
+            );
+            pointer-events: none;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 2;
+        }
+
+        .header-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-label {
+            color: var(--terminal-green);
+            font-weight: 600;
+        }
+
+        .header-val {
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .blink-fast { animation: blink 0.5s infinite; }
+
+        /* Navigation (Standard) */
+        nav {
+            padding: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
         }
 
         .logo {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--terminal-green);
             letter-spacing: 2px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+            white-space: nowrap;
         }
 
-        .logo::before {
-            content: 'root@hds:~$ ';
-            color: var(--terminal-blue);
+        .logo::before { content: 'root@hds:~$ '; color: var(--terminal-blue); }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 15px rgba(0, 255, 65, 0.8);
         }
 
         .nav-links {
@@ -214,81 +273,81 @@
 
         /* Hero */
         .hero {
-            padding: 3rem 0 5rem;
+            padding: 4rem 0 5rem;
         }
 
-        /* --- Matrix Reveal Effect Styles --- */
-        .hero-ascii-container {
+        /* --- Command Style Hello World --- */
+        .hero-command-line {
             font-family: 'IBM Plex Mono', monospace;
             font-weight: 500;
-            /* Dynamic sizing to fit "MR. HARKAMAL" on mobile */
-            font-size: clamp(0.9rem, 4vw, 1.5rem); 
-            color: var(--terminal-green); 
-            letter-spacing: 1px;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-            cursor: default;
-            user-select: none;
-            white-space: nowrap; /* Prevent breaking */
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            color: var(--terminal-green);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        
+
         .hero-prompt {
             color: var(--terminal-blue);
-            margin-right: 8px;
-            font-weight: bold;
-            font-size: clamp(0.9rem, 4vw, 1.5rem); /* Match size */
+            margin-right: 10px;
+            white-space: nowrap;
         }
 
-        /* The Glitch Character Style */
-        .glitch-char {
-            color: #10b981 !important; /* Matrix Green */
-            font-family: "JetBrains Mono", monospace;
-            text-shadow: 0 0 10px rgba(16, 185, 129, 0.9);
-            opacity: 1;
-        }
-
-        /* Regular char style in container */
-        .matrix-char {
-            transition: color 0.075s ease;
+        /* Refined Text Container - No Overlay, Pure Text */
+        .hero-text-container {
             display: inline-block;
+            min-width: 150px;
+            color: var(--terminal-green);
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.6);
+            letter-spacing: 1px;
         }
 
         .system-info {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-dim);
             margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .command-line {
+        .command-line-sub {
             font-size: 1rem;
             color: var(--text-secondary);
             margin-bottom: 2rem;
         }
 
-        .command-line .prompt { color: var(--terminal-blue); }
-        .command-line .command { color: var(--terminal-green); }
+        .command-line-sub .prompt { color: var(--terminal-blue); }
+        .command-line-sub .command { color: var(--terminal-green); }
 
+        /* --- FIXED: Name on Single Line --- */
         h1 {
-            font-size: 5rem;
+            font-size: 5vw; 
             font-weight: 800;
-            line-height: 1;
+            line-height: 1.1;
             margin-bottom: 1.5rem;
             color: var(--text-primary);
-            letter-spacing: -3px;
+            letter-spacing: -1px;
             text-transform: uppercase;
+            white-space: nowrap; 
+            overflow: visible; 
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 7vw; }
+        }
+        @media (min-width: 1400px) {
+            h1 { font-size: 5rem; }
         }
 
         .role {
-            font-size: 1.6rem;
+            font-size: clamp(1rem, 3vw, 1.6rem);
             color: var(--terminal-green);
             margin-bottom: 2rem;
             font-weight: 500;
         }
 
-        .role::before {
-            content: '> ';
-            color: var(--terminal-blue);
-        }
+        .role::before { content: '> '; color: var(--terminal-blue); }
 
         .bio {
             font-size: 1.05rem;
@@ -440,6 +499,19 @@
             overflow: hidden;
         }
 
+        .skill-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .skill-block:hover::before { left: 100%; }
+
         .skill-block:hover {
             border-color: var(--terminal-green);
             background: rgba(0, 255, 65, 0.08);
@@ -454,10 +526,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .skill-block h3::before {
-            content: '> ';
-            color: var(--terminal-blue);
-        }
+        .skill-block h3::before { content: '> '; color: var(--terminal-blue); }
 
         .skill-list { list-style: none; }
         .skill-list li {
@@ -467,14 +536,13 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .skill-list li:last-child { border-bottom: none; }
-        .skill-list li::before {
-            content: '└─ ';
-            color: var(--terminal-green);
-        }
+        .skill-list li::before { content: '└─ '; color: var(--terminal-green); transition: all 0.3s; }
         .skill-list li:hover {
             color: var(--terminal-green);
             padding-left: 15px;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
         }
+        .skill-list li:hover::before { color: var(--terminal-blue); }
 
         /* Projects */
         .projects-container {
@@ -491,6 +559,32 @@
             position: relative;
             overflow: hidden;
         }
+
+        .project::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--terminal-green), var(--terminal-blue));
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .project::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.05), transparent);
+            transition: left 0.6s;
+        }
+
+        .project:hover::before { width: 100%; }
+        .project:hover::after { left: 100%; }
+
         .project:hover {
             border-color: var(--terminal-green);
             background: rgba(0, 255, 65, 0.08);
@@ -505,21 +599,10 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .project h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-        .project-desc {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
+        .project h3 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--text-primary); }
+        .project-desc { color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.8; }
+
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 0.75rem; }
         .tech-tag {
             padding: 0.4rem 1rem;
             background: transparent;
@@ -528,18 +611,31 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .tech-tag:hover {
+        .tech-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
             background: var(--terminal-green);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+        .tech-tag:hover::before { left: 0; }
+        .tech-tag:hover {
             color: var(--bg-black);
+            border-color: var(--terminal-green);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+            transform: translateY(-2px);
         }
 
         /* Education Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 4rem;
-        }
+        .timeline { position: relative; padding-left: 4rem; }
         .timeline::before {
             content: '';
             position: absolute;
@@ -555,6 +651,7 @@
             padding-bottom: 2rem;
             border-bottom: 1px solid rgba(0, 255, 65, 0.1);
         }
+        .timeline-item:last-child { border-bottom: none; }
         .timeline-item::before {
             content: '';
             position: absolute;
@@ -566,6 +663,7 @@
             border: 3px solid var(--bg-black);
             border-radius: 50%;
             box-shadow: 0 0 0 3px rgba(0, 255, 65, 0.3);
+            animation: pulse 2s ease-in-out infinite;
         }
         .timeline-item h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
         .timeline-institution { color: var(--text-secondary); margin-bottom: 0.5rem; }
@@ -574,13 +672,12 @@
         .timeline-achievements li { color: var(--text-secondary); margin: 0.5rem 0; }
         .timeline-achievements li::before { content: '▸ '; color: var(--terminal-green); }
 
-        /* --- CERTIFICATIONS (Restored Style) --- */
+        /* Certifications */
         .cert-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
         }
-
         .cert {
             background: rgba(0, 255, 65, 0.03);
             border: 1px solid rgba(0, 255, 65, 0.3);
@@ -589,7 +686,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .cert::before {
             content: '';
             position: absolute;
@@ -601,106 +697,55 @@
             transform: scaleY(0);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .cert:hover::before {
-            transform: scaleY(1);
-        }
-
+        .cert:hover::before { transform: scaleY(1); }
         .cert:hover {
             border-color: var(--terminal-green);
             background: rgba(0, 255, 65, 0.08);
             transform: translateX(15px);
             box-shadow: -5px 5px 20px rgba(0, 255, 65, 0.15);
         }
+        .cert-name { font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary); }
+        .cert-issuer { font-size: 0.9rem; color: var(--text-secondary); }
+        .cert-issuer::before { content: '└─ '; color: var(--terminal-green); }
 
-        .cert-name {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .cert-issuer {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .cert-issuer::before {
-            content: '└─ ';
-            color: var(--terminal-green);
-        }
-
-        /* --- CONTACT SECTION (Fixed Mobile Wrapping) --- */
+        /* Contact */
         .contact-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
         }
-
         .contact-item {
-            background: rgba(0, 20, 0, 0.6);
-            border: 1px solid rgba(0, 255, 65, 0.2);
+            background: rgba(0, 255, 65, 0.02);
+            border-left: 3px solid var(--terminal-green);
             padding: 2rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            overflow: hidden;
-            border-radius: 0;
         }
-        
-        /* Inner grid pattern */
-        .contact-item::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-            background-size: 20px 20px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
         .contact-item:hover {
-            border-color: var(--terminal-green);
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
+            background: rgba(0, 255, 65, 0.05);
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.15);
         }
-
         .contact-label {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.75rem;
-            color: #666;
-            letter-spacing: 1px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
             text-transform: uppercase;
-            margin-bottom: 0.8rem;
-            position: relative;
-            z-index: 1;
-            font-weight: 400; 
+            letter-spacing: 2px;
         }
-
         .contact-value {
-            font-family: 'IBM Plex Mono', monospace;
             font-size: 1.1rem;
-            font-weight: 400; 
-            color: var(--terminal-green);
-            /* Fix for wrapping: try break-word first, then break-all if needed */
-            overflow-wrap: break-word; 
-            word-wrap: break-word;
-            line-height: 1.4;
-            position: relative;
-            z-index: 1;
+            color: #ffffff;
+            word-break: break-all;
+            font-weight: 500;
         }
-
         .contact-value a {
-            color: var(--terminal-green);
+            color: #ffffff;
             text-decoration: none;
             transition: color 0.3s;
         }
-        
-        .contact-value a:hover {
-            text-shadow: 0 0 5px rgba(0, 255, 65, 0.6);
-            color: #fff;
-        }
+        .contact-value a:hover { color: var(--terminal-green); }
 
         /* Footer */
         footer {
@@ -735,28 +780,16 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .stats-row, .skills-container, .projects-container, .cert-grid {
+            .stats-row, .skills-container, .projects-container, .cert-grid, .contact-grid {
                 grid-template-columns: 1fr;
             }
-            h1 { font-size: 3rem; }
-            h2 { font-size: 2rem; }
-            .nav-links { display: none; }
             .container { padding: 0 1.5rem; }
-            
-            @media (min-width: 768px) {
-                 .contact-grid { grid-template-columns: 1fr 1fr; }
-            }
         }
 
         @media (max-width: 480px) {
-            h1 { font-size: 2.2rem; }
             #boot-screen { font-size: 10px; padding: 1rem; }
-            .contact-value { font-size: 0.85rem; } /* Smaller on mobile to fit email */
-            .contact-item { padding: 1.5rem; }
-            .hero-ascii-container { 
-                /* Scaled down even more for small screens */
-                font-size: 1rem; 
-            }
+            .hacker-header { flex-direction: column; gap: 5px; align-items: flex-start; }
+            .header-right { display: none; }
         }
 
         .blink { animation: blink 1s infinite; }
@@ -772,31 +805,44 @@
         <div class="boot-cursor"></div>
     </div>
 
-    <div class="container">
-        <!-- Navigation -->
-        <nav>
-            <div class="logo">HDS</div>
-            <ul class="nav-links">
-                <li><a href="#about">ABOUT</a></li>
-                <li><a href="#skills">SKILLS</a></li>
-                <li><a href="#projects">PROJECTS</a></li>
-                <li><a href="#education">EDUCATION</a></li>
-                <li><a href="#contact">CONTACT</a></li>
-            </ul>
-        </nav>
+    <!-- New Hacker Tech Status Bar -->
+    <header class="hacker-header">
+        <div class="header-left">
+            <div class="header-item">
+                <span class="header-label">SYS_TIME:</span>
+                <span class="header-val" id="time-display">--:--:--</span>
+            </div>
+            <div class="header-item">
+                <span class="header-label">IP:</span>
+                <span class="header-val" id="ip-display">192.168.X.X</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-item">
+                <span class="header-label">MEM:</span>
+                <span class="header-val">64%</span>
+            </div>
+            <div class="header-item">
+                <span class="header-label">SECURE:</span>
+                <span class="header-val blink-fast" style="color: #00ff41;">TRUE</span>
+            </div>
+        </div>
+    </header>
 
+    <div class="container">
         <!-- Hero Section -->
         <section class="hero">
-            <!-- New Matrix Reveal Effect Container -->
-            <div>
+            <!-- Command Style Hero -->
+            <div class="hero-command-line">
                 <span class="hero-prompt">root@hds:~# ./</span>
-                <div id="matrix-text" class="hero-ascii-container"></div>
+                <div id="matrix-text" class="hero-text-container"></div>
             </div>
 
             <div class="system-info">PORTFOLIO v2.0 | STATUS: ONLINE</div>
-            <div class="command-line"><span class="prompt">user@portfolio:~$</span> <span class="command">cat profile.txt</span><span class="blink">▌</span></div>
+            <div class="command-line-sub"><span class="prompt">user@portfolio:~$</span> <span class="command">cat profile.txt</span><span class="blink">▌</span></div>
 
-            <h1>HARKAMAL<br>DEEP SINGH</h1>
+            <h1>HARKAMAL DEEP SINGH</h1>
+            
             <div class="role">Business Analyst | Marketing Strategist | Data Analyst</div>
             <p class="bio">
                 BBA student specializing in Marketing with strong foundation in business operations, data analysis, 
@@ -1092,6 +1138,25 @@
             });
         }
 
+        // --- CLOCK & STATUS UPDATE ---
+        function updateStatus() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            document.getElementById('time-display').innerText = timeString;
+            
+            if (Math.random() > 0.95) {
+                const octet = Math.floor(Math.random() * 255);
+                document.getElementById('ip-display').innerText = `192.168.1.${octet}`;
+            }
+        }
+        setInterval(updateStatus, 1000);
+        updateStatus();
+
         // --- MR. ROBOT STYLE BOOT SEQUENCE ---
         const bootScreen = document.getElementById('boot-screen');
         const bootLogContainer = document.getElementById('boot-log-container');
@@ -1134,7 +1199,6 @@
             line.innerHTML = `<span class="log-time">[ ${now.padStart(10, ' ')} ]</span> ${message}`;
             
             bootLogContainer.appendChild(line);
-            
             bootScreen.scrollTop = bootScreen.scrollHeight;
         }
 
@@ -1158,84 +1222,62 @@
             setTimeout(() => {
                 bootScreen.style.display = 'none';
                 mainContainer.classList.add('visible');
-                // Start Cycle
                 startTextCycle();
             }, 500);
         }
 
-        // --- MATRIX REVEAL EFFECT ---
+        // --- DECRYPTION EFFECT (NO OVERLAY) ---
         const phrases = ["HELLO_WORLD", "MR. HARKAMAL"];
         let phraseIndex = 0;
-        let matrixInterval;
-        const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*<>[]{}';
+        let animationInterval;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-        function updateText(text) {
-            const container = document.getElementById('matrix-text');
-            if (!container) return;
-            container.innerHTML = '';
+        function animateText(targetText) {
+            const element = document.getElementById('matrix-text');
+            if(!element) return;
             
-            // Create spans
-            text.split('').forEach(char => {
-                const span = document.createElement('span');
-                span.textContent = char;
-                span.className = 'matrix-char';
-                container.appendChild(span);
-            });
-        }
-
-        function triggerGlitch() {
-            const container = document.getElementById('matrix-text');
-            if(!container) return;
-            const spans = container.children;
-            if(spans.length === 0) return;
-
-            // 30% chance to glitch a char
-            if (Math.random() > 0.7) {
-                const index = Math.floor(Math.random() * spans.length);
-                const span = spans[index];
+            let iterations = 0;
+            
+            clearInterval(animationInterval);
+            
+            animationInterval = setInterval(() => {
+                element.innerText = targetText.split("")
+                    .map((letter, index) => {
+                        if(index < iterations) {
+                            return targetText[index];
+                        }
+                        return letters[Math.floor(Math.random() * letters.length)];
+                    })
+                    .join("");
                 
-                if (span.textContent !== ' ') {
-                    const originalChar = span.textContent;
-                    
-                    // Glitch it
-                    span.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-                    span.classList.add('glitch-char');
-
-                    // Revert quickly
-                    setTimeout(() => {
-                        span.textContent = originalChar;
-                        span.classList.remove('glitch-char');
-                    }, 50 + Math.random() * 100);
+                if(iterations >= targetText.length){ 
+                    clearInterval(animationInterval);
+                    element.innerText = targetText; 
                 }
-            }
+                
+                iterations += 1/3; 
+            }, 30);
         }
 
         function startTextCycle() {
-            // Initial render
-            updateText(phrases[phraseIndex]);
-            
-            // Start glitch effect loop
-            if(matrixInterval) clearInterval(matrixInterval);
-            matrixInterval = setInterval(triggerGlitch, 100);
+            // Initial animation
+            animateText(phrases[0]);
 
-            // Cycle phrase every 4 seconds
+            // Cycle every 4 seconds
             setInterval(() => {
                 phraseIndex = (phraseIndex + 1) % phrases.length;
-                updateText(phrases[phraseIndex]);
+                animateText(phrases[phraseIndex]);
             }, 4000);
         }
 
-        // Interactive scramble on hover
+        // Interactive scramble
         const matrixText = document.getElementById('matrix-text');
         if (matrixText) {
             matrixText.addEventListener('mouseenter', () => {
-                 for (let i = 0; i < 5; i++) {
-                    setTimeout(triggerGlitch, i * 50);
-                }
+                 animateText(phrases[phraseIndex]);
             });
         }
 
-        // Start everything on load
         window.addEventListener('load', runBootSequence);
     </script>
 </body>
