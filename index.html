@@ -7,7 +7,7 @@
     <meta name="description" content="Portfolio of Harkamal Deep Singh - Top-ranked BBA student specializing in Marketing, Data Analysis, and Business Strategy">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --terminal-green: #00ff41;
@@ -27,9 +27,8 @@
             box-sizing: border-box;
         }
 
-        ::selection {
-            background: var(--terminal-green);
-            color: var(--bg-black);
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -40,6 +39,81 @@
             overflow-x: hidden;
             font-weight: 400;
             font-size: 15px;
+        }
+
+        /* --- Boot Screen --- */
+        #boot-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 10000;
+            padding: 1.5rem;
+            overflow-y: auto;
+            overflow-x: hidden;
+            font-family: 'IBM Plex Mono', monospace;
+            color: #ccc;
+            font-size: 12px;
+            line-height: 1.4;
+            display: block;
+        }
+
+        #boot-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+
+        body.booting {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .log-line {
+            width: 100%;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .log-success {
+            color: var(--terminal-green);
+            font-weight: bold;
+        }
+
+        .log-time {
+            color: var(--text-dim);
+            margin-right: 8px;
+            display: inline-block;
+            min-width: 80px;
+        }
+        
+        .boot-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--terminal-green);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        /* Main Content Visibility */
+        .container {
+            opacity: 0;
+            transition: opacity 1.5s ease-in;
+        }
+        
+        .container.visible {
+            opacity: 1;
+        }
+
+        ::selection {
+            background: var(--terminal-green);
+            color: var(--bg-black);
         }
 
         /* CRT Effect */
@@ -79,6 +153,12 @@
                 repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px),
                 repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px);
             z-index: 0;
+            animation: gridPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
         }
 
         .container {
@@ -104,6 +184,9 @@
             font-weight: 700;
             color: var(--terminal-green);
             letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
         }
 
         .logo::before {
@@ -127,39 +210,47 @@
             letter-spacing: 1px;
         }
 
-        .nav-links a:hover {
-            color: var(--terminal-green);
-        }
-
-        .nav-links a::before {
-            content: '[ ';
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .nav-links a::after {
-            content: ' ]';
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .nav-links a:hover::before,
-        .nav-links a:hover::after {
-            opacity: 1;
-        }
+        .nav-links a:hover { color: var(--terminal-green); }
 
         /* Hero */
         .hero {
             padding: 3rem 0 5rem;
         }
 
-        .hero-ascii {
-            font-size: 2.5rem;
-            color: var(--terminal-green);
-            margin-bottom: 2rem;
-            font-weight: 700;
-            letter-spacing: 8px;
-            opacity: 0.9;
+        /* --- Matrix Reveal Effect Styles --- */
+        .hero-ascii-container {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 500;
+            /* Dynamic sizing to fit "MR. HARKAMAL" on mobile */
+            font-size: clamp(0.9rem, 4vw, 1.5rem); 
+            color: var(--terminal-green); 
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            cursor: default;
+            user-select: none;
+            white-space: nowrap; /* Prevent breaking */
+        }
+        
+        .hero-prompt {
+            color: var(--terminal-blue);
+            margin-right: 8px;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 4vw, 1.5rem); /* Match size */
+        }
+
+        /* The Glitch Character Style */
+        .glitch-char {
+            color: #10b981 !important; /* Matrix Green */
+            font-family: "JetBrains Mono", monospace;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.9);
+            opacity: 1;
+        }
+
+        /* Regular char style in container */
+        .matrix-char {
+            transition: color 0.075s ease;
+            display: inline-block;
         }
 
         .system-info {
@@ -174,13 +265,8 @@
             margin-bottom: 2rem;
         }
 
-        .command-line .prompt {
-            color: var(--terminal-blue);
-        }
-
-        .command-line .command {
-            color: var(--terminal-green);
-        }
+        .command-line .prompt { color: var(--terminal-blue); }
+        .command-line .command { color: var(--terminal-green); }
 
         h1 {
             font-size: 5rem;
@@ -239,10 +325,7 @@
             gap: 2rem;
         }
 
-        .stat {
-            text-align: center;
-        }
-
+        .stat { text-align: center; }
         .stat-value {
             font-size: 3rem;
             font-weight: 800;
@@ -250,7 +333,6 @@
             line-height: 1;
             margin-bottom: 0.5rem;
         }
-
         .stat-label {
             font-size: 0.75rem;
             color: var(--text-dim);
@@ -274,7 +356,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -290,29 +372,26 @@
             width: 100%;
             height: 100%;
             background: var(--terminal-green);
-            transition: left 0.3s;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: -1;
         }
 
-        .btn:hover::before {
-            left: 0;
-        }
-
+        .btn:hover::before { left: 0; }
         .btn:hover {
             color: var(--bg-black);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+            transform: translateY(-2px);
         }
 
         .btn-primary {
             background: var(--terminal-green);
             color: var(--bg-black);
+            box-shadow: 0 4px 15px rgba(0, 255, 65, 0.3);
         }
-
-        .btn-primary::before {
-            background: var(--bg-black);
-        }
-
+        .btn-primary::before { background: var(--bg-black); }
         .btn-primary:hover {
             color: var(--terminal-green);
+            box-shadow: 0 6px 25px rgba(0, 255, 65, 0.5);
         }
 
         /* Sections */
@@ -321,9 +400,7 @@
             border-top: 1px solid rgba(0, 255, 65, 0.2);
         }
 
-        .section-header {
-            margin-bottom: 4rem;
-        }
+        .section-header { margin-bottom: 4rem; }
 
         .section-tag {
             font-size: 0.8rem;
@@ -331,10 +408,7 @@
             margin-bottom: 1rem;
             letter-spacing: 2px;
         }
-
-        .section-tag::before {
-            content: '// ';
-        }
+        .section-tag::before { content: '// '; }
 
         h2 {
             font-size: 3rem;
@@ -361,13 +435,16 @@
             background: rgba(0, 255, 65, 0.03);
             border: 1px solid rgba(0, 255, 65, 0.3);
             padding: 2rem;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
         .skill-block:hover {
             border-color: var(--terminal-green);
             background: rgba(0, 255, 65, 0.08);
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
         }
 
         .skill-block h3 {
@@ -377,35 +454,26 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .skill-block h3::before {
             content: '> ';
             color: var(--terminal-blue);
         }
 
-        .skill-list {
-            list-style: none;
-        }
-
+        .skill-list { list-style: none; }
         .skill-list li {
             padding: 0.6rem 0;
             color: var(--text-secondary);
             border-bottom: 1px solid rgba(0, 255, 65, 0.1);
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .skill-list li:last-child {
-            border-bottom: none;
-        }
-
+        .skill-list li:last-child { border-bottom: none; }
         .skill-list li::before {
             content: '└─ ';
             color: var(--terminal-green);
         }
-
         .skill-list li:hover {
             color: var(--terminal-green);
-            padding-left: 10px;
+            padding-left: 15px;
         }
 
         /* Projects */
@@ -419,28 +487,15 @@
             background: rgba(0, 255, 65, 0.03);
             border: 1px solid rgba(0, 255, 65, 0.3);
             padding: 2.5rem;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
         }
-
-        .project::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--terminal-green);
-            transition: width 0.3s;
-        }
-
-        .project:hover::before {
-            width: 100%;
-        }
-
         .project:hover {
             border-color: var(--terminal-green);
             background: rgba(0, 255, 65, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 65, 0.15);
         }
 
         .project-meta {
@@ -450,25 +505,21 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .project h3 {
             font-size: 1.4rem;
             margin-bottom: 1rem;
             color: var(--text-primary);
         }
-
         .project-desc {
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
             line-height: 1.8;
         }
-
         .tech-stack {
             display: flex;
             flex-wrap: wrap;
             gap: 0.75rem;
         }
-
         .tech-tag {
             padding: 0.4rem 1rem;
             background: transparent;
@@ -477,9 +528,8 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
-
         .tech-tag:hover {
             background: var(--terminal-green);
             color: var(--bg-black);
@@ -490,7 +540,6 @@
             position: relative;
             padding-left: 4rem;
         }
-
         .timeline::before {
             content: '';
             position: absolute;
@@ -500,18 +549,12 @@
             width: 2px;
             background: linear-gradient(to bottom, var(--terminal-green), transparent);
         }
-
         .timeline-item {
             position: relative;
             margin-bottom: 3rem;
             padding-bottom: 2rem;
             border-bottom: 1px solid rgba(0, 255, 65, 0.1);
         }
-
-        .timeline-item:last-child {
-            border-bottom: none;
-        }
-
         .timeline-item::before {
             content: '';
             position: absolute;
@@ -524,38 +567,14 @@
             border-radius: 50%;
             box-shadow: 0 0 0 3px rgba(0, 255, 65, 0.3);
         }
+        .timeline-item h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .timeline-institution { color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .timeline-date { font-size: 0.85rem; color: var(--terminal-blue); margin-bottom: 1rem; }
+        .timeline-achievements { list-style: none; }
+        .timeline-achievements li { color: var(--text-secondary); margin: 0.5rem 0; }
+        .timeline-achievements li::before { content: '▸ '; color: var(--terminal-green); }
 
-        .timeline-item h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-institution {
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-date {
-            font-size: 0.85rem;
-            color: var(--terminal-blue);
-            margin-bottom: 1rem;
-        }
-
-        .timeline-achievements {
-            list-style: none;
-        }
-
-        .timeline-achievements li {
-            color: var(--text-secondary);
-            margin: 0.5rem 0;
-        }
-
-        .timeline-achievements li::before {
-            content: '▸ ';
-            color: var(--terminal-green);
-        }
-
-        /* Certifications */
+        /* --- CERTIFICATIONS (Restored Style) --- */
         .cert-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -566,13 +585,32 @@
             background: rgba(0, 255, 65, 0.03);
             border: 1px solid rgba(0, 255, 65, 0.3);
             padding: 1.5rem;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cert::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--terminal-green);
+            transform: scaleY(0);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cert:hover::before {
+            transform: scaleY(1);
         }
 
         .cert:hover {
             border-color: var(--terminal-green);
             background: rgba(0, 255, 65, 0.08);
-            transform: translateX(10px);
+            transform: translateX(15px);
+            box-shadow: -5px 5px 20px rgba(0, 255, 65, 0.15);
         }
 
         .cert-name {
@@ -591,47 +629,77 @@
             color: var(--terminal-green);
         }
 
-        /* Contact */
+        /* --- CONTACT SECTION (Fixed Mobile Wrapping) --- */
         .contact-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            max-width: 900px;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .contact-item {
-            background: rgba(0, 255, 65, 0.03);
-            border: 1px solid rgba(0, 255, 65, 0.3);
+            background: rgba(0, 20, 0, 0.6);
+            border: 1px solid rgba(0, 255, 65, 0.2);
             padding: 2rem;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0;
+        }
+        
+        /* Inner grid pattern */
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .contact-item:hover {
             border-color: var(--terminal-green);
-            background: rgba(0, 255, 65, 0.08);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
         }
 
         .contact-label {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            margin-bottom: 0.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 1;
+            font-weight: 400; 
         }
 
         .contact-value {
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 1.1rem;
+            font-weight: 400; 
             color: var(--terminal-green);
-            word-break: break-all;
+            /* Fix for wrapping: try break-word first, then break-all if needed */
+            overflow-wrap: break-word; 
+            word-wrap: break-word;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
         }
 
         .contact-value a {
             color: var(--terminal-green);
             text-decoration: none;
+            transition: color 0.3s;
         }
-
+        
         .contact-value a:hover {
-            color: var(--terminal-blue);
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.6);
+            color: #fff;
         }
 
         /* Footer */
@@ -641,17 +709,8 @@
             text-align: center;
             margin-top: 5rem;
         }
-
-        footer p {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
-
-        .footer-line {
-            margin-top: 1rem;
-            font-size: 0.8rem;
-            color: var(--terminal-green);
-        }
+        footer p { color: var(--text-dim); font-size: 0.9rem; }
+        .footer-line { margin-top: 1rem; font-size: 0.8rem; color: var(--terminal-green); }
 
         /* Download Notification */
         .download-notify {
@@ -667,63 +726,51 @@
             display: none;
             box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
         }
-
-        .download-notify.active {
-            display: block;
-            animation: slideInRight 0.3s ease-out;
-        }
+        .download-notify.active { display: block; animation: slideInRight 0.3s ease-out; }
 
         @keyframes slideInRight {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .stats-row,
-            .skills-container,
-            .projects-container,
-            .cert-grid,
-            .contact-grid {
+            .stats-row, .skills-container, .projects-container, .cert-grid {
                 grid-template-columns: 1fr;
             }
-
-            h1 {
-                font-size: 3rem;
-            }
-
-            h2 {
-                font-size: 2rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .container {
-                padding: 0 1.5rem;
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .container { padding: 0 1.5rem; }
+            
+            @media (min-width: 768px) {
+                 .contact-grid { grid-template-columns: 1fr 1fr; }
             }
         }
 
-        /* Cursor Blink */
-        .blink {
-            animation: blink 1s infinite;
+        @media (max-width: 480px) {
+            h1 { font-size: 2.2rem; }
+            #boot-screen { font-size: 10px; padding: 1rem; }
+            .contact-value { font-size: 0.85rem; } /* Smaller on mobile to fit email */
+            .contact-item { padding: 1.5rem; }
+            .hero-ascii-container { 
+                /* Scaled down even more for small screens */
+                font-size: 1rem; 
+            }
         }
 
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
+        .blink { animation: blink 1s infinite; }
+        @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
     </style>
 </head>
-<body class="crt">
+<body class="crt booting">
     <div class="terminal-grid"></div>
+
+    <!-- Boot Screen -->
+    <div id="boot-screen">
+        <div id="boot-log-container"></div>
+        <div class="boot-cursor"></div>
+    </div>
 
     <div class="container">
         <!-- Navigation -->
@@ -740,36 +787,41 @@
 
         <!-- Hero Section -->
         <section class="hero">
-            <div class="hero-ascii">HELLO_WORLD</div>
+            <!-- New Matrix Reveal Effect Container -->
+            <div>
+                <span class="hero-prompt">root@hds:~# ./</span>
+                <div id="matrix-text" class="hero-ascii-container"></div>
+            </div>
 
-            <div class="system-info">SYSTEM: PORTFOLIO_v2.0 | STATUS: ONLINE | LOCATION: Greater_Noida, India</div>
+            <div class="system-info">PORTFOLIO v2.0 | STATUS: ONLINE</div>
             <div class="command-line"><span class="prompt">user@portfolio:~$</span> <span class="command">cat profile.txt</span><span class="blink">▌</span></div>
 
             <h1>HARKAMAL<br>DEEP SINGH</h1>
             <div class="role">Business Analyst | Marketing Strategist | Data Analyst</div>
             <p class="bio">
-                Top-ranked BBA student with expertise in marketing analytics, digital payment systems, and business strategy. 
-                Combining analytical rigor with hands-on experience in data-driven decision making to solve complex business challenges 
-                at the intersection of technology and commerce.
+                BBA student specializing in Marketing with strong foundation in business operations, data analysis, 
+                and digital systems. Hands-on exposure to Excel, digital payment systems, cybersecurity fundamentals, 
+                and structured project research. Seeking entry-level roles where business, technology, and process 
+                excellence intersect.
             </p>
 
             <div class="terminal-box">
                 <div class="stats-row">
                     <div class="stat">
+                        <div class="stat-value">01</div>
+                        <div class="stat-label">CLASS RANK</div>
+                    </div>
+                    <div class="stat">
                         <div class="stat-value">9.3</div>
                         <div class="stat-label">CGPA</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">#01</div>
-                        <div class="stat-label">RANK</div>
-                    </div>
-                    <div class="stat">
                         <div class="stat-value">05+</div>
-                        <div class="stat-label">CERTS</div>
+                        <div class="stat-label">CERTIFICATIONS</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-value">94.7%</div>
-                        <div class="stat-label">CLASS XII</div>
+                        <div class="stat-value">02</div>
+                        <div class="stat-label">RESEARCH PROJECTS</div>
                     </div>
                 </div>
             </div>
@@ -786,9 +838,10 @@
                 <div class="section-tag">INIT_ABOUT.SH</div>
                 <h2>SYSTEM OVERVIEW</h2>
                 <p class="section-desc">
-                    Disciplined and high-performing business student from Army Institute of Management and Technology. 
-                    Specializing in bridging the gap between business operations and technology through analytical thinking, 
-                    data-driven insights, and strategic execution in enterprise environments.
+                    BBA student specializing in Marketing at Army Institute of Management and Technology. 
+                    Strong foundation in business operations, data analysis, digital systems, and process-driven work environments. 
+                    Known for analytical thinking, reliability, and ability to learn enterprise systems quickly. 
+                    Seeking entry-level role at large IT services organization where business, technology, and process excellence intersect.
                 </p>
             </div>
         </section>
@@ -804,33 +857,33 @@
                 <div class="skill-block">
                     <h3>Technical</h3>
                     <ul class="skill-list">
-                        <li>Microsoft Excel (Advanced)</li>
-                        <li>Data Analysis & Visualization</li>
-                        <li>PowerPoint Presentations</li>
-                        <li>Digital Payment Systems</li>
+                        <li>Microsoft Excel (Advanced Analytics)</li>
+                        <li>Data Analysis & Interpretation</li>
+                        <li>Statistical Analysis Tools</li>
+                        <li>Business Intelligence Dashboards</li>
                         <li>Cybersecurity Fundamentals</li>
                     </ul>
                 </div>
 
                 <div class="skill-block">
-                    <h3>Business</h3>
+                    <h3>Business Operations</h3>
                     <ul class="skill-list">
-                        <li>Market Research & Analysis</li>
-                        <li>CRM Systems</li>
-                        <li>Financial Services Domain</li>
-                        <li>Business Process Analysis</li>
-                        <li>Process Documentation</li>
+                        <li>Market Research & Consumer Analytics</li>
+                        <li>CRM & Customer Lifecycle Management</li>
+                        <li>Financial Services & Banking Operations</li>
+                        <li>Business Process Analysis & Mapping</li>
+                        <li>Operational Documentation & SOPs</li>
                     </ul>
                 </div>
 
                 <div class="skill-block">
-                    <h3>Core Abilities</h3>
+                    <h3>Professional Skills</h3>
                     <ul class="skill-list">
-                        <li>Analytical Thinking</li>
-                        <li>Strategic Communication</li>
-                        <li>Public Speaking</li>
-                        <li>Team Collaboration</li>
-                        <li>Attention to Detail</li>
+                        <li>Analytical & Critical Thinking</li>
+                        <li>Cross-functional Communication</li>
+                        <li>Stakeholder Management</li>
+                        <li>Problem Solving & Decision Making</li>
+                        <li>Research & Documentation</li>
                     </ul>
                 </div>
             </div>
@@ -848,14 +901,17 @@
                     <div class="project-meta">PROJECT_001 | JAN_2025 - MAY_2025</div>
                     <h3>Digital Payment Impact Analysis</h3>
                     <p class="project-desc">
-                        Conducted comprehensive analysis of consumer adoption patterns across digital payment platforms in India. 
-                        Interpreted transaction behavior and spending trends using structured datasets. Applied Excel-based 
-                        statistical analysis to extract actionable business insights and strategic recommendations.
+                        Analyzed consumer adoption patterns of digital payment platforms in India. 
+                        Interpreted transaction behavior and spending trends using structured datasets. 
+                        Applied Excel-based analysis to draw business insights and recommendations.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">Excel</span>
                         <span class="tech-tag">Data Analysis</span>
                         <span class="tech-tag">Market Research</span>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk" target="_blank" class="btn" style="display: inline-flex; padding: 0.6rem 1.2rem; font-size: 0.8rem;">VIEW PROJECT</a>
                     </div>
                 </div>
 
@@ -863,14 +919,17 @@
                     <div class="project-meta">PROJECT_002 | JAN_2024 - MAY_2024</div>
                     <h3>Social Media Usage Pattern Analysis</h3>
                     <p class="project-desc">
-                        Investigated correlation between social media engagement and academic performance through primary research 
-                        methodology. Designed questionnaires, executed data collection, and performed statistical interpretation. 
-                        Delivered findings with practical implications for digital behavior management.
+                        Studied the relationship between social media usage and academic performance. 
+                        Designed questionnaires and performed basic data interpretation. 
+                        Presented findings with practical implications for digital behavior management.
                     </p>
                     <div class="tech-stack">
                         <span class="tech-tag">Survey Design</span>
-                        <span class="tech-tag">Statistical Analysis</span>
+                        <span class="tech-tag">Data Interpretation</span>
                         <span class="tech-tag">Research</span>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk" target="_blank" class="btn" style="display: inline-flex; padding: 0.6rem 1.2rem; font-size: 0.8rem;">VIEW PROJECT</a>
                     </div>
                 </div>
             </div>
@@ -889,19 +948,17 @@
                     <div class="timeline-institution">Army Institute of Management and Technology, Greater Noida</div>
                     <div class="timeline-date">2023 - PRESENT</div>
                     <ul class="timeline-achievements">
-                        <li>Specialization: Marketing Analytics</li>
-                        <li>Performance: Rank 1st in College</li>
-                        <li>CGPA: 9.3/10</li>
+                        <li>Specialization: Marketing</li>
+                        <li>Performance: Rank 1st in college | CGPA: 9.3/10</li>
                     </ul>
                 </div>
 
                 <div class="timeline-item">
-                    <h3>Class XII (Commerce Stream)</h3>
+                    <h3>Class XII (Commerce)</h3>
                     <div class="timeline-institution">Army Public School, Unchi Bassi</div>
                     <div class="timeline-date">2022 - 2023</div>
                     <ul class="timeline-achievements">
                         <li>Performance: 94.7% (Stream Topper)</li>
-                        <li>Subjects: Accountancy, Business Studies, Economics, English</li>
                     </ul>
                 </div>
 
@@ -985,8 +1042,13 @@
                 </div>
 
                 <div class="contact-item">
-                    <div class="contact-label">Geolocation</div>
-                    <div class="contact-value">Greater Noida, India</div>
+                    <div class="contact-label">Current Base</div>
+                    <div class="contact-value">Greater Noida, UP</div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-label">Permanent HQ</div>
+                    <div class="contact-value">Hoshiarpur, Punjab</div>
                 </div>
             </div>
         </section>
@@ -1005,7 +1067,7 @@
         > RESUME_DOWNLOAD_INITIATED
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1021,30 +1083,160 @@
         const resumeBtn = document.getElementById('resumeBtn');
         const downloadNotify = document.getElementById('downloadNotify');
 
-        resumeBtn.addEventListener('click', function() {
-            downloadNotify.classList.add('active');
-            setTimeout(() => {
-                downloadNotify.classList.remove('active');
-            }, 3000);
-        });
+        if (resumeBtn) {
+            resumeBtn.addEventListener('click', function() {
+                downloadNotify.classList.add('active');
+                setTimeout(() => {
+                    downloadNotify.classList.remove('active');
+                }, 3000);
+            });
+        }
 
-        // Terminal typing effect
-        const commandText = document.querySelector('.command');
-        if (commandText) {
-            const text = commandText.textContent;
-            commandText.textContent = '';
-            let i = 0;
+        // --- MR. ROBOT STYLE BOOT SEQUENCE ---
+        const bootScreen = document.getElementById('boot-screen');
+        const bootLogContainer = document.getElementById('boot-log-container');
+        const mainContainer = document.querySelector('.container');
+        
+        const bootLogs = [
+            { text: "Linux version 6.5.0-generic (buildd@lcy02-amd64-001)", time: 0 },
+            { text: "Command line: BOOT_IMAGE=/boot/vmlinuz-6.5.0-generic root=UUID=hds-portfolio ro quiet splash", time: 50 },
+            { text: "KERNEL: Initializing cgroup subsys cpuset", time: 100 },
+            { text: "KERNEL: Initializing cgroup subsys cpu", time: 150 },
+            { text: "Console: colour dummy device 80x25", time: 200 },
+            { text: "Calibrating delay loop... 4200.12 BogoMIPS (lpj=8400240)", time: 300 },
+            { text: "TCP: cubic registered", time: 400 },
+            { text: "NET: Registered protocol family 17", time: 450 },
+            { text: "Freeing unused kernel image memory: 2048K", time: 500 },
+            { text: "Write protecting the kernel read-only data: 24576k", time: 550 },
+            { text: "Run /init as init process", time: 600 },
+            { text: "[  <span class='log-success'>OK</span>  ] Started Dispatch Password Requests to Console Directory Watch.", time: 700 },
+            { text: "[  <span class='log-success'>OK</span>  ] Reached target Local Encrypted Volumes.", time: 750 },
+            { text: "[  <span class='log-success'>OK</span>  ] Reached target Paths.", time: 800 },
+            { text: "[  <span class='log-success'>OK</span>  ] Reached target Remote File Systems.", time: 850 },
+            { text: "[  <span class='log-success'>OK</span>  ] Reached target Slices.", time: 900 },
+            { text: "[  <span class='log-success'>OK</span>  ] Reached target Swap.", time: 950 },
+            { text: "[  <span class='log-success'>OK</span>  ] Listening on Journal Socket.", time: 1000 },
+            { text: "[  <span class='log-success'>OK</span>  ] Listening on udev Control Socket.", time: 1050 },
+            { text: "[  <span class='log-success'>OK</span>  ] Listening on udev Kernel Socket.", time: 1100 },
+            { text: "[  <span class='log-success'>OK</span>  ] Started User Manager for UID 1000.", time: 1150 },
+            { text: "Welcome to HDS OS v2.0", time: 1300 },
+            { text: "Mounting portfolio assets...", time: 1400 },
+            { text: "Loading kernel modules: [ business-analyst, marketing, data-viz ]", time: 1500 },
+            { text: "Initializing Graphical Interface...", time: 1600 },
+            { text: "Starting user session...", time: 1700 }
+        ];
+
+        function typeLog(message) {
+            const line = document.createElement('div');
+            line.className = 'log-line';
             
-            function type() {
-                if (i < text.length) {
-                    commandText.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, 100);
+            const now = (performance.now() / 1000).toFixed(6);
+            line.innerHTML = `<span class="log-time">[ ${now.padStart(10, ' ')} ]</span> ${message}`;
+            
+            bootLogContainer.appendChild(line);
+            
+            bootScreen.scrollTop = bootScreen.scrollHeight;
+        }
+
+        function runBootSequence() {
+            document.body.classList.add('booting');
+            
+            bootLogs.forEach((log, index) => {
+                setTimeout(() => {
+                    typeLog(log.text);
+                    if (index === bootLogs.length - 1) {
+                        setTimeout(endBootSequence, 800);
+                    }
+                }, log.time);
+            });
+        }
+
+        function endBootSequence() {
+            bootScreen.classList.add('hidden');
+            document.body.classList.remove('booting');
+            
+            setTimeout(() => {
+                bootScreen.style.display = 'none';
+                mainContainer.classList.add('visible');
+                // Start Cycle
+                startTextCycle();
+            }, 500);
+        }
+
+        // --- MATRIX REVEAL EFFECT ---
+        const phrases = ["HELLO_WORLD", "MR. HARKAMAL"];
+        let phraseIndex = 0;
+        let matrixInterval;
+        const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&*<>[]{}';
+
+        function updateText(text) {
+            const container = document.getElementById('matrix-text');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            // Create spans
+            text.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.className = 'matrix-char';
+                container.appendChild(span);
+            });
+        }
+
+        function triggerGlitch() {
+            const container = document.getElementById('matrix-text');
+            if(!container) return;
+            const spans = container.children;
+            if(spans.length === 0) return;
+
+            // 30% chance to glitch a char
+            if (Math.random() > 0.7) {
+                const index = Math.floor(Math.random() * spans.length);
+                const span = spans[index];
+                
+                if (span.textContent !== ' ') {
+                    const originalChar = span.textContent;
+                    
+                    // Glitch it
+                    span.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                    span.classList.add('glitch-char');
+
+                    // Revert quickly
+                    setTimeout(() => {
+                        span.textContent = originalChar;
+                        span.classList.remove('glitch-char');
+                    }, 50 + Math.random() * 100);
                 }
             }
-            
-            setTimeout(type, 500);
         }
+
+        function startTextCycle() {
+            // Initial render
+            updateText(phrases[phraseIndex]);
+            
+            // Start glitch effect loop
+            if(matrixInterval) clearInterval(matrixInterval);
+            matrixInterval = setInterval(triggerGlitch, 100);
+
+            // Cycle phrase every 4 seconds
+            setInterval(() => {
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                updateText(phrases[phraseIndex]);
+            }, 4000);
+        }
+
+        // Interactive scramble on hover
+        const matrixText = document.getElementById('matrix-text');
+        if (matrixText) {
+            matrixText.addEventListener('mouseenter', () => {
+                 for (let i = 0; i < 5; i++) {
+                    setTimeout(triggerGlitch, i * 50);
+                }
+            });
+        }
+
+        // Start everything on load
+        window.addEventListener('load', runBootSequence);
     </script>
 </body>
 </html>
