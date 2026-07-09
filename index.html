@@ -1546,6 +1546,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li id="nav-item-experience" style="display: none;"><a href="#experience">Experience</a></li>
       <li><a href="#education">Education</a></li>
       <li><a href="#certifications">Credentials</a></li>
       <li><a href="#contact" class="nav-cta">Contact</a></li>
@@ -1560,6 +1561,7 @@
     <a href="#about" onclick="closeMobile()">About</a>
     <a href="#skills" onclick="closeMobile()">Skills</a>
     <a href="#projects" onclick="closeMobile()">Projects</a>
+    <a href="#experience" id="mobile-nav-item-experience" style="display: none;" onclick="closeMobile()">Experience</a>
     <a href="#education" onclick="closeMobile()">Education</a>
     <a href="#certifications" onclick="closeMobile()">Credentials</a>
     <a href="#contact" class="btn-primary" onclick="closeMobile()">Contact</a>
@@ -2267,9 +2269,13 @@
 
       // Experience Section
       const expSection = document.getElementById('experience');
+      const navExp = document.getElementById('nav-item-experience');
+      const mobileNavExp = document.getElementById('mobile-nav-item-experience');
       if (expSection) {
         if (data.experience && data.experience.items && data.experience.items.length > 0) {
           expSection.style.display = 'block';
+          if (navExp) navExp.style.display = 'block';
+          if (mobileNavExp) mobileNavExp.style.display = 'block';
           if (data.experience.title) {
             const expTitle = expSection.querySelector('.section-title');
             if (expTitle) expTitle.textContent = data.experience.title;
@@ -2294,6 +2300,8 @@
           }
         } else {
           expSection.style.display = 'none';
+          if (navExp) navExp.style.display = 'none';
+          if (mobileNavExp) mobileNavExp.style.display = 'none';
         }
       }
 
@@ -2308,7 +2316,7 @@
           if (educationSubtitle) educationSubtitle.textContent = data.education.subtitle;
         }
         if (data.education.items && Array.isArray(data.education.items)) {
-          const eduTimeline = document.querySelector('.edu-timeline');
+          const eduTimeline = document.querySelector('#education .edu-timeline');
           if (eduTimeline) {
             eduTimeline.innerHTML = data.education.items.map((edu, idx) => `
               <div class="edu-item reveal ${idx === 1 ? 'd1' : idx === 2 ? 'd2' : ''}">
