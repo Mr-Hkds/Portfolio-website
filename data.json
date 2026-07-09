@@ -32,11 +32,11 @@
       }
     ],
     "institution": {
-      "label": "Graduated From",
+      "label": "Graduated From ",
       "name": "Army Institute of Management & Technology",
-      "sub": "BBA — Marketing Specialization &nbsp;·&nbsp; Greater Noida, India",
+      "sub": "BBA — Marketing Specialization · Greater Noida, India",
       "tags": [
-        "2023 – 2026",
+        "2023 – Present",
         "Business Analytics"
       ]
     }
@@ -51,7 +51,7 @@
     "cards": [
       {
         "title": "Academic Track Record",
-        "text": "Rank 1 across all BBA programs at AIMT with 9.49 CGPA. Commerce stream topper with 94.7% in Class XII. Consecutive years of top-tier performance."
+        "text": "Rank 1 across all BBA programs at AIMT with 9.3 CGPA. Commerce stream topper with 94.7% in Class XII. Consecutive years of top-tier performance."
       },
       {
         "title": "Analytical Foundation",
@@ -153,7 +153,7 @@
         "degree": "Bachelor of Business Administration",
         "badges": [
           {
-            "text": "Rank 1 · CGPA 9.49 / 10",
+            "text": "Rank 1 · CGPA 9.3 / 10",
             "type": "gold"
           },
           {
