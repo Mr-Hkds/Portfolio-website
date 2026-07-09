@@ -366,6 +366,7 @@
       margin: 0 auto 1.8rem;
       display: none;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      position: relative;
     }
 
     .hero-photo.loaded {
@@ -2365,6 +2366,14 @@
           if (profileImg) {
             profileImg.src = data.hero.profileImage;
             profileImg.parentElement.style.display = 'block';
+            profileImg.onload = () => {
+              profileImg.parentElement.classList.add('loaded');
+              initMatrixPhotoEffect(profileImg);
+            };
+            if (profileImg.complete) {
+              profileImg.parentElement.classList.add('loaded');
+              initMatrixPhotoEffect(profileImg);
+            }
           }
         }
         if (data.hero.stats && Array.isArray(data.hero.stats)) {
@@ -2818,6 +2827,154 @@
           const countEl = document.getElementById('visitor-count');
           if (countEl) countEl.textContent = '000100';
         });
+    }
+
+    // Matrix Photo Canvas Animation Effect (Intro and Hover Disruption)
+    function initMatrixPhotoEffect(img) {
+      const container = document.getElementById('heroPhoto');
+      if (!container || !img || container.querySelector('#matrixCanvas')) return;
+
+      // Create canvas element
+      const canvas = document.createElement('canvas');
+      canvas.id = 'matrixCanvas';
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.borderRadius = '10px';
+      canvas.style.zIndex = '5';
+      canvas.style.cursor = 'pointer';
+      container.appendChild(canvas);
+
+      // Hide the loaded image element visually
+      img.style.position = 'absolute';
+      img.style.opacity = '0';
+      img.style.pointerEvents = 'none';
+
+      const ctx = canvas.getContext('2d');
+      const width = 220;
+      const height = 275; // aspect ratio 4:5
+      canvas.width = width;
+      canvas.height = height;
+
+      // Extract pixel colors from image
+      const offscreen = document.createElement('canvas');
+      offscreen.width = width;
+      offscreen.height = height;
+      const octx = offscreen.getContext('2d');
+      octx.drawImage(img, 0, 0, width, height);
+      let imgData;
+      try {
+        imgData = octx.getImageData(0, 0, width, height);
+      } catch (e) {
+        // Fallback if local filesystem CORS prevents reading pixels
+        console.warn('Canvas pixel extraction blocked by CORS. Using CSS fallback.');
+        img.style.opacity = '1';
+        canvas.remove();
+        return;
+      }
+      const pixels = imgData.data;
+
+      // Config
+      const pixelSize = 4; // block dimensions
+      const cols = Math.floor(width / pixelSize);
+      const rows = Math.floor(height / pixelSize);
+
+      let progress = 0; // reveal timeline
+      const drops = Array(cols).fill(0).map(() => Math.random() * -100);
+      const chars = '01$#@%&*+-/X'.split('');
+
+      // Track mouse
+      let mouse = { x: -1000, y: -1000, radius: 45, active: false };
+
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = (e.clientX - rect.left) * (width / rect.width);
+        mouse.y = (e.clientY - rect.top) * (height / rect.height);
+        mouse.active = true;
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        mouse.active = false;
+        mouse.x = -1000;
+        mouse.y = -1000;
+      });
+
+      // Frame loops
+      function draw() {
+        ctx.fillStyle = '#080d1a'; // deep navy/black canvas background
+        ctx.fillRect(0, 0, width, height);
+
+        if (progress < 1) {
+          progress += 0.008; // slow paint reveal
+        }
+
+        for (let c = 0; c < cols; c++) {
+          const x = c * pixelSize;
+          
+          // Increment matrix drops
+          drops[c] += pixelSize * 1.5;
+          if (drops[c] > height && Math.random() > 0.975) {
+            drops[c] = -20; // reset
+          }
+
+          for (let r = 0; r < rows; r++) {
+            const y = r * pixelSize;
+
+            const pixelIdx = (y * width + x) * 4;
+            if (pixelIdx >= pixels.length) continue;
+
+            const rColor = pixels[pixelIdx];
+            const gColor = pixels[pixelIdx + 1];
+            const bColor = pixels[pixelIdx + 2];
+            const alpha = pixels[pixelIdx + 3];
+
+            if (alpha < 50) continue; // skip bounds
+
+            const dx = x - mouse.x;
+            const dy = y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            // Matrix reveal condition
+            const isRevealed = y < progress * height;
+
+            if (mouse.active && dist < mouse.radius) {
+              // Disrupted state: render glowing code stream
+              if (Math.random() > 0.82) {
+                ctx.fillStyle = 'rgba(0, 255, 120, 0.9)';
+                ctx.font = 'bold 6px monospace';
+                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y + 5);
+              } else {
+                ctx.fillStyle = 'rgba(0, 100, 45, 0.2)';
+                ctx.fillRect(x, y, pixelSize - 0.5, pixelSize - 0.5);
+              }
+            } else if (!isRevealed) {
+              // Unrevealed state: show falling green drops
+              const isDrop = Math.abs(y - drops[c]) < pixelSize * 6;
+              if (isDrop && Math.random() > 0.4) {
+                ctx.fillStyle = 'rgba(0, 255, 100, 0.8)';
+                ctx.font = '5px monospace';
+                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y + 4);
+              }
+            } else {
+              // Revealed image state: high-contrast color blocks with subtle scanlines
+              // Tint slightly toward green/gold for cybersecurity styling
+              const grn = Math.min(255, gColor * 1.08);
+              const red = Math.min(255, rColor * 1.04);
+              
+              // Add a very slight scanline opacity flicker
+              const flicker = 0.94 + Math.random() * 0.06;
+              ctx.fillStyle = `rgba(${red}, ${grn}, ${bColor}, ${flicker})`;
+              ctx.fillRect(x, y, pixelSize - 0.5, pixelSize - 0.5);
+            }
+          }
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
     }
 
     // Load dynamic data on page startup
