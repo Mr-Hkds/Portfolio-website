@@ -2582,16 +2582,69 @@
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-    async function getBestAvailableModel() {
+    async function fetchWithModelFallback(apiKey, payload) {
+      let modelsToTry = [];
+      
+      // 1. If user explicitly selected a model, try it first
       const explicitModel = localStorage.getItem('gemini_model');
       if (explicitModel && explicitModel.trim() !== '') {
-        return explicitModel.trim();
+        modelsToTry.push(explicitModel.trim());
       }
-      return 'gemini-1.5-flash';
-    }
-
-    function getApiUrl(model, apiKey) {
-      return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      
+      // 2. Fetch live list of active models for this API key
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+        if (res.ok) {
+          const data = await res.json();
+          const fetched = data.models
+            .filter(m => m.supportedGenerationMethods.includes('generateContent') && m.name.includes('gemini'))
+            .map(m => m.name.replace('models/', ''));
+          fetched.forEach(m => { if (!modelsToTry.includes(m)) modelsToTry.push(m); });
+        }
+      } catch(e) {}
+      
+      // 3. Absolute fallback list if fetch fails
+      if (modelsToTry.length === 0) {
+        modelsToTry = ['gemini-2.0-flash-exp', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.5-flash'];
+      }
+      
+      let lastError = null;
+      for (const model of modelsToTry) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          
+          if (!response.ok) {
+            let errMsg = 'HTTP ' + response.status;
+            try {
+              const errData = await response.json();
+              if (errData.error && errData.error.message) errMsg = errData.error.message;
+            } catch(e) {}
+            // Throw so we can catch and try the next model
+            throw new Error(errMsg);
+          }
+          
+          const result = await response.json();
+          
+          // Success! Save this model as the active one so it loads faster next time
+          localStorage.setItem('gemini_model', model);
+          
+          // Optionally update the UI input if it exists
+          const modelInput = document.getElementById('gemini-model-input');
+          if (modelInput) modelInput.value = model;
+          
+          return result;
+        } catch(err) {
+          console.warn(`Model ${model} failed, trying next. Error:`, err);
+          lastError = err;
+        }
+      }
+      
+      throw new Error(`All available models failed. Last error: ${lastError ? lastError.message : 'Unknown error'}`);
     }
 
     async function sendCopilotChatMessage() {
@@ -2709,30 +2762,10 @@ You must return a JSON object with exactly two keys:
 Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON.`;
 
       try {
-        const model = await getBestAvailableModel();
-        const url = getApiUrl(model, apiKey);
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: systemText }] }]
-          })
-        });
+        const payload = { contents: [{ parts: [{ text: systemText }] }] };
+        const result = await fetchWithModelFallback(apiKey, payload);
 
         typingBubble.remove();
-
-        if (!response.ok) {
-          let errMsg = 'HTTP Status ' + response.status;
-          try {
-            const errData = await response.json();
-            if (errData.error && errData.error.message) {
-              errMsg = errData.error.message;
-            }
-          } catch(e) {}
-          throw new Error('Gemini API call failed: ' + errMsg);
-        }
-
-        const result = await response.json();
         let cleanText = result.candidates[0].content.parts[0].text.trim();
         
         // Strip markdown backticks if model returned them anyway
@@ -3260,15 +3293,10 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
     async function callGemini(prompt, jsonMode = true) {
       const apiKey = getApiKey();
       if (!apiKey) return null;
-      const model = await getBestAvailableModel();
-      const url = getApiUrl(model, apiKey);
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-      });
-      if (!res.ok) throw new Error('Gemini API error');
-      const data = await res.json();
+      
+      const payload = { contents: [{ parts: [{ text: prompt }] }] };
+      const data = await fetchWithModelFallback(apiKey, payload);
+      
       let raw = data.candidates[0].content.parts[0].text.trim();
       if (jsonMode && raw.startsWith('```')) {
         raw = raw.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
