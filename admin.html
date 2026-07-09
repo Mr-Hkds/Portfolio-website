@@ -2187,68 +2187,10 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
         const result = await response.json();
         const cleanText = result.candidates[0].content.parts[0].text.trim();
         
-        // Helper to diff old and new objects for Mr. Robot style logging
-        function generateDataDiff(oldData, newData) {
-          let diffs = [];
-          function compare(o, n, path) {
-            if (o === undefined || n === undefined) return;
-            if (typeof o !== typeof n) {
-              diffs.push(`[SHIFT] ${path}: type changed`);
-              return;
-            }
-            if (Array.isArray(o) && Array.isArray(n)) {
-              if (o.length !== n.length) {
-                diffs.push(`[SIZE] ${path}: ${o.length} -> ${n.length}`);
-              }
-              const maxLen = Math.max(o.length, n.length);
-              for (let i = 0; i < maxLen; i++) {
-                if (i >= o.length) diffs.push(`[ADD] ${path}[${i}]`);
-                else if (i >= n.length) diffs.push(`[DEL] ${path}[${i}]`);
-                else compare(o[i], n[i], `${path}[${i}]`);
-              }
-              return;
-            }
-            if (typeof o === 'object' && o !== null && n !== null) {
-              for (let k in o) {
-                if (!(k in n)) diffs.push(`[DEL] ${path}.${k}`);
-                else compare(o[k], n[k], `${path}.${k}`);
-              }
-              for (let k in n) {
-                if (!(k in o)) diffs.push(`[ADD] ${path}.${k}`);
-              }
-              return;
-            }
-            if (o !== n) {
-              const oldStr = o.toString().length > 30 ? o.toString().substring(0, 27) + '...' : o.toString();
-              const newStr = n.toString().length > 30 ? n.toString().substring(0, 27) + '...' : n.toString();
-              diffs.push(`[MUTATE] ${path.replace('root.', '')}: "${oldStr}" -> "${newStr}"`);
-            }
-          }
-          compare(oldData, newData, 'root');
-          return diffs;
-        }
-
         portfolioData = JSON.parse(cleanText);
         populateForm();
         
-        const diffs = generateDataDiff(currentData, portfolioData);
-        let robotLog = `fsociety@harkamal-terminal:~$ log --analyze-delta<br/>
-[STATUS] Memory delta operation complete.<br/>
-[DELTA] Total changes detected: ${diffs.length}<br/>`;
-
-        if (diffs.length > 0) {
-          robotLog += `<pre style="font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; background: rgba(0,0,0,0.45); padding: 0.6rem; border-radius: 4px; border-left: 2.5px solid var(--gold); color: #818CF8; margin: 0.5rem 0; overflow-x: auto; white-space: pre-wrap; line-height: 1.45;">`;
-          diffs.forEach(d => {
-            robotLog += `${d}\n`;
-          });
-          robotLog += `</pre>`;
-        } else {
-          robotLog += `[DELTA] Memory registers match. No shifts detected.<br/>`;
-        }
-        
-        robotLog += `<br/>Injection finished. Confirm values in dashboard tabs, then click **"Save Changes"** in the header to push delta live.`;
-        
-        appendChatMessage('AI Copilot', robotLog);
+        appendChatMessage('AI Copilot', 'I have updated the forms with your changes! You can navigate through the tabs to verify. Click **"Save Changes"** at the top right to make them live on your website.');
         showToast('AI Copilot updated your forms!');
       } catch (error) {
         console.error(error);
