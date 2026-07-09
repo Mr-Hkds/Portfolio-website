@@ -394,6 +394,8 @@
       border-radius: 8px;
       overflow: hidden;
       margin-bottom: 1.8rem;
+      width: 100%;
+      max-width: 440px;
     }
 
     .stat-box {
@@ -445,6 +447,9 @@
       gap: 1rem;
       align-items: flex-start;
       transition: background 0.25s, border-color 0.25s;
+      width: 100%;
+      max-width: 440px;
+      box-sizing: border-box;
     }
 
     .hero-inst:hover {
@@ -705,44 +710,45 @@
       border-bottom: 1px solid var(--border-light);
     }
 
-    .skill-list {
-      list-style: none;
+    .skill-tags {
       display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.1rem;
     }
 
-    .skill-list li {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      font-weight: 300;
-      display: flex;
-      align-items: baseline;
-      gap: 0.55rem;
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 450;
+      color: var(--navy);
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     }
 
-    .skill-list li::before {
-      content: '';
-      display: inline-block;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-      margin-top: 1px;
+    .skill-tag:hover {
+      border-color: var(--gold);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(184, 146, 74, 0.08);
     }
 
-    .skill-badge {
-      margin-left: auto;
-      font-size: 0.66rem;
+    .skill-level {
+      font-size: 0.62rem;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
       color: var(--gold);
-      background: rgba(184, 146, 74, 0.09);
-      border: 1px solid rgba(184, 146, 74, 0.22);
-      padding: 0.1rem 0.45rem;
-      border-radius: 3px;
-      white-space: nowrap;
-      flex-shrink: 0;
+      background: rgba(184, 146, 74, 0.08);
+      border: 1px solid rgba(184, 146, 74, 0.2);
+      padding: 0.08rem 0.35rem;
+      border-radius: 4px;
+      margin-left: 0.4rem;
+      line-height: 1;
     }
 
     /* PROJECTS */
@@ -2219,15 +2225,15 @@
                   ${getIconSvg(cat.icon)}
                 </div>
                 <h3>${cat.name}</h3>
-                <ul class="skill-list">
+                <div class="skill-tags">
                   ${cat.skills.map(sk => {
                     const parts = sk.split(' — ');
                     if (parts.length > 1) {
-                      return `<li>${parts[0]} <span class="skill-badge">${parts[1]}</span></li>`;
+                      return `<span class="skill-tag">${parts[0]} <span class="skill-level">${parts[1]}</span></span>`;
                     }
-                    return `<li>${sk}</li>`;
+                    return `<span class="skill-tag">${sk}</span>`;
                   }).join('')}
-                </ul>
+                </div>
               </div>
             `).join('');
           }
