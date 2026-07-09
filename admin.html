@@ -2262,6 +2262,11 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
           subtitle: document.getElementById('projects-subtitle').value,
           items: getProjectsFromDOM()
         },
+        experience: {
+          title: document.getElementById('experience-title').value,
+          subtitle: document.getElementById('experience-subtitle').value,
+          items: getExperienceFromDOM()
+        },
         education: {
           title: document.getElementById('education-title').value,
           subtitle: document.getElementById('education-subtitle').value,
@@ -2295,6 +2300,15 @@ Take the current data.json structure:
 ${JSON.stringify(currentData)}
 
 And update it according to this instruction: "${prompt}"
+
+IMPORTANT RULE FOR HERO INSTITUTION:
+Whenever professional experience items or education items are updated (added, edited, or removed), or if explicitly requested, you must automatically keep the hero's current institution status block ("hero.institution") synced to match this latest state:
+- If there is at least one item in "experience.items", set "hero.institution" to:
+  - "label": "Currently Working At" (or similar based on role, e.g. "Currently Interning At")
+  - "name": The company name from the experience item
+  - "sub": The role title from the experience item
+  - "tags": An array containing the period and the first tag/skill from the experience item
+- If "experience.items" is empty, revert "hero.institution" to the Army Institute of Management & Technology BBA student status.
 
 Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json blocks. Do not add any conversational text.`;
 
@@ -2619,7 +2633,36 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
       saveText.textContent = 'Save Changes';
     }
 
+    function autoSyncHeroInstitution() {
+      const expItems = getExperienceFromDOM();
+      
+      let currentJob = null;
+      if (expItems && expItems.length > 0) {
+        currentJob = expItems.find(item => (item.period || '').toLowerCase().includes('present'));
+        if (!currentJob) currentJob = expItems[0];
+      }
+      
+      if (currentJob) {
+        document.getElementById('inst-label').value = 'Currently Working At';
+        document.getElementById('inst-name').value = currentJob.company || '';
+        document.getElementById('inst-sub').value = currentJob.role || '';
+        
+        let tagsText = currentJob.period || '';
+        if (currentJob.tags && currentJob.tags.length > 0) {
+          tagsText += `, ${currentJob.tags[0]}`;
+        }
+        document.getElementById('inst-tags').value = tagsText;
+      } else {
+        document.getElementById('inst-label').value = 'Currently Studying At';
+        document.getElementById('inst-name').value = 'Army Institute of Management & Technology';
+        document.getElementById('inst-sub').value = 'BBA — Marketing Specialization · Greater Noida, India';
+        document.getElementById('inst-tags').value = '2023 – Present, Business Analytics';
+      }
+    }
+
     async function saveData() {
+      autoSyncHeroInstitution();
+
       const saveButton = document.getElementById('saveButton');
       const saveIcon = document.getElementById('saveIcon');
       const saveText = saveButton.querySelector('span');
