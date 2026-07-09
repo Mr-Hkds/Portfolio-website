@@ -72,7 +72,7 @@
     "subtitle": "A structured map of hard technical capabilities, data analytics expertise, and strategic soft skills.",
     "categories": [
       {
-        "name": "Technical & Cybersecurity",
+        "name": "Technical Skills",
         "icon": "shield",
         "skills": [
           "Cybersecurity Fundamentals — Certified",
@@ -84,7 +84,7 @@
         ]
       },
       {
-        "name": "Data & Analytical Research",
+        "name": "Hard Skills",
         "icon": "table",
         "skills": [
           "Advanced Microsoft Excel — Advanced",
@@ -97,7 +97,7 @@
         ]
       },
       {
-        "name": "Strategy & Core Soft Skills",
+        "name": "Soft Skills",
         "icon": "book",
         "skills": [
           "Consumer Behavior Analysis — Advanced",
