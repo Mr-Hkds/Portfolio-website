@@ -2457,21 +2457,29 @@
 
     // Fetch portfolio data from server or local file
     async function loadPortfolioData() {
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+      const targetUrl = isLocal ? '/api/data' : 'data.json';
+
       try {
-        const response = await fetch('/api/data');
-        if (!response.ok) throw new Error('Server API failed');
+        const response = await fetch(targetUrl);
+        if (!response.ok) throw new Error('Fetch failed');
         const data = await response.json();
         renderPortfolio(data);
       } catch (error) {
-        console.warn('Could not load portfolio data from server, trying data.json directly...', error);
-        try {
-          const response = await fetch('data.json');
-          if (!response.ok) throw new Error('Local fetch failed');
-          const data = await response.json();
-          renderPortfolio(data);
-        } catch (localError) {
-          console.error('Failed to load portfolio data. Running with static HTML fallbacks.', localError);
-          initAnimationsAndScroll(); // run animations on fallback HTML
+        if (isLocal) {
+          console.warn('Could not load portfolio data from server, trying data.json directly...', error);
+          try {
+            const response = await fetch('data.json');
+            if (!response.ok) throw new Error('Local fetch failed');
+            const data = await response.json();
+            renderPortfolio(data);
+          } catch (localError) {
+            console.error('Failed to load portfolio data. Running with static HTML fallbacks.', localError);
+            initAnimationsAndScroll();
+          }
+        } else {
+          console.error('Failed to load portfolio data. Running with static HTML fallbacks.', error);
+          initAnimationsAndScroll();
         }
       }
     }
@@ -2492,7 +2500,7 @@
 
     // Increment and retrieve visits counter (starts at 100)
     function initVisitorCounter() {
-      const counterUrl = 'https://api.counterapi.dev/v2/harkamal-deep-singh/visits/up';
+      const counterUrl = 'https://abacus.jasoncameron.dev/hit/harkamal-deep-singh/visits';
 
       fetch(counterUrl)
         .then(response => response.json())
