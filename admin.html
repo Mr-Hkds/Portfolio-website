@@ -131,7 +131,7 @@
     /* MAIN CONTAINER */
     .admin-container {
       display: grid;
-      grid-template-columns: 240px 1fr;
+      grid-template-columns: 260px 1fr;
       flex: 1;
       max-width: 1400px;
       width: 100%;
@@ -180,6 +180,24 @@
       stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 0.1rem 0.5rem;
+      min-width: 22px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .nav-item.active .nav-badge {
+      background: var(--gold);
+      color: var(--navy);
     }
 
     /* CONTENT AREA */
@@ -239,6 +257,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1.2rem;
+      align-items: center;
     }
 
     .form-group.grid-3 {
@@ -578,7 +597,7 @@
       <div class="header-badge">Admin Panel</div>
     </div>
     <div class="header-actions">
-      <!-- GitHub Token button (visible only in live view but available for configs) -->
+      <!-- GitHub Token settings -->
       <button class="btn btn-secondary" id="githubSettingsButton" onclick="openGithubModal()">
         <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
@@ -619,6 +638,7 @@
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
         Hero Section
+        <span class="nav-badge" id="badge-hero">0</span>
       </div>
       <div class="nav-item" onclick="switchTab('about')">
         <svg viewBox="0 0 24 24">
@@ -626,6 +646,7 @@
           <circle cx="12" cy="7" r="4" />
         </svg>
         About
+        <span class="nav-badge" id="badge-about">0</span>
       </div>
       <div class="nav-item" onclick="switchTab('capabilities')">
         <svg viewBox="0 0 24 24">
@@ -633,12 +654,14 @@
           <path d="M3 9h18M9 21V9" />
         </svg>
         Capabilities
+        <span class="nav-badge" id="badge-capabilities">0</span>
       </div>
       <div class="nav-item" onclick="switchTab('projects')">
         <svg viewBox="0 0 24 24">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
         </svg>
         Research Projects
+        <span class="nav-badge" id="badge-projects">0</span>
       </div>
       <div class="nav-item" onclick="switchTab('education')">
         <svg viewBox="0 0 24 24">
@@ -646,18 +669,21 @@
           <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5" />
         </svg>
         Education
+        <span class="nav-badge" id="badge-education">0</span>
       </div>
       <div class="nav-item" onclick="switchTab('certifications')">
         <svg viewBox="0 0 24 24">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
         </svg>
         Credentials
+        <span class="nav-badge" id="badge-certifications">0</span>
       </div>
       <div class="nav-item" onclick="switchTab('building')">
         <svg viewBox="0 0 24 24">
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
         </svg>
         Currently Building
+        <span class="nav-badge" id="badge-building">0</span>
       </div>
       <div class="nav-item" onclick="switchTab('contact')">
         <svg viewBox="0 0 24 24">
@@ -699,6 +725,19 @@
           <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.8rem;">Current
             Institution</h3>
         </div>
+        <div class="form-group grid-2">
+          <div>
+            <label>Graduation Status Helper</label>
+            <div style="display: flex; gap: 0.6rem;">
+              <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('studying')" style="flex: 1; padding: 0.5rem 0.8rem; font-size: 0.72rem;">Studying</button>
+              <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('graduated')" style="flex: 1; padding: 0.5rem 0.8rem; font-size: 0.72rem;">Graduated</button>
+            </div>
+          </div>
+          <div>
+            <label for="inst-tags">Institution Tags (comma separated)</label>
+            <input type="text" id="inst-tags" placeholder="e.g. 2023 – Present, Business Analytics" />
+          </div>
+        </div>
         <div class="form-group">
           <label for="inst-label">Institution Label</label>
           <input type="text" id="inst-label" placeholder="e.g. Currently Studying At" />
@@ -711,10 +750,6 @@
           <label for="inst-sub">Degree &amp; Location details</label>
           <input type="text" id="inst-sub"
             placeholder="e.g. BBA — Marketing Specialization · Greater Noida, India" />
-        </div>
-        <div class="form-group">
-          <label for="inst-tags">Institution Tags (comma separated)</label>
-          <input type="text" id="inst-tags" placeholder="e.g. 2023 – Present, Business Analytics" />
         </div>
 
         <div style="margin: 2rem 0 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
@@ -1103,6 +1138,67 @@
         document.getElementById('contact-cta-title').value = portfolioData.contact.ctaTitle || '';
         document.getElementById('contact-cta-text').value = portfolioData.contact.ctaText || '';
       }
+
+      // Initial sidebar counts refresh
+      updateSidebarBadges();
+    }
+
+    // Institution Status Helper
+    function setInstitutionStatus(status) {
+      const labelInput = document.getElementById('inst-label');
+      const tagsInput = document.getElementById('inst-tags');
+      if (status === 'studying') {
+        labelInput.value = 'Currently Studying At';
+        const tags = tagsInput.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
+        if (tags.length > 0) {
+          tags[0] = '2023 – Present';
+          tagsInput.value = tags.join(', ');
+        } else {
+          tagsInput.value = '2023 – Present';
+        }
+        showToast('Helper: Set status to "Currently Studying"');
+      } else {
+        labelInput.value = 'Graduated From';
+        const tags = tagsInput.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
+        if (tags.length > 0) {
+          tags[0] = '2023 – 2026';
+          tagsInput.value = tags.join(', ');
+        } else {
+          tagsInput.value = '2023 – 2026';
+        }
+        showToast('Helper: Set status to "Graduated"');
+      }
+    }
+
+    // Dynamic Sidebar Counts
+    function updateSidebarBadges() {
+      // 1. Stats count
+      const statsEls = document.querySelectorAll('.stat-num-input');
+      document.getElementById('badge-hero').textContent = statsEls.length;
+
+      // 2. About Cards count
+      const aboutCardTitleEls = document.querySelectorAll('.about-card-title-input');
+      document.getElementById('badge-about').textContent = aboutCardTitleEls.length;
+
+      // 3. Capabilities Categories count
+      const skillCatNameEls = document.querySelectorAll('.skill-cat-name-input');
+      document.getElementById('badge-capabilities').textContent = skillCatNameEls.length;
+
+      // 4. Projects count
+      const projectTitleEls = document.querySelectorAll('.project-title-input');
+      document.getElementById('badge-projects').textContent = projectTitleEls.length;
+
+      // 5. Education count
+      const eduPeriodEls = document.querySelectorAll('.edu-period-input');
+      document.getElementById('badge-education').textContent = eduPeriodEls.length;
+
+      // 6. Certifications count
+      const certNameEls = document.querySelectorAll('.cert-name-input');
+      document.getElementById('badge-certifications').textContent = certNameEls.length;
+
+      // 7. Currently Building count
+      const buildingTitleEls = document.querySelectorAll('.building-title-input');
+      document.getElementById('badge-building').textContent = buildingTitleEls.length;
     }
 
     /* LIST RENDERING AND UTILS */
@@ -1145,6 +1241,7 @@
           </div>
         </div>
       `).join('');
+      updateSidebarBadges();
     }
 
     // ABOUT PARAGRAPHS
@@ -1204,11 +1301,12 @@
           </div>
         </div>
       `).join('');
+      updateSidebarBadges();
     }
 
     function addAboutCard() {
       const cards = getAboutCardsFromDOM();
-      cards.push({ title: '', text: '' });
+      cards.push({ title: 'New Focus Area', text: 'Describe this accomplishment or area of expertise.' });
       portfolioData.about.cards = cards;
       renderAboutCards(cards);
     }
@@ -1242,6 +1340,14 @@
       renderAboutCards(cards);
     }
 
+    // HERO STATS HELPER
+    function addStat() {
+      const stats = getStatsFromDOM();
+      stats.push({ num: '0', sup: '', label: 'New Stat', context: 'Context Detail' });
+      portfolioData.hero.stats = stats;
+      renderStatsList(stats);
+    }
+
     function moveAboutCardDown(idx) {
       moveAboutCard(idx + 1);
     }
@@ -1272,6 +1378,7 @@
           </div>
         </div>
       `).join('');
+      updateSidebarBadges();
     }
 
     function getSkillCategoriesFromDOM() {
@@ -1291,7 +1398,7 @@
 
     function addSkillCategory() {
       const categories = getSkillCategoriesFromDOM();
-      categories.push({ name: '', icon: 'book', skills: [] });
+      categories.push({ name: 'New Competency Area', icon: 'book', skills: ['Skill Item 1', 'Skill Item 2 — Learning'] });
       portfolioData.capabilities.categories = categories;
       renderSkillCategories(categories);
     }
@@ -1301,19 +1408,6 @@
       categories.splice(idx, 1);
       portfolioData.capabilities.categories = categories;
       renderSkillCategories(categories);
-    }
-
-    function moveSkillCat(idx) {
-      const categories = getSkillCategoriesFromDOM();
-      const temp = categories[idx];
-      categories[idx] = categories[idx - 1];
-      categories[idx - 1] = temp;
-      portfolioData.capabilities.categories = categories;
-      renderSkillCategories(categories);
-    }
-
-    function moveSkillCatDown(idx) {
-      moveSkillCat(idx + 1);
     }
 
     // PROJECTS LIST
@@ -1352,6 +1446,7 @@
           </div>
         </div>
       `).join('');
+      updateSidebarBadges();
     }
 
     function getProjectsFromDOM() {
@@ -1378,7 +1473,14 @@
 
     function addProject() {
       const projects = getProjectsFromDOM();
-      projects.push({ index: (projects.length + 1).toString().padStart(2, '0'), period: '', title: '', description: '', tags: [], link: '' });
+      projects.push({
+        index: (projects.length + 1).toString().padStart(2, '0'),
+        period: 'Jan 2026 – Present',
+        title: 'New Research Project',
+        description: 'Detail the methods used, demographics analyzed, and final recommendations.',
+        tags: ['Excel', 'Data Analysis', 'Market Research'],
+        link: '#'
+      });
       portfolioData.projects.items = projects;
       renderProjectsList(projects);
     }
@@ -1388,19 +1490,6 @@
       projects.splice(idx, 1);
       portfolioData.projects.items = projects;
       renderProjectsList(projects);
-    }
-
-    function moveProject(idx) {
-      const projects = getProjectsFromDOM();
-      const temp = projects[idx];
-      projects[idx] = projects[idx - 1];
-      projects[idx - 1] = temp;
-      portfolioData.projects.items = projects;
-      renderProjectsList(projects);
-    }
-
-    function moveProjectDown(idx) {
-      moveProject(idx + 1);
     }
 
     // EDUCATION LIST
@@ -1443,6 +1532,7 @@
           </div>
         </div>
       `).join('');
+      updateSidebarBadges();
     }
 
     function getEducationFromDOM() {
@@ -1476,7 +1566,12 @@
 
     function addEducation() {
       const items = getEducationFromDOM();
-      items.push({ period: '', school: '', degree: '', badges: [] });
+      items.push({
+        period: '2026',
+        school: 'University or School Name',
+        degree: 'Degree / Certificate Title',
+        badges: [{ text: 'Highlight detail here', type: 'normal' }]
+      });
       portfolioData.education.items = items;
       renderEducationList(items);
     }
@@ -1486,19 +1581,6 @@
       items.splice(idx, 1);
       portfolioData.education.items = items;
       renderEducationList(items);
-    }
-
-    function moveEdu(idx) {
-      const items = getEducationFromDOM();
-      const temp = items[idx];
-      items[idx] = items[idx - 1];
-      items[idx - 1] = temp;
-      portfolioData.education.items = items;
-      renderEducationList(items);
-    }
-
-    function moveEduDown(idx) {
-      moveEdu(idx + 1);
     }
 
     function addEduBadge(eduIdx) {
@@ -1537,6 +1619,7 @@
           </div>
         </div>
       `).join('');
+      updateSidebarBadges();
     }
 
     function getCertificationsFromDOM() {
@@ -1556,7 +1639,7 @@
 
     function addCertification() {
       const certs = getCertificationsFromDOM();
-      certs.push({ issuer: '', date: '', name: '' });
+      certs.push({ issuer: 'Google', date: '2026', name: 'New Certification Course Name' });
       portfolioData.certifications.items = certs;
       renderCertificationsList(certs);
     }
@@ -1566,19 +1649,6 @@
       certs.splice(idx, 1);
       portfolioData.certifications.items = certs;
       renderCertificationsList(certs);
-    }
-
-    function moveCert(idx) {
-      const certs = getCertificationsFromDOM();
-      const temp = certs[idx];
-      certs[idx] = certs[idx - 1];
-      certs[idx - 1] = temp;
-      portfolioData.certifications.items = certs;
-      renderCertificationsList(certs);
-    }
-
-    function moveCertDown(idx) {
-      moveCert(idx + 1);
     }
 
     // CURRENTLY BUILDING
@@ -1591,22 +1661,29 @@
             <label>Topic / Skill Title</label>
             <input type="text" class="building-title-input" value="${b.title || ''}" />
           </div>
-          <div class="form-group" style="margin-bottom: 0;">
+          <div class="form-group">
             <label>Details / Learning Content</label>
             <input type="text" class="building-desc-input" value="${b.description || ''}" />
           </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+            <input type="checkbox" class="building-completed-checkbox" id="building-completed-${idx}" ${b.completed ? 'checked' : ''} style="width: 16px; height: 16px;" onchange="updateSidebarBadges()" />
+            <label for="building-completed-${idx}" style="margin-bottom: 0; text-transform: none; font-weight: normal; cursor: pointer; font-size: 0.8rem; color: var(--text);">Mark as Completed (Shows a green checkmark badge on live site)</label>
+          </div>
         </div>
       `).join('');
+      updateSidebarBadges();
     }
 
     function getBuildingItemsFromDOM() {
       const titleEls = document.querySelectorAll('.building-title-input');
       const descEls = document.querySelectorAll('.building-desc-input');
+      const completedEls = document.querySelectorAll('.building-completed-checkbox');
       const items = [];
       titleEls.forEach((el, idx) => {
         items.push({
           title: el.value,
-          description: descEls[idx].value
+          description: descEls[idx].value,
+          completed: completedEls[idx].checked
         });
       });
       return items;
@@ -1614,7 +1691,7 @@
 
     function addBuildingItem() {
       const items = getBuildingItemsFromDOM();
-      items.push({ title: '', description: '' });
+      items.push({ title: 'New Course/Topic', description: 'What you are studying, provider name, etc.', completed: false });
       portfolioData.building.items = items;
       renderBuildingList(items);
     }
@@ -1626,20 +1703,7 @@
       renderBuildingList(items);
     }
 
-    function moveBuilding(idx) {
-      const items = getBuildingItemsFromDOM();
-      const temp = items[idx];
-      items[idx] = items[idx - 1];
-      items[idx - 1] = temp;
-      portfolioData.building.items = items;
-      renderBuildingList(items);
-    }
-
-    function moveBuildingDown(idx) {
-      moveBuilding(idx + 1);
-    }
-
-    // STATS LIST DOM COLLECTORS AND MOVERS
+    // STATS LIST DOM MOVERS
     function getStatsFromDOM() {
       const numEls = document.querySelectorAll('.stat-num-input');
       const supEls = document.querySelectorAll('.stat-sup-input');
@@ -1665,6 +1729,7 @@
       renderStatsList(stats);
     }
 
+    /* REORDERING GENERIC MOVERS */
     function moveStat(idx) {
       const stats = getStatsFromDOM();
       const temp = stats[idx];
@@ -1676,6 +1741,71 @@
 
     function moveStatDown(idx) {
       moveStat(idx + 1);
+    }
+
+    function moveSkillCat(idx) {
+      const categories = getSkillCategoriesFromDOM();
+      const temp = categories[idx];
+      categories[idx] = categories[idx - 1];
+      categories[idx - 1] = temp;
+      portfolioData.capabilities.categories = categories;
+      renderSkillCategories(categories);
+    }
+
+    function moveSkillCatDown(idx) {
+      moveSkillCat(idx + 1);
+    }
+
+    function moveProject(idx) {
+      const projects = getProjectsFromDOM();
+      const temp = projects[idx];
+      projects[idx] = projects[idx - 1];
+      projects[idx - 1] = temp;
+      portfolioData.projects.items = projects;
+      renderProjectsList(projects);
+    }
+
+    function moveProjectDown(idx) {
+      moveProject(idx + 1);
+    }
+
+    function moveEdu(idx) {
+      const items = getEducationFromDOM();
+      const temp = items[idx];
+      items[idx] = items[idx - 1];
+      items[idx - 1] = temp;
+      portfolioData.education.items = items;
+      renderEducationList(items);
+    }
+
+    function moveEduDown(idx) {
+      moveEdu(idx + 1);
+    }
+
+    function moveCert(idx) {
+      const certs = getCertificationsFromDOM();
+      const temp = certs[idx];
+      certs[idx] = certs[idx - 1];
+      certs[idx - 1] = temp;
+      portfolioData.certifications.items = certs;
+      renderCertificationsList(certs);
+    }
+
+    function moveCertDown(idx) {
+      moveCert(idx + 1);
+    }
+
+    function moveBuilding(idx) {
+      const items = getBuildingItemsFromDOM();
+      const temp = items[idx];
+      items[idx] = items[idx - 1];
+      items[idx - 1] = temp;
+      portfolioData.building.items = items;
+      renderBuildingList(items);
+    }
+
+    function moveBuildingDown(idx) {
+      moveBuilding(idx + 1);
     }
 
     /* SAVE DATA ON SERVER / GITHUB */
@@ -1697,13 +1827,11 @@
       const saveIcon = document.getElementById('saveIcon');
       const saveText = saveButton.querySelector('span');
 
-      // 1. Enter Loading state
       saveButton.disabled = true;
       saveText.textContent = 'Saving...';
       const originalIcon = saveIcon.outerHTML;
       saveIcon.outerHTML = `<div class="spinner"></div>`;
 
-      // 2. Build updated data payload
       const updatedData = {
         hero: {
           eyebrow: document.getElementById('hero-eyebrow').value,
@@ -1762,7 +1890,6 @@
       };
 
       if (isLocal) {
-        // --- LOCAL DEV SERVER SAVE ---
         try {
           const response = await fetch('/api/save', {
             method: 'POST',
@@ -1782,7 +1909,6 @@
           restoreButtonState(saveButton, originalIcon, saveText);
         }
       } else {
-        // --- LIVE PRODUCTION GITHUB SAVE ---
         const token = localStorage.getItem('github_pat');
         if (!token) {
           showToast('GitHub token is missing. Click the "GitHub Token" button in the header.', 'error');
@@ -1796,7 +1922,6 @@
           const filePath = 'data.json';
           const githubApiUrl = `https://api.github.com/repos/${repo}/contents/${filePath}`;
 
-          // Fetch the SHA of the current file first
           const refResponse = await fetch(githubApiUrl, {
             headers: {
               'Authorization': `token ${token}`,
@@ -1814,11 +1939,9 @@
           const fileMetadata = await refResponse.json();
           const sha = fileMetadata.sha;
 
-          // Convert content to Base64 (supporting special characters/UTF-8)
           const jsonString = JSON.stringify(updatedData, null, 2);
           const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
 
-          // Submit commit to GitHub
           const saveResponse = await fetch(githubApiUrl, {
             method: 'PUT',
             headers: {

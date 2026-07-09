@@ -1046,6 +1046,22 @@
       display: flex;
       align-items: center;
       gap: 0.55rem;
+      width: 100%;
+    }
+
+    .building-status.completed {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: #10B981;
+      background: rgba(16, 185, 129, 0.09);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 0.1rem 0.45rem;
+      border-radius: 3px;
+      margin-left: auto;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
     }
 
     .building-item h4::before {
@@ -2220,7 +2236,10 @@
           if (buildingGrid) {
             buildingGrid.innerHTML = data.building.items.map((b, idx) => `
               <div class="building-item reveal ${idx % 4 === 1 ? 'd1' : idx % 4 === 2 ? 'd2' : idx % 4 === 3 ? 'd3' : ''}">
-                <h4>${b.title}</h4>
+                <h4>
+                  <span>${b.title}</span>
+                  ${b.completed ? `<span class="building-status completed">Completed</span>` : ''}
+                </h4>
                 <p>${b.description}</p>
               </div>
             `).join('');
