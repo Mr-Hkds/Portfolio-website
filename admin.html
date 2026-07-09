@@ -598,7 +598,356 @@
         padding: 1.5rem;
       }
     }
+    /* AI OPTIMIZER PREMIUM UI */
+    .optimizer-card {
+      background: var(--white);
+      border: 1px solid rgba(13, 27, 62, 0.05);
+      border-radius: 16px;
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(13, 27, 62, 0.02);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .optimizer-card:hover {
+      box-shadow: 0 12px 30px rgba(13, 27, 62, 0.04);
+      transform: translateY(-2px);
+    }
+
+    .optimizer-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--accent-gradient, var(--navy));
+    }
+
+    .optimizer-card.navy { --accent-gradient: linear-gradient(90deg, #0D1B3E, #2A437E); }
+    .optimizer-card.gold { --accent-gradient: linear-gradient(90deg, #B8924A, #D4A96A); }
+    .optimizer-card.emerald { --accent-gradient: linear-gradient(90deg, #10B981, #34D399); }
+
+    .opt-header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .opt-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .opt-icon-wrapper {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(13, 27, 62, 0.04);
+      color: var(--navy);
+      flex-shrink: 0;
+    }
+
+    .opt-icon-wrapper svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .optimizer-card.gold .opt-icon-wrapper {
+      background: rgba(184, 146, 74, 0.08);
+      color: var(--gold);
+    }
+
+    .optimizer-card.emerald .opt-icon-wrapper {
+      background: rgba(16, 185, 129, 0.08);
+      color: #10B981;
+    }
+
+    .opt-title-text h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.15rem;
+    }
+
+    .opt-title-text p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .opt-btn {
+      padding: 0.65rem 1.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .opt-btn:active {
+      transform: scale(0.97);
+    }
+
+    .opt-btn-navy {
+      background: var(--navy);
+      color: var(--white);
+    }
+    .opt-btn-navy:hover {
+      background: var(--navy-mid);
+    }
+
+    .opt-btn-gold {
+      background: var(--gold);
+      color: var(--white);
+    }
+    .opt-btn-gold:hover {
+      background: var(--gold-light);
+    }
+
+    .opt-btn-emerald {
+      background: #10B981;
+      color: var(--white);
+    }
+    .opt-btn-emerald:hover {
+      background: #059669;
+    }
+
+    /* Result styles */
+    .opt-result-panel {
+      margin-top: 1.2rem;
+      border-top: 1px solid var(--border-light);
+      padding-top: 1.2rem;
+      animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .score-badge-large {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(13, 27, 62, 0.02);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .audit-grid {
+      display: grid;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .audit-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      background: rgba(13, 27, 62, 0.015);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .audit-row:hover {
+      border-color: rgba(13,27,62,0.1);
+    }
+
+    .audit-status-icon {
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .audit-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .audit-section-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .audit-section-score {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+    }
+
+    .priority-card {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(13,27,62,0.15);
+    }
+
+    .priority-card::after {
+      content: '✦';
+      position: absolute;
+      right: 1.5rem;
+      bottom: 0.5rem;
+      font-size: 4rem;
+      color: rgba(255,255,255,0.03);
+      font-family: serif;
+      pointer-events: none;
+    }
+
+    .change-list-item {
+      display: flex;
+      align-items: start;
+      gap: 0.8rem;
+      font-size: 0.82rem;
+      color: var(--text);
+      background: rgba(13,27,62,0.015);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .change-list-item span.bullet {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .ats-bar-container {
+      background: rgba(13, 27, 62, 0.05);
+      height: 6px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 0.4rem;
+      width: 100%;
+    }
+
+    .ats-bar-fill {
+      height: 100%;
+      background: #10B981;
+      border-radius: 10px;
+      transition: width 0.8s ease-in-out;
+    }
+
+    .pill-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .pill-tag-present {
+      background: #E6FDF4;
+      color: #047857;
+      border: 1px solid #A7F3D0;
+    }
+
+    .pill-tag-missing {
+      background: var(--cream);
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+
+    .kw-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      padding: 0.7rem 0.9rem;
+      background: rgba(13,27,62,0.015);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      margin-bottom: 0.4rem;
+      font-size: 0.8rem;
+    }
+
+    .kw-badge {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .kw-badge.critical { background: #FEE2E2; color: #EF4444; }
+    .kw-badge.high { background: #FEF3C7; color: #D4A96A; }
+    .kw-badge.medium { background: #F3F4F6; color: #6B7280; }
+
+    .quick-wins-box {
+      background: #0D1B3E;
+      border-radius: 12px;
+      padding: 1.2rem;
+      color: #F9F7F3;
+      margin-top: 1.2rem;
+    }
+
+    .quick-wins-box h4 {
+      font-size: 0.85rem;
+      color: #D4A96A;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+    }
+
+    .quick-wins-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .quick-wins-list li {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.78);
+      display: flex;
+      gap: 0.6rem;
+      line-height: 1.45;
+    }
+
+    .quick-wins-list li::before {
+      content: '→';
+      color: #D4A96A;
+      font-weight: 700;
+    }
   </style>
+
 </head>
 
 <body>
@@ -1083,42 +1432,54 @@
         </div>
 
         <!-- Tool 1: Health Check -->
-        <div style="background:var(--white);border:1px solid var(--border-light);border-radius:12px;padding:1.6rem;margin-bottom:1.2rem;position:relative;overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0D1B3E,#2A437E);"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
-            <div>
-              <h3 style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.2rem;">🔍 Portfolio Health Check</h3>
-              <p style="font-size:0.8rem;color:var(--text-muted);">Scores every section 1–10 and tells you exactly what's weak and why.</p>
+        <div class="optimizer-card navy">
+          <div class="opt-header-flex">
+            <div class="opt-title-group">
+              <div class="opt-icon-wrapper">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M8 11h6"/></svg>
+              </div>
+              <div class="opt-title-text">
+                <h3>Portfolio Health Check</h3>
+                <p>Scores every section 1–10 and tells you exactly what is weak and how to fix it.</p>
+              </div>
             </div>
-            <button type="button" class="btn btn-primary" onclick="runAudit()" id="auditBtn">Run Health Check</button>
+            <button type="button" class="opt-btn opt-btn-navy" onclick="runAudit()" id="auditBtn">Run Health Check</button>
           </div>
-          <div id="audit-result" style="display:none;margin-top:1rem;"></div>
+          <div id="audit-result" class="opt-result-panel" style="display:none;"></div>
         </div>
 
         <!-- Tool 2: Auto-Improve -->
-        <div style="background:var(--white);border:1px solid var(--border-light);border-radius:12px;padding:1.6rem;margin-bottom:1.2rem;position:relative;overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#B8924A,#D4A96A);"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
-            <div>
-              <h3 style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.2rem;">✨ Auto-Improve All Sections</h3>
-              <p style="font-size:0.8rem;color:var(--text-muted);">AI rewrites every description, bio, and summary to be punchier and recruiter-friendly. You review before saving.</p>
+        <div class="optimizer-card gold">
+          <div class="opt-header-flex">
+            <div class="opt-title-group">
+              <div class="opt-icon-wrapper">
+                <svg viewBox="0 0 24 24"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+              </div>
+              <div class="opt-title-text">
+                <h3>Auto-Improve All Sections</h3>
+                <p>AI rewrites descriptions, summaries, and headers to make them punchier. You review before saving.</p>
+              </div>
             </div>
-            <button type="button" class="btn btn-primary" onclick="runAutoImprove()" id="improveBtn" style="background:var(--gold);border-color:var(--gold);">✨ Improve Everything</button>
+            <button type="button" class="opt-btn opt-btn-gold" onclick="runAutoImprove()" id="improveBtn">✨ Improve Everything</button>
           </div>
-          <div id="improve-result" style="display:none;margin-top:1rem;"></div>
+          <div id="improve-result" class="opt-result-panel" style="display:none;"></div>
         </div>
 
         <!-- Tool 3: Keyword Gap -->
-        <div style="background:var(--white);border:1px solid var(--border-light);border-radius:12px;padding:1.6rem;position:relative;overflow:hidden;">
-          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2D785A,#3DA876);"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
-            <div>
-              <h3 style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.2rem;">📊 Keyword Gap Analysis</h3>
-              <p style="font-size:0.8rem;color:var(--text-muted);">Finds what keywords recruiters expect for your target roles that are missing from your portfolio right now.</p>
+        <div class="optimizer-card emerald">
+          <div class="opt-header-flex">
+            <div class="opt-title-group">
+              <div class="opt-icon-wrapper">
+                <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              </div>
+              <div class="opt-title-text">
+                <h3>Keyword Gap Analysis</h3>
+                <p>Compares your content against target roles to find critical keywords missing from your portfolio.</p>
+              </div>
             </div>
-            <button type="button" class="btn btn-primary" onclick="runKeywordGap()" id="keywordBtn" style="background:#2D785A;border-color:#2D785A;">Analyze Keywords</button>
+            <button type="button" class="opt-btn opt-btn-emerald" onclick="runKeywordGap()" id="keywordBtn">Analyze Keywords</button>
           </div>
-          <div id="keyword-result" style="display:none;margin-top:1rem;"></div>
+          <div id="keyword-result" class="opt-result-panel" style="display:none;"></div>
         </div>
 
       </div>
@@ -2966,25 +3327,25 @@ Be brutally honest. Do not pad scores. A 10/10 means genuinely outstanding for t
 
         const result = await callGemini(prompt);
         const scoreColor = result.overallScore >= 8 ? '#10B981' : result.overallScore >= 6 ? '#B8924A' : '#EF4444';
-        const statusIcon = s => s === 'good' ? '✅' : s === 'warn' ? '⚠️' : '❌';
+        const statusIcon = s => s === 'good' ? '✓' : s === 'warn' ? '!' : '×';
         const statusColor = s => s === 'good' ? '#10B981' : s === 'warn' ? '#B8924A' : '#EF4444';
 
         resultEl.innerHTML = `
-          <div style="display:flex;align-items:center;gap:1rem;background:var(--cream);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;border:1px solid var(--border-light);">
+          <div class="score-badge-large">
             <div style="font-size:2.2rem;font-weight:800;color:${scoreColor};font-family:'JetBrains Mono',monospace;line-height:1;">${result.overallScore}<span style="font-size:1rem;opacity:0.5;">/10</span></div>
             <div>
               <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:0.2rem;">Overall Score</div>
               <div style="font-size:0.85rem;color:var(--text);">${result.overallVerdict}</div>
             </div>
           </div>
-          <div style="display:grid;gap:0.6rem;margin-bottom:1rem;">
+          <div class="audit-grid">
             ${result.sections.map(s => `
-              <div style="display:grid;grid-template-columns:auto 1fr;gap:0.8rem;align-items:start;background:var(--cream);border-radius:8px;padding:0.8rem 1rem;border-left:3px solid ${statusColor(s.status)};">
-                <div style="font-size:1.1rem;line-height:1.2;padding-top:0.1rem;">${statusIcon(s.status)}</div>
+              <div class="audit-row" style="border-left:3px solid ${statusColor(s.status)};">
+                <div class="audit-status-icon" style="background:${statusColor(s.status)}18;color:${statusColor(s.status)};font-weight:bold;">${statusIcon(s.status)}</div>
                 <div>
-                  <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.2rem;">
-                    <span style="font-size:0.82rem;font-weight:700;color:var(--navy);">${s.name}</span>
-                    <span style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;font-weight:700;color:${statusColor(s.status)};background:${statusColor(s.status)}18;padding:0.1rem 0.4rem;border-radius:4px;">${s.score}/10</span>
+                  <div class="audit-section-header">
+                    <span class="audit-section-name">${s.name}</span>
+                    <span class="audit-section-score" style="background:${statusColor(s.status)}15;color:${statusColor(s.status)};">${s.score}/10</span>
                   </div>
                   <div style="font-size:0.78rem;color:var(--text-muted);">${s.issue}</div>
                   ${s.status !== 'good' ? `<div style="font-size:0.78rem;color:var(--navy);margin-top:0.2rem;font-weight:500;">→ ${s.fix}</div>` : ''}
@@ -2992,9 +3353,9 @@ Be brutally honest. Do not pad scores. A 10/10 means genuinely outstanding for t
               </div>
             `).join('')}
           </div>
-          <div style="background:#0D1B3E;color:#D4A96A;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.82rem;">
-            <span style="font-weight:700;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;opacity:0.6;display:block;margin-bottom:0.3rem;">⚡ Top Priority</span>
-            ${result.topPriority}
+          <div class="priority-card">
+            <span style="font-weight:700;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold-light);display:block;margin-bottom:0.3rem;">⚡ Top Priority</span>
+            <div style="font-size:0.82rem;line-height:1.45;">${result.topPriority}</div>
           </div>`;
         resultEl.style.display = 'block';
       } catch(e) {
@@ -3035,15 +3396,19 @@ Return JSON with exactly two keys:
         const pendingData = result.improvedData;
 
         resultEl.innerHTML = `
-          <div style="background:var(--cream);border:1px solid var(--border-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;">
-            <div style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.6rem;">📝 Changes Made</div>
-            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.3rem;">
-              ${result.changes.map(c => `<li style="font-size:0.8rem;color:var(--text);display:flex;gap:0.5rem;"><span style="color:var(--gold);">→</span>${c}</li>`).join('')}
-            </ul>
+          <div style="margin-bottom:1.2rem;">
+            <div style="font-size:0.82rem;font-weight:700;color:var(--navy);margin-bottom:0.6rem;">📝 Improved Sections Summary</div>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;">
+              ${result.changes.map(c => `
+                <div class="change-list-item">
+                  <span class="bullet">✦</span>
+                  <div>${c}</div>
+                </div>`).join('')}
+            </div>
           </div>
-          <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-            <button type="button" class="btn btn-primary" onclick="applyImprovedData()" id="applyImproveBtn">✅ Apply Changes</button>
-            <button type="button" class="btn btn-secondary" onclick="document.getElementById('improve-result').style.display='none'">Discard</button>
+          <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:1rem;">
+            <button type="button" class="opt-btn opt-btn-gold" onclick="applyImprovedData()" id="applyImproveBtn">✅ Apply Changes</button>
+            <button type="button" class="opt-btn" style="background:var(--cream);color:var(--navy);border:1px solid var(--border);" onclick="document.getElementById('improve-result').style.display='none'">Discard</button>
           </div>`;
         resultEl.style.display = 'block';
 
@@ -3091,38 +3456,49 @@ Return a JSON object with this structure:
         const impBg = i => i === 'critical' ? '#FEE2E2' : i === 'high' ? '#FEF3C7' : '#F3F4F6';
 
         resultEl.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:var(--cream);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem;border:1px solid var(--border-light);">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:rgba(13,27,62,0.02);border:1px solid var(--border-light);border-radius:12px;padding:1rem 1.4rem;margin-bottom:1.2rem;">
             <div>
-              <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:0.2rem;">ATS Score</div>
-              <div style="font-size:1.8rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:${result.atsScore >= 70 ? '#10B981' : result.atsScore >= 50 ? '#B8924A' : '#EF4444'};">${result.atsScore}<span style="font-size:0.9rem;opacity:0.5;">/100</span></div>
+              <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:0.15rem;">ATS Optimization Match</div>
+              <div style="font-size:1.8rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:${result.atsScore >= 70 ? '#10B981' : result.atsScore >= 50 ? '#B8924A' : '#EF4444'};line-height:1.1;">
+                ${result.atsScore}<span style="font-size:0.9rem;opacity:0.5;">/100</span>
+              </div>
+              <div class="ats-bar-container" style="width:140px;">
+                <div class="ats-bar-fill" style="width:${result.atsScore}%;background:${result.atsScore >= 70 ? '#10B981' : result.atsScore >= 50 ? '#B8924A' : '#EF4444'};"></div>
+              </div>
             </div>
             <div>
               <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:0.4rem;">Target Roles</div>
-              <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">${result.targetRoles.map(r => `<span style="font-size:0.72rem;background:var(--navy);color:var(--white);padding:0.2rem 0.6rem;border-radius:4px;">${r}</span>`).join('')}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
+                ${result.targetRoles.map(r => `<span style="font-size:0.72rem;background:var(--navy);color:var(--white);padding:0.2rem 0.6rem;border-radius:4px;font-weight:500;">${r}</span>`).join('')}
+              </div>
             </div>
           </div>
 
-          <div style="margin-bottom:1rem;">
-            <div style="font-size:0.78rem;font-weight:700;color:var(--navy);margin-bottom:0.5rem;">✅ Keywords You Have (${result.presentKeywords.length})</div>
-            <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">${result.presentKeywords.map(k => `<span style="font-size:0.72rem;background:#D1FAE5;color:#065F46;padding:0.2rem 0.6rem;border-radius:4px;font-weight:500;">${k}</span>`).join('')}</div>
+          <div style="margin-bottom:1.2rem;">
+            <div style="font-size:0.78rem;font-weight:700;color:var(--navy);margin-bottom:0.6rem;">✅ Present Keywords (${result.presentKeywords.length})</div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+              ${result.presentKeywords.map(k => `<span class="pill-tag pill-tag-present">${k}</span>`).join('')}
+            </div>
           </div>
 
-          <div style="margin-bottom:1rem;">
-            <div style="font-size:0.78rem;font-weight:700;color:var(--navy);margin-bottom:0.5rem;">❌ Missing Keywords (${result.missingKeywords.length})</div>
+          <div style="margin-bottom:1.2rem;">
+            <div style="font-size:0.78rem;font-weight:700;color:var(--navy);margin-bottom:0.6rem;">❌ Missing Keywords (${result.missingKeywords.length})</div>
             <div style="display:flex;flex-direction:column;gap:0.4rem;">
               ${result.missingKeywords.map(k => `
-                <div style="display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;">
-                  <span style="background:${impBg(k.importance)};color:${impColor(k.importance)};padding:0.15rem 0.5rem;border-radius:4px;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0;">${k.importance}</span>
-                  <span style="font-weight:600;color:var(--navy);">${k.keyword}</span>
-                  <span style="color:var(--text-muted);">→ add to ${k.addTo}</span>
+                <div class="kw-row">
+                  <div style="display:flex;align-items:center;gap:0.6rem;">
+                    <span class="kw-badge ${k.importance}">${k.importance}</span>
+                    <span style="font-weight:600;color:var(--navy);">${k.keyword}</span>
+                  </div>
+                  <span style="color:var(--text-muted);font-size:0.74rem;">→ add to <strong>${k.addTo}</strong></span>
                 </div>`).join('')}
             </div>
           </div>
 
-          <div style="background:#0D1B3E;border-radius:8px;padding:1rem 1.2rem;">
-            <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#D4A96A;margin-bottom:0.6rem;">⚡ Quick Wins</div>
-            <ul style="list-style:none;display:flex;flex-direction:column;gap:0.35rem;">
-              ${result.quickWins.map(w => `<li style="font-size:0.8rem;color:rgba(255,255,255,0.75);display:flex;gap:0.5rem;"><span style="color:#D4A96A;flex-shrink:0;">→</span>${w}</li>`).join('')}
+          <div class="quick-wins-box">
+            <h4>⚡ Quick Wins</h4>
+            <ul class="quick-wins-list">
+              ${result.quickWins.map(w => `<li>${w}</li>`).join('')}
             </ul>
           </div>`;
         resultEl.style.display = 'block';
