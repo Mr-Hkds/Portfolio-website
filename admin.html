@@ -2219,11 +2219,30 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 
     /* LATEX RESUME GENERATOR */
     function generateResumeLaTeX() {
-      const name = document.getElementById('hero-name').value;
-      const email = document.getElementById('contact-email').value;
-      const phone = document.getElementById('contact-phone').value;
-      const linkedin = document.getElementById('contact-linkedin').value;
-      const location = document.getElementById('contact-location').value.replace(/&nbsp;/g, ' ').replace(/·/g, '|');
+      // Helper function to safely escape LaTeX reserved characters
+      function cleanLatex(val) {
+        if (!val) return '';
+        return val.toString()
+          .replace(/\\/g, '\\textbackslash{}')
+          .replace(/&/g, '\\&')
+          .replace(/%/g, '\\%')
+          .replace(/\$/g, '\\$')
+          .replace(/#/g, '\\#')
+          .replace(/_/g, '\\_')
+          .replace(/{/g, '\\{')
+          .replace(/}/g, '\\}')
+          .replace(/~/g, '\\textasciitilde{}')
+          .replace(/\^/g, '\\textasciicircum{}')
+          .replace(/–/g, '--')
+          .replace(/—/g, '---')
+          .replace(/·/g, '|');
+      }
+
+      const name = cleanLatex(document.getElementById('hero-name').value);
+      const email = cleanLatex(document.getElementById('contact-email').value);
+      const phone = cleanLatex(document.getElementById('contact-phone').value);
+      const linkedin = cleanLatex(document.getElementById('contact-linkedin').value);
+      const location = cleanLatex(document.getElementById('contact-location').value.replace(/&nbsp;/g, ' '));
       
       const skillsCategories = getSkillCategoriesFromDOM();
       const projects = getProjectsFromDOM();
@@ -2270,7 +2289,6 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 
 \\raggedbottom
 \\raggedright
-\\cleanlook
 
 % Sections formatting
 \\titleformat{\\section}{
@@ -2321,10 +2339,10 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 `;
 
       education.forEach(edu => {
-        const cleanSchool = edu.school.replace(/&/g, '\\&');
-        const cleanDegree = edu.degree.replace(/&/g, '\\&');
-        const cleanPeriod = edu.period.replace(/–/g, '--');
-        const badgeTexts = edu.badges.map(b => b.text).join(' | ').replace(/·/g, '|').replace(/&/g, '\\&');
+        const cleanSchool = cleanLatex(edu.school);
+        const cleanDegree = cleanLatex(edu.degree);
+        const cleanPeriod = cleanLatex(edu.period);
+        const badgeTexts = edu.badges.map(b => cleanLatex(b.text)).join(' | ');
         
         latex += `    \\resumeSubheading{${cleanSchool}}{${cleanPeriod}}{${cleanDegree}}{Greater Noida, India}
       \\resumeItemListStart
@@ -2343,8 +2361,8 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 `;
 
       skillsCategories.forEach((cat, idx) => {
-        const cleanCatName = cat.name.replace(/&/g, '\\&');
-        const cleanSkills = cat.skills.map(s => s.split(' — ')[0]).join(', ').replace(/&/g, '\\&');
+        const cleanCatName = cleanLatex(cat.name);
+        const cleanSkills = cat.skills.map(s => cleanLatex(s.split(' — ')[0])).join(', ');
         latex += `      \\textbf{${cleanCatName}}{: ${cleanSkills}} ${idx < skillsCategories.length - 1 ? '\\\\' : ''}\n`;
       });
 
@@ -2358,10 +2376,10 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 `;
 
       projects.forEach(p => {
-        const cleanTitle = p.title.replace(/&/g, '\\&');
-        const cleanPeriod = p.period.replace(/–/g, '--');
-        const cleanDesc = p.description.replace(/&/g, '\\&').replace(/—/g, '---');
-        const cleanTags = p.tags.join(', ').replace(/&/g, '\\&');
+        const cleanTitle = cleanLatex(p.title);
+        const cleanPeriod = cleanLatex(p.period);
+        const cleanDesc = cleanLatex(p.description);
+        const cleanTags = p.tags.map(t => cleanLatex(t)).join(', ');
         
         latex += `    \\resumeSubheading{${cleanTitle}}{${cleanPeriod}}{Independent Research Project}{Greater Noida, India}
       \\resumeItemListStart
@@ -2380,9 +2398,9 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 `;
 
       certifications.forEach(c => {
-        const cleanIssuer = c.issuer.replace(/&/g, '\\&');
-        const cleanName = c.name.replace(/&/g, '\\&');
-        const cleanDate = c.date;
+        const cleanIssuer = cleanLatex(c.issuer);
+        const cleanName = cleanLatex(c.name);
+        const cleanDate = cleanLatex(c.date);
         latex += `    \\item\\small{
       \\textbf{${cleanName}} --- \\textit{${cleanIssuer}} \\hfill ${cleanDate}
     }\\vspace{-2pt}\n`;
@@ -2397,8 +2415,8 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 `;
 
       building.forEach(b => {
-        const cleanTitle = b.title.replace(/&/g, '\\&');
-        const cleanDesc = b.description.replace(/&/g, '\\&');
+        const cleanTitle = cleanLatex(b.title);
+        const cleanDesc = cleanLatex(b.description);
         const statusText = b.completed ? 'Completed' : 'In Progress';
         latex += `    \\item\\small{
       \\textbf{${cleanTitle}} --- ${cleanDesc} \\hfill \\textit{${statusText}}
