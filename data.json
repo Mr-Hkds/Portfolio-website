@@ -140,6 +140,21 @@
           "Statistics"
         ],
         "link": "https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk"
+      },
+      {
+        "index": "03",
+        "period": "Jan 2026 – May 2026",
+        "title": "A Study on the Impact of Time-Sensitive Promotional Strategies in Q-Commerce Platforms on Consumers' Unplanned Purchasing Behaviour",
+        "description": "This quantitative BBA marketing research project studies how urgency-based promotional tactics and FOMO used by Indian Q-commerce platforms influence consumers' impulse buying behaviour through statistical analysis of survey data collected from 100 users. It found that time-sensitive promotions and FOMO significantly increase impulse buying, collectively explaining about 25% of the variation, while demographics like gender and age have no significant effect. The study highlights the successful use of urgency marketing by Q-commerce but also raises ethical concerns regarding potential unnecessary spending.",
+        "tags": [
+          "Q-Commerce",
+          "Consumer Behavior",
+          "Impulse Buying",
+          "Digital Marketing",
+          "Marketing Research",
+          "Statistical Analysis"
+        ],
+        "link": "https://drive.google.com/file/d/1qdopFzsvBypUMGcij5R9RpmIc16vmvEp/view?usp=drivesdk"
       }
     ]
   },
@@ -149,6 +164,7 @@
     "items": [
       {
         "period": "2026 – Present",
+        "duration": "",
         "company": "Tata Consultancy Services (TCS)",
         "role": "Admin Officer",
         "description": "Responsible for administrative operations, office management, and support functions to ensure smooth organizational workflow.",
@@ -214,38 +230,32 @@
       {
         "issuer": "NPTEL — IIT Kharagpur",
         "date": "April 2025",
-        "name": "Integrated Marketing Communication",
-        "link": ""
+        "name": "Integrated Marketing Communication"
       },
       {
         "issuer": "Bajaj Finserv & UpGrad",
         "date": "2025",
-        "name": "Certified Professional — Banking, Finance & Insurance",
-        "link": ""
+        "name": "Certified Professional — Banking, Finance & Insurance"
       },
       {
         "issuer": "NPTEL — IIT Madras",
         "date": "April 2024",
-        "name": "Business Development: From Start to Scale",
-        "link": ""
+        "name": "Business Development: From Start to Scale"
       },
       {
         "issuer": "IBM",
         "date": "2024",
-        "name": "Cybersecurity Fundamentals",
-        "link": "https://www.credly.com/org/ibm"
+        "name": "Cybersecurity Fundamentals"
       },
       {
         "issuer": "Microsoft",
         "date": "2024",
-        "name": "Office Specialist: Excel Associate (MOS)",
-        "link": "https://learn.microsoft.com/en-us/credentials/"
+        "name": "Office Specialist: Excel Associate (MOS)"
       },
       {
         "issuer": "Google",
         "date": "2024",
-        "name": "Google Ads for Beginners",
-        "link": "https://skillshop.google.com/"
+        "name": "Google Ads for Beginners"
       }
     ]
   },
