@@ -2833,6 +2833,32 @@
         window.location.href = 'admin.html';
       }
     });
+
+    // Mobile Secret Shortcut: 5 quick taps on footer note or profile image to access admin panel
+    let secretTapCount = 0;
+    let secretTapTimer = null;
+    function handleSecretTap() {
+      secretTapCount++;
+      clearTimeout(secretTapTimer);
+      if (secretTapCount >= 5) {
+        secretTapCount = 0;
+        window.location.href = 'admin.html';
+      } else {
+        secretTapTimer = setTimeout(() => {
+          secretTapCount = 0;
+        }, 2000); // Reset timer if inactive for 2s
+      }
+    }
+
+    const footerNote = document.querySelector('.footer-note');
+    if (footerNote) {
+      footerNote.addEventListener('click', handleSecretTap);
+    }
+
+    const heroPhoto = document.getElementById('heroPhoto');
+    if (heroPhoto) {
+      heroPhoto.addEventListener('click', handleSecretTap);
+    }
   </script>
 
   <!-- Floating Download CV -->
