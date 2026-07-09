@@ -2030,7 +2030,7 @@
           <span class="counter-label">SYS.VISITS:</span>
           <span class="counter-val" id="visitor-count">000000</span><span class="counter-cursor"></span>
         </div>
-        <span class="footer-note">Designed & built with precision</span>
+        <span class="footer-note">Crafted with meticulous precision & distinction</span>
       </div>
     </div>
   </footer>
@@ -2441,18 +2441,14 @@
       document.body.style.overflow = '';
     }
 
-    // Increment or retrieve session visits counter
+    // Increment and retrieve visits counter (starts at 100)
     function initVisitorCounter() {
-      const visited = sessionStorage.getItem('visited_session');
-      const counterUrl = visited 
-        ? 'https://api.counterapi.dev/v1/harkamal-deep-singh/visits'
-        : 'https://api.counterapi.dev/v1/harkamal-deep-singh/visits/up';
+      const counterUrl = 'https://api.counterapi.dev/v1/harkamal-deep-singh/visits/up';
 
       fetch(counterUrl)
         .then(response => response.json())
         .then(data => {
-          if (!visited) sessionStorage.setItem('visited_session', 'true');
-          const val = (data.value || 0) + 1280;
+          const val = (data.value || 0) + 100;
           const formattedVal = val.toString().padStart(6, '0');
           const countEl = document.getElementById('visitor-count');
           if (countEl) countEl.textContent = formattedVal;
@@ -2460,7 +2456,7 @@
         .catch(err => {
           console.warn('Visitor counter error:', err);
           const countEl = document.getElementById('visitor-count');
-          if (countEl) countEl.textContent = '001429';
+          if (countEl) countEl.textContent = '000100';
         });
     }
 
