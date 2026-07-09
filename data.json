@@ -68,45 +68,45 @@
     ]
   },
   "capabilities": {
-    "title": "Technical skill set",
-    "subtitle": "Competencies developed through formal research, professional certifications, and independent study.",
+    "title": "Technical & Core Skill Set",
+    "subtitle": "A structured map of hard technical capabilities, data analytics expertise, and strategic soft skills.",
     "categories": [
       {
-        "name": "Data & Analysis",
-        "icon": "table",
-        "skills": [
-          "Microsoft Excel — Advanced",
-          "Pivot Tables & VLOOKUP",
-          "Data Cleaning & Structuring",
-          "Statistical Analysis & Reporting",
-          "Survey Design & Interpretation",
-          "Business Intelligence Dashboards",
-          "Market Research Methodology"
-        ]
-      },
-      {
-        "name": "Cybersecurity",
+        "name": "Technical & Cybersecurity",
         "icon": "shield",
         "skills": [
-          "Security Fundamentals",
-          "Threat Awareness & Risk Thinking",
-          "Social Engineering Psychology",
-          "Network Security Concepts",
-          "Organizational Security Posture",
-          "Python for Security — Learning"
+          "Cybersecurity Fundamentals — Certified",
+          "Threat Awareness & Modeling — Intermediate",
+          "Network Security Concepts — Core",
+          "Social Engineering Psychology — Core",
+          "Python Programming — Learning",
+          "Organizational Security Posture — Core"
         ]
       },
       {
-        "name": "Business & Strategy",
+        "name": "Data & Analytical Research",
+        "icon": "table",
+        "skills": [
+          "Advanced Microsoft Excel — Advanced",
+          "Data Cleaning & Structuring — Advanced",
+          "Pivot Tables & VLOOKUP — Advanced",
+          "Statistical Analysis & Reporting — Core",
+          "Survey Methodology & Design — Core",
+          "Business Intelligence Dashboards — Intermediate",
+          "Market Research Methodology — Core"
+        ]
+      },
+      {
+        "name": "Strategy & Core Soft Skills",
         "icon": "book",
         "skills": [
-          "Consumer Behavior Analysis",
-          "Digital Marketing & SEO/SEM",
-          "Google Ads",
-          "Integrated Marketing Communication",
-          "Financial Services Knowledge",
-          "Business Process Mapping",
-          "Research Documentation & SOPs"
+          "Consumer Behavior Analysis — Advanced",
+          "Digital Marketing & SEO/SEM — Advanced",
+          "Integrated Marketing Communication — Core",
+          "Business Process Mapping — Core",
+          "Research Documentation & SOPs — Core",
+          "Interpersonal Communication — Core",
+          "Banking & Financial Services — Core"
         ]
       }
     ]
