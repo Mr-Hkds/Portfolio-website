@@ -2066,6 +2066,19 @@
           if (instDetails && Array.isArray(data.hero.institution.tags)) {
             instDetails.innerHTML = data.hero.institution.tags.map(t => `<span class="hero-inst-tag">${t}</span>`).join('');
           }
+          
+          // Select icon based on current status label
+          const label = (data.hero.institution.label || '').toLowerCase();
+          const iconContainer = document.querySelector('.hero-inst-icon');
+          if (iconContainer) {
+            if (label.includes('study') || label.includes('learn') || label.includes('student') || label.includes('aimt') || label.includes('school')) {
+              iconContainer.innerHTML = `<svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5" /></svg>`;
+            } else if (label.includes('work') || label.includes('job') || label.includes('intern') || label.includes('analyst') || label.includes('employ') || label.includes('place')) {
+              iconContainer.innerHTML = `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>`;
+            } else {
+              iconContainer.innerHTML = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="3" /></svg>`;
+            }
+          }
         }
       }
 

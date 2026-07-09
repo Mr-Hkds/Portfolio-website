@@ -733,32 +733,33 @@
         </div>
 
         <div style="margin: 2rem 0 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
-          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.8rem;">Current
-            Institution</h3>
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.3rem;">Current Status / Activity Card</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem;">Show what you are currently doing (e.g. studying, interning, job hunting) in the main hero banner card.</p>
         </div>
         <div class="form-group grid-2">
           <div>
-            <label>Graduation Status Helper</label>
-            <div style="display: flex; gap: 0.6rem;">
-              <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('studying')" style="flex: 1; padding: 0.5rem 0.8rem; font-size: 0.72rem;">Studying</button>
-              <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('graduated')" style="flex: 1; padding: 0.5rem 0.8rem; font-size: 0.72rem;">Graduated</button>
+            <label>Status Templates</label>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('studying')" style="padding: 0.45rem 0.7rem; font-size: 0.72rem;">Studying</button>
+              <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('seeking')" style="padding: 0.45rem 0.7rem; font-size: 0.72rem;">Seeking Roles</button>
+              <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('working')" style="padding: 0.45rem 0.7rem; font-size: 0.72rem;">Working / Interning</button>
             </div>
           </div>
           <div>
-            <label for="inst-tags">Institution Tags (comma separated)</label>
+            <label for="inst-tags">Status Timeline Tags (comma separated)</label>
             <input type="text" id="inst-tags" placeholder="e.g. 2023 – Present, Business Analytics" />
           </div>
         </div>
         <div class="form-group">
-          <label for="inst-label">Institution Label</label>
+          <label for="inst-label">Status Card Label</label>
           <input type="text" id="inst-label" placeholder="e.g. Currently Studying At" />
         </div>
         <div class="form-group">
-          <label for="inst-name">Institution Name</label>
+          <label for="inst-name">Organization / Status Name</label>
           <input type="text" id="inst-name" placeholder="e.g. Army Institute of Management & Technology" />
         </div>
         <div class="form-group">
-          <label for="inst-sub">Degree &amp; Location details</label>
+          <label for="inst-sub">Role &amp; Location Details</label>
           <input type="text" id="inst-sub"
             placeholder="e.g. BBA — Marketing Specialization · Greater Noida, India" />
         </div>
@@ -1157,27 +1158,28 @@
     // Institution Status Helper
     function setInstitutionStatus(status) {
       const labelInput = document.getElementById('inst-label');
+      const nameInput = document.getElementById('inst-name');
+      const subInput = document.getElementById('inst-sub');
       const tagsInput = document.getElementById('inst-tags');
+      
       if (status === 'studying') {
         labelInput.value = 'Currently Studying At';
-        const tags = tagsInput.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
-        if (tags.length > 0) {
-          tags[0] = '2023 – Present';
-          tagsInput.value = tags.join(', ');
-        } else {
-          tagsInput.value = '2023 – Present';
-        }
+        nameInput.value = 'Army Institute of Management & Technology';
+        subInput.value = 'BBA — Marketing Specialization · Greater Noida, India';
+        tagsInput.value = '2023 – Present, Business Analytics';
         showToast('Helper: Set status to "Currently Studying"');
-      } else {
-        labelInput.value = 'Graduated From';
-        const tags = tagsInput.value.split(',').map(s => s.trim()).filter(s => s.length > 0);
-        if (tags.length > 0) {
-          tags[0] = '2023 – 2026';
-          tagsInput.value = tags.join(', ');
-        } else {
-          tagsInput.value = '2023 – 2026';
-        }
-        showToast('Helper: Set status to "Graduated"');
+      } else if (status === 'seeking') {
+        labelInput.value = 'Currently Seeking';
+        nameInput.value = 'Business Analyst & Security Opportunities';
+        subInput.value = 'Available for full-time roles · India-wide';
+        tagsInput.value = 'Active, Immediate Joiner';
+        showToast('Helper: Set status to "Seeking Roles"');
+      } else if (status === 'working') {
+        labelInput.value = 'Currently Working At';
+        nameInput.value = 'Company Name';
+        subInput.value = 'Business Analyst Intern · Location';
+        tagsInput.value = '2026 – Present';
+        showToast('Helper: Set status to "Working / Interning" (please customize company details)');
       }
     }
 
