@@ -2395,10 +2395,12 @@
           const label = (data.hero.institution.label || '').toLowerCase();
           const iconContainer = document.querySelector('.hero-inst-icon');
           if (iconContainer) {
-            if (label.includes('study') || label.includes('learn') || label.includes('student') || label.includes('aimt') || label.includes('school')) {
+            if (label.includes('study') || label.includes('learn') || label.includes('student') || label.includes('aimt') || label.includes('school') || label.includes('grad') || label.includes('alumni')) {
               iconContainer.innerHTML = `<svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5" /></svg>`;
-            } else if (label.includes('work') || label.includes('job') || label.includes('intern') || label.includes('analyst') || label.includes('employ') || label.includes('place')) {
+            } else if (label.includes('work') || label.includes('job') || label.includes('intern') || label.includes('analyst') || label.includes('employ') || label.includes('place') || label.includes('officer')) {
               iconContainer.innerHTML = `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>`;
+            } else if (label.includes('seek') || label.includes('look') || label.includes('find') || label.includes('open')) {
+              iconContainer.innerHTML = `<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>`;
             } else {
               iconContainer.innerHTML = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="3" /></svg>`;
             }
