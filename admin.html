@@ -2061,9 +2061,15 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
               <input type="text" class="cert-date-input" value="${c.date || ''}" placeholder="e.g. April 2025" />
             </div>
           </div>
-          <div class="form-group" style="margin-bottom: 0;">
-            <label>Certification Title</label>
-            <input type="text" class="cert-name-input" value="${c.name || ''}" />
+          <div class="form-group grid-2" style="margin-bottom: 0;">
+            <div>
+              <label>Certification Title</label>
+              <input type="text" class="cert-name-input" value="${c.name || ''}" placeholder="e.g. Cybersecurity Fundamentals" />
+            </div>
+            <div>
+              <label>Verification Link / URL</label>
+              <input type="text" class="cert-link-input" value="${c.link || ''}" placeholder="e.g. https://credly.com/..." />
+            </div>
           </div>
         </div>
       `).join('');
@@ -2074,12 +2080,14 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
       const issuerEls = document.querySelectorAll('.cert-issuer-input');
       const dateEls = document.querySelectorAll('.cert-date-input');
       const nameEls = document.querySelectorAll('.cert-name-input');
+      const linkEls = document.querySelectorAll('.cert-link-input');
       const certs = [];
       nameEls.forEach((el, idx) => {
         certs.push({
           issuer: issuerEls[idx].value,
           date: dateEls[idx].value,
-          name: el.value
+          name: el.value,
+          link: linkEls[idx] ? linkEls[idx].value.trim() : ''
         });
       });
       return certs;
@@ -2087,7 +2095,7 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 
     function addCertification() {
       const certs = getCertificationsFromDOM();
-      certs.push({ issuer: 'Google', date: '2026', name: 'New Certification Course Name' });
+      certs.push({ issuer: 'Google', date: '2026', name: 'New Certification Course Name', link: '' });
       portfolioData.certifications.items = certs;
       renderCertificationsList(certs);
     }

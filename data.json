@@ -214,32 +214,38 @@
       {
         "issuer": "NPTEL — IIT Kharagpur",
         "date": "April 2025",
-        "name": "Integrated Marketing Communication"
+        "name": "Integrated Marketing Communication",
+        "link": ""
       },
       {
         "issuer": "Bajaj Finserv & UpGrad",
         "date": "2025",
-        "name": "Certified Professional — Banking, Finance & Insurance"
+        "name": "Certified Professional — Banking, Finance & Insurance",
+        "link": ""
       },
       {
         "issuer": "NPTEL — IIT Madras",
         "date": "April 2024",
-        "name": "Business Development: From Start to Scale"
+        "name": "Business Development: From Start to Scale",
+        "link": ""
       },
       {
         "issuer": "IBM",
         "date": "2024",
-        "name": "Cybersecurity Fundamentals"
+        "name": "Cybersecurity Fundamentals",
+        "link": "https://www.credly.com/org/ibm"
       },
       {
         "issuer": "Microsoft",
         "date": "2024",
-        "name": "Office Specialist: Excel Associate (MOS)"
+        "name": "Office Specialist: Excel Associate (MOS)",
+        "link": "https://learn.microsoft.com/en-us/credentials/"
       },
       {
         "issuer": "Google",
         "date": "2024",
-        "name": "Google Ads for Beginners"
+        "name": "Google Ads for Beginners",
+        "link": "https://skillshop.google.com/"
       }
     ]
   },
