@@ -1070,16 +1070,26 @@
 
     .cert-card {
       background: var(--white);
-      border: 1px solid rgba(10, 25, 47, 0.06);
-      border-radius: 14px;
-      padding: 1.5rem 1.6rem 1.3rem;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border: 1px solid rgba(10, 25, 47, 0.08);
+      border-radius: 16px;
+      padding: 1.8rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
-      gap: 0;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.025);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+    
+    /* Clean gradient overlay on hover */
+    .cert-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(212,175,55,0.03) 0%, rgba(10,25,47,0.02) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
     }
 
     .cert-card::before {
@@ -1088,77 +1098,108 @@
       top: 0; left: 0; right: 0;
       height: 3px;
       background: var(--gold);
-      border-radius: 14px 14px 0 0;
+      border-radius: 16px 16px 0 0;
+      transition: height 0.2s ease;
     }
 
     .cert-card:hover {
-      box-shadow: 0 16px 40px rgba(10,25,47,0.08);
-      transform: translateY(-4px);
-      border-color: rgba(10,25,47,0.1);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(10, 25, 47, 0.08);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+    
+    .cert-card:hover::after {
+      opacity: 1;
+    }
+
+    .cert-card:hover::before {
+      height: 5px;
     }
 
     .cert-card-top {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      margin-bottom: 0.6rem;
+      justify-content: flex-start;
+      margin-bottom: 1.2rem;
     }
 
     .cert-date-pill {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      background: rgba(10,25,47,0.04);
-      border: 1px solid rgba(10,25,47,0.07);
-      padding: 0.18rem 0.55rem;
-      border-radius: 20px;
-    }
-
-    .cert-issuer {
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       font-weight: 600;
+      color: var(--navy-light);
+      background: rgba(10,25,47,0.04);
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
       letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.8rem;
     }
 
     .cert-name {
-      font-size: 0.96rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--navy);
-      line-height: 1.35;
-      margin-bottom: 0.2rem;
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.01em;
+    }
+
+    .cert-issuer {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .cert-issuer::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
     }
 
     .cert-verify {
       margin-top: auto;
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--gold);
+      justify-content: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--navy);
+      background: var(--cream);
+      border: 1px solid rgba(10,25,47,0.1);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
       text-decoration: none;
-      opacity: 0.7;
-      transition: opacity 0.2s, gap 0.2s;
-    }
-
-    .cert-verify:hover {
-      opacity: 1;
-      gap: 0.5rem;
+      transition: all 0.2s ease;
+      align-self: flex-start;
     }
 
     .cert-verify svg {
-      width: 11px;
-      height: 11px;
+      width: 14px;
+      height: 14px;
       stroke: currentColor;
       fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      stroke-width: 2.2;
+      transition: transform 0.2s ease;
     }
+
+    .cert-verify:hover {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+      transform: scale(0.97);
+    }
+    
+    .cert-verify:hover svg {
+      transform: translateX(2px) translateY(-2px);
+    }
+
 
     /* Floating Download CV button */
     .fab-cv {
