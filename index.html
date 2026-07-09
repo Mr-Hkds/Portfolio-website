@@ -1100,23 +1100,8 @@
     .cert-card-top {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-
-    .cert-logo {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--white);
-      background: var(--navy);
-      flex-shrink: 0;
+      justify-content: flex-end;
+      margin-bottom: 0.6rem;
     }
 
     .cert-date-pill {
@@ -2619,19 +2604,7 @@
         if (data.certifications.items && Array.isArray(data.certifications.items)) {
           const certsGrid = document.querySelector('.certs-grid');
           if (certsGrid) {
-            const getCertLogo = (issuer) => {
-              const name = (issuer || '').toLowerCase();
-              if (name.includes('ibm')) return 'IBM';
-              if (name.includes('microsoft')) return 'MS';
-              if (name.includes('google')) return 'G';
-              if (name.includes('nptel') || name.includes('iit')) return 'N';
-              if (name.includes('bajaj')) return 'BF';
-              const logo = (issuer || '').split(' ').map(w => w[0]).join('').substring(0, 3).toUpperCase();
-              return logo || 'CRT';
-            };
-
             certsGrid.innerHTML = data.certifications.items.map((c, idx) => {
-              const logo = getCertLogo(c.issuer);
               const linkHtml = c.link ? `
                 <a href="${c.link}" target="_blank" class="cert-verify">
                   Verify Link <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -2639,7 +2612,6 @@
               return `
                 <div class="cert-card reveal ${idx % 3 === 1 ? 'd1' : idx % 3 === 2 ? 'd2' : ''}">
                   <div class="cert-card-top">
-                    <div class="cert-logo">${logo}</div>
                     <span class="cert-date-pill">${c.date}</span>
                   </div>
                   <div class="cert-issuer">${c.issuer}</div>
