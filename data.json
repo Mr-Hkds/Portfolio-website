@@ -31,11 +31,11 @@
       }
     ],
     "institution": {
-      "label": "Currently Studying At",
+      "label": "Graduated From",
       "name": "Army Institute of Management & Technology",
       "sub": "BBA — Marketing Specialization &nbsp;·&nbsp; Greater Noida, India",
       "tags": [
-        "2023 – Present",
+        "2023 – 2026",
         "Business Analytics"
       ]
     }
@@ -231,19 +231,23 @@
     "items": [
       {
         "title": "Python Programming",
-        "description": "Full Stack Generative & Agentic AI with Python — Hitesh Choudhary"
+        "description": "Full Stack Generative & Agentic AI with Python — Hitesh Choudhary",
+        "completed": false
       },
       {
         "title": "Generative AI & AI Tooling",
-        "description": "Prompt engineering, LLM workflows, AI-assisted productivity systems"
+        "description": "Prompt engineering, LLM workflows, AI-assisted productivity systems",
+        "completed": false
       },
       {
         "title": "Cybersecurity Depth",
-        "description": "Threat modeling, network fundamentals, attack surface analysis"
+        "description": "Threat modeling, network fundamentals, attack surface analysis",
+        "completed": false
       },
       {
         "title": "Social Engineering Psychology",
-        "description": "Manipulation frameworks, trust mechanics, human factors in security"
+        "description": "Manipulation frameworks, trust mechanics, human factors in security",
+        "completed": false
       }
     ]
   },
