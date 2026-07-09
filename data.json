@@ -32,12 +32,12 @@
       }
     ],
     "institution": {
-      "label": "Currently Working At",
-      "name": "Tata Consultancy Services (TCS)",
-      "sub": "Admin Officer",
+      "label": "Currently Studying At",
+      "name": "Army Institute of Management & Technology",
+      "sub": "BBA — Marketing Specialization · Greater Noida, India",
       "tags": [
-        "2026 – Present",
-        "Administration"
+        "2023 – Present",
+        "Business Analytics"
       ]
     }
   },
@@ -161,20 +161,7 @@
   "experience": {
     "title": "Professional Experience",
     "subtitle": "My professional history, internships, and roles.",
-    "items": [
-      {
-        "period": "2026 – Present",
-        "duration": "",
-        "company": "Tata Consultancy Services (TCS)",
-        "role": "Admin Officer",
-        "description": "Responsible for administrative operations, office management, and support functions to ensure smooth organizational workflow.",
-        "tags": [
-          "Administration",
-          "Operations Management",
-          "Support Services"
-        ]
-      }
-    ]
+    "items": []
   },
   "education": {
     "title": "Academic background",
