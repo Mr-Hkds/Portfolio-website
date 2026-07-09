@@ -1586,133 +1586,7 @@
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-    // AI Copilot Integration
-    async function sendCopilotChatMessage() {
-      const inputEl = document.getElementById('copilot-chat-input');
-      const prompt = inputEl.value.trim();
-      const apiKey = localStorage.getItem('gemini_key');
-      
-      if (!prompt) return;
-      if (!apiKey) {
-        showToast('Please configure your Gemini API Key in Settings.', 'error');
-        openGithubModal();
-        return;
-      }
 
-      // Append user message
-      appendChatMessage('You', prompt, true);
-      inputEl.value = '';
-
-      // Append typing indicator bubble
-      const messagesContainer = document.getElementById('copilot-messages');
-      const typingBubble = document.createElement('div');
-      typingBubble.style.padding = '0.8rem 1.1rem';
-      typingBubble.style.borderRadius = '6px';
-      typingBubble.style.fontSize = '0.85rem';
-      typingBubble.style.alignSelf = 'flex-start';
-      typingBubble.style.background = 'var(--navy-mid)';
-      typingBubble.style.color = 'rgba(255,255,255,0.7)';
-      typingBubble.innerHTML = `<em>AI Copilot is processing...</em>`;
-      messagesContainer.appendChild(typingBubble);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-      // Gather current state from DOM
-      const currentData = {
-        hero: {
-          eyebrow: document.getElementById('hero-eyebrow').value,
-          name: document.getElementById('hero-name').value,
-          description: document.getElementById('hero-description').value,
-          resumeLink: document.getElementById('hero-resume').value,
-          profileImage: document.getElementById('hero-photo').value,
-          stats: getStatsFromDOM(),
-          institution: {
-            label: document.getElementById('inst-label').value,
-            name: document.getElementById('inst-name').value,
-            sub: document.getElementById('inst-sub').value,
-            tags: document.getElementById('inst-tags').value.split(',').map(s => s.trim()).filter(s => s.length > 0)
-          }
-        },
-        about: {
-          title: document.getElementById('about-title').value,
-          paragraphs: Array.from(document.querySelectorAll('.about-p-input')).map(el => el.value),
-          cards: getAboutCardsFromDOM()
-        },
-        capabilities: {
-          title: document.getElementById('skills-title').value,
-          subtitle: document.getElementById('skills-subtitle').value,
-          categories: getSkillCategoriesFromDOM()
-        },
-        projects: {
-          title: document.getElementById('projects-title').value,
-          subtitle: document.getElementById('projects-subtitle').value,
-          items: getProjectsFromDOM()
-        },
-        education: {
-          title: document.getElementById('education-title').value,
-          subtitle: document.getElementById('education-subtitle').value,
-          items: getEducationFromDOM()
-        },
-        certifications: {
-          title: document.getElementById('certs-title').value,
-          subtitle: document.getElementById('certs-subtitle').value,
-          items: getCertificationsFromDOM()
-        },
-        building: {
-          title: document.getElementById('building-title').value,
-          subtitle: document.getElementById('building-subtitle').value,
-          items: getBuildingItemsFromDOM()
-        },
-        contact: {
-          title: document.getElementById('contact-title').value,
-          subtitle: document.getElementById('contact-subtitle').value,
-          email: document.getElementById('contact-email').value,
-          phone: document.getElementById('contact-phone').value,
-          linkedin: document.getElementById('contact-linkedin').value,
-          linkedinLabel: document.getElementById('contact-linkedin-label').value,
-          location: document.getElementById('contact-location').value,
-          ctaTitle: document.getElementById('contact-cta-title').value,
-          ctaText: document.getElementById('contact-cta-text').value
-        }
-      };
-
-      const systemText = `You are a precise JSON data editor for Harkamal Deep Singh's portfolio website. 
-Take the current data.json structure:
-${JSON.stringify(currentData)}
-
-And update it according to this instruction: "${prompt}"
-
-Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json blocks. Do not add any conversational text.`;
-
-      try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: systemText }] }],
-            generationConfig: {
-              responseMimeType: "application/json"
-            }
-          })
-        });
-
-        typingBubble.remove();
-
-        if (!response.ok) throw new Error('Gemini API call failed');
-        const result = await response.json();
-        const cleanText = result.candidates[0].content.parts[0].text.trim();
-        
-        portfolioData = JSON.parse(cleanText);
-        populateForm();
-        
-        appendChatMessage('AI Copilot', 'I have updated the forms with your changes! You can navigate through the tabs to verify. Click **"Save Changes"** at the top right to make them live on your website.');
-        showToast('AI Copilot updated your forms!');
-      } catch (error) {
-        console.error(error);
-        typingBubble.remove();
-        appendChatMessage('AI Copilot', 'Error: I ran into an issue modifying the JSON. Please check your Gemini API key or confirm that the prompt is clear.', false);
-        showToast('AI Copilot error', 'error');
-      }
-    }
 
     function closeGithubModal() {
       document.getElementById('githubModal').classList.remove('visible');
@@ -2769,10 +2643,25 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
 
         typingBubble.remove();
 
-        if (!response.ok) throw new Error('Gemini API call failed');
+        if (!response.ok) {
+          let errMsg = 'HTTP Status ' + response.status;
+          try {
+            const errData = await response.json();
+            if (errData.error && errData.error.message) {
+              errMsg = errData.error.message;
+            }
+          } catch(e) {}
+          throw new Error('Gemini API call failed: ' + errMsg);
+        }
+
         const result = await response.json();
-        const cleanText = result.candidates[0].content.parts[0].text.trim();
+        let cleanText = result.candidates[0].content.parts[0].text.trim();
         
+        // Strip markdown backticks if model returned them anyway
+        if (cleanText.startsWith('```')) {
+          cleanText = cleanText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
+        }
+
         const parsed = JSON.parse(cleanText);
         let dynamicMsg = 'Forms updated successfully.';
         if (parsed.updatedData) {
@@ -2788,7 +2677,7 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
       } catch (error) {
         console.error(error);
         typingBubble.remove();
-        appendChatMessage('AI Copilot', 'Error: I ran into an issue modifying the JSON. Please check your Gemini API key or confirm that the prompt is clear.', false);
+        appendChatMessage('AI Copilot', `Error: ${error.message}. Please double-check your Gemini API key in Settings (gear icon) and confirm it has access to gemini-2.5-flash.`, false);
         showToast('AI Copilot error', 'error');
       }
     }
