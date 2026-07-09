@@ -773,14 +773,19 @@
       padding: 1.2rem 1.6rem 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.7rem;
+      gap: 0.85rem;
     }
 
     .skill-row {
       display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+    }
+
+    .skill-row-top {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
     }
 
     .skill-name {
@@ -789,32 +794,21 @@
       color: var(--text);
     }
 
-    .skill-dots {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      flex-shrink: 0;
+    .skill-bar-track {
+      height: 2px;
+      background: rgba(var(--cat-rgb), 0.1);
+      border-radius: 99px;
+      overflow: hidden;
     }
 
-    .skill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(var(--cat-rgb), 0.25);
-      background: transparent;
-      transition: background 0.2s ease, border-color 0.2s ease;
-    }
-
-    .skill-dot.filled {
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 99px;
       background: var(--cat-accent);
-      border-color: var(--cat-accent);
-      opacity: 0.75;
-    }
-
-    .skill-dot.half {
-      background: linear-gradient(90deg, var(--cat-accent) 50%, transparent 50%);
-      border-color: rgba(var(--cat-rgb), 0.3);
-      opacity: 0.75;
+      opacity: 0.5;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* PROJECTS */
@@ -2285,17 +2279,14 @@
                 return `<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>`;
               }
             };
-            // dots: 1=learning, 2=core, 3=intermediate, 4=advanced, 5=certified
-            const levelToDots = { 'certified': 5, 'advanced': 4, 'intermediate': 3, 'core': 2, 'learning': 1 };
+            // bars: certified=1.0, advanced=0.82, intermediate=0.62, core=0.45, learning=0.28
+            const levelToWidth = { 'certified': 1.0, 'advanced': 0.82, 'intermediate': 0.62, 'core': 0.45, 'learning': 0.28 };
             const catClasses = ['cat-technical', 'cat-hard', 'cat-soft'];
             const catDescs = [
               'Programming, security tools & systems',
               'Data, analytics & research methods',
               'Communication, strategy & business'
             ];
-            const makeDots = (filled) => Array.from({length: 5}, (_, i) =>
-              `<span class="skill-dot ${i < filled ? 'filled' : ''}"></span>`
-            ).join('');
             skillsGrid.innerHTML = data.capabilities.categories.map((cat, idx) => `
               <div class="skill-cat ${catClasses[idx] || ''} reveal ${idx === 1 ? 'd1' : idx === 2 ? 'd2' : ''}">
                 <div class="skill-cat-header">
@@ -2311,15 +2302,32 @@
                     const parts = sk.split(' — ');
                     const name = parts[0].trim();
                     const level = parts[1] ? parts[1].trim() : 'Core';
-                    const filled = levelToDots[level.toLowerCase()] || 2;
+                    const width = levelToWidth[level.toLowerCase()] || 0.45;
                     return `<div class="skill-row">
-                      <span class="skill-name">${name}</span>
-                      <span class="skill-dots">${makeDots(filled)}</span>
+                      <div class="skill-row-top">
+                        <span class="skill-name">${name}</span>
+                      </div>
+                      <div class="skill-bar-track">
+                        <div class="skill-bar-fill" data-width="${width}"></div>
+                      </div>
                     </div>`;
                   }).join('')}
                 </div>
               </div>
             `).join('');
+
+            // Animate bars on scroll into view
+            const animateBars = () => {
+              document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                const rect = bar.closest('.skill-cat').getBoundingClientRect();
+                if (rect.top < window.innerHeight - 40 && !bar.dataset.animated) {
+                  bar.dataset.animated = '1';
+                  bar.style.transform = `scaleX(${bar.dataset.width})`;
+                }
+              });
+            };
+            window.addEventListener('scroll', animateBars, { passive: true });
+            setTimeout(animateBars, 200);
           }
         }
       }
