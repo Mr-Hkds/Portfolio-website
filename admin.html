@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Admin Panel — Harkamal Deep Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --navy: #0D1B3E;
+      --navy-mid: #1A2F5A;
+      --navy-light: #2A437E;
+      --gold: #B8924A;
+      --gold-light: #D4A96A;
+      --cream: #F9F7F3;
+      --white: #FFFFFF;
+      --text: #1C1C2E;
+      --text-muted: #6B7280;
+      --border: #E5E0D8;
+      --border-light: #F0EDE8;
+      --shadow: 0 1px 3px rgba(13, 27, 62, 0.05), 0 8px 24px rgba(13, 27, 62, 0.05);
+      --success: #10B981;
+      --error: #EF4444;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--navy);
+      color: var(--white);
+      padding: 0.8rem 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .header-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .btn {
+      padding: 0.55rem 1.2rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    /* MAIN CONTAINER */
+    .admin-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* SIDEBAR */
+    aside {
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.75rem 1rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background: var(--cream);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .nav-item svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* CONTENT AREA */
+    main {
+      padding: 2rem 3rem;
+      overflow-y: auto;
+      background: var(--white);
+    }
+
+    .tab-content {
+      display: none;
+      max-width: 800px;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .section-header {
+      margin-bottom: 1.8rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .section-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* FORM STYLING */
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .form-group.grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .form-group.grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--navy);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(13, 27, 62, 0.08);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    textarea.tall {
+      min-height: 140px;
+    }
+
+    /* LIST EDITORS */
+    .list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .list-item {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      animation: slideIn 0.2s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .list-item-controls {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      display: flex;
+      gap: 0.3rem;
+    }
+
+    .control-btn {
+      width: 26px;
+      height: 26px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+
+    .control-btn:hover {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+    }
+
+    .control-btn.btn-delete:hover {
+      background: var(--error);
+      color: var(--white);
+      border-color: var(--error);
+    }
+
+    .control-btn svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.2;
+    }
+
+    .list-add-btn {
+      background: var(--white);
+      color: var(--navy);
+      border: 1.5px dashed var(--border);
+      padding: 0.8rem;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .list-add-btn:hover {
+      border-color: var(--navy);
+      background: var(--cream);
+    }
+
+    /* BADGES INSIDE EDUCATION LISTS */
+    .edu-badges-container {
+      border: 1px solid var(--border);
+      padding: 0.8rem;
+      border-radius: 4px;
+      background: var(--white);
+    }
+
+    .edu-badge-row {
+      display: grid;
+      grid-template-columns: 1fr 120px 40px;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+    }
+
+    .edu-badge-row:last-child {
+      margin-bottom: 0;
+    }
+
+    /* MODAL OVERLAYS */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(13, 27, 62, 0.65);
+      backdrop-filter: blur(5px);
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease-in-out;
+    }
+
+    .modal-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(13, 27, 62, 0.25);
+      animation: modalSlide 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes modalSlide {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: none;
+        opacity: 1;
+      }
+    }
+
+    .modal-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--border-light);
+      padding-top: 1rem;
+    }
+
+    /* FLOATING NOTIFICATION BANNER */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.9rem 1.6rem;
+      border-radius: 6px;
+      color: var(--white);
+      font-weight: 500;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transform: translateY(100px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .toast.visible {
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .toast.success {
+      background: var(--success);
+    }
+
+    .toast.error {
+      background: var(--error);
+    }
+
+    .toast svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* LOADING SPINNER */
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--white);
+      animation: spin 0.8s linear infinite;
+    }
+
+    .btn-primary .spinner {
+      border-top-color: var(--navy);
+      border-left-color: var(--navy);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .admin-container {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0.8rem;
+      }
+
+      .nav-item {
+        white-space: nowrap;
+        padding: 0.5rem 0.8rem;
+      }
+
+      main {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-brand">
+      <div class="header-title">Harkamal Deep Singh</div>
+      <div class="header-badge">Admin Panel</div>
+    </div>
+    <div class="header-actions">
+      <!-- GitHub Token button (visible only in live view but available for configs) -->
+      <button class="btn btn-secondary" id="githubSettingsButton" onclick="openGithubModal()">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+        </svg>
+        <span>GitHub Token</span>
+      </button>
+
+      <a href="/" target="_blank" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
+        View Portfolio
+      </a>
+      <button class="btn btn-primary" id="saveButton">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" id="saveIcon">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+          <polyline points="17 21 17 13 7 13 7 21" />
+          <polyline points="7 3 7 8 15 8" />
+        </svg>
+        <span>Save Changes</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- WORKSPACE -->
+  <div class="admin-container">
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="nav-item active" onclick="switchTab('hero')">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        Hero Section
+      </div>
+      <div class="nav-item" onclick="switchTab('about')">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        About
+      </div>
+      <div class="nav-item" onclick="switchTab('capabilities')">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 9h18M9 21V9" />
+        </svg>
+        Capabilities
+      </div>
+      <div class="nav-item" onclick="switchTab('projects')">
+        <svg viewBox="0 0 24 24">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+        </svg>
+        Research Projects
+      </div>
+      <div class="nav-item" onclick="switchTab('education')">
+        <svg viewBox="0 0 24 24">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+          <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5" />
+        </svg>
+        Education
+      </div>
+      <div class="nav-item" onclick="switchTab('certifications')">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        Credentials
+      </div>
+      <div class="nav-item" onclick="switchTab('building')">
+        <svg viewBox="0 0 24 24">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Currently Building
+      </div>
+      <div class="nav-item" onclick="switchTab('contact')">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+          <polyline points="22,6 12,13 2,6" />
+        </svg>
+        Contact &amp; Footer
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main>
+      <!-- HERO TAB -->
+      <div id="tab-hero" class="tab-content active">
+        <div class="section-header">
+          <h2 class="section-title">Hero Section</h2>
+          <p class="section-desc">Manage the top of your landing page, introduction, stats, and current institution.
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="hero-eyebrow">Eyebrow Text</label>
+          <input type="text" id="hero-eyebrow" placeholder="e.g. Portfolio — Business Analytics & Cybersecurity" />
+        </div>
+        <div class="form-group">
+          <label for="hero-name">Full Name</label>
+          <input type="text" id="hero-name" placeholder="e.g. Harkamal Deep Singh" />
+        </div>
+        <div class="form-group">
+          <label for="hero-description">Hero Description (HTML allowed)</label>
+          <textarea id="hero-description" class="tall"
+            placeholder="A short summary of what you do. HTML tags like <strong> are supported."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="hero-resume">Resume Download Link (Google Drive / URL)</label>
+          <input type="text" id="hero-resume" placeholder="Google Drive direct download link or PDF path" />
+        </div>
+
+        <div style="margin: 2rem 0 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.8rem;">Current
+            Institution</h3>
+        </div>
+        <div class="form-group">
+          <label for="inst-label">Institution Label</label>
+          <input type="text" id="inst-label" placeholder="e.g. Currently Studying At" />
+        </div>
+        <div class="form-group">
+          <label for="inst-name">Institution Name</label>
+          <input type="text" id="inst-name" placeholder="e.g. Army Institute of Management & Technology" />
+        </div>
+        <div class="form-group">
+          <label for="inst-sub">Degree &amp; Location details</label>
+          <input type="text" id="inst-sub"
+            placeholder="e.g. BBA — Marketing Specialization · Greater Noida, India" />
+        </div>
+        <div class="form-group">
+          <label for="inst-tags">Institution Tags (comma separated)</label>
+          <input type="text" id="inst-tags" placeholder="e.g. 2023 – Present, Business Analytics" />
+        </div>
+
+        <div style="margin: 2rem 0 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.8rem;">Hero Stats
+          </h3>
+        </div>
+        <div class="list-container" id="hero-stats-list">
+          <!-- Stats rows added dynamically -->
+        </div>
+      </div>
+
+      <!-- ABOUT TAB -->
+      <div id="tab-about" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">About Section</h2>
+          <p class="section-desc">Manage the narrative bio paragraphs and the feature cards.</p>
+        </div>
+        <div class="form-group">
+          <label for="about-title">Section Title</label>
+          <input type="text" id="about-title" placeholder="e.g. Business logic meets security thinking" />
+        </div>
+        <div class="form-group">
+          <label>Bio Paragraphs (HTML allowed)</label>
+          <div id="about-paragraphs-list" class="list-container">
+            <!-- Dynamic paragraphs -->
+          </div>
+          <button class="list-add-btn" onclick="addAboutParagraph()">➕ Add Paragraph</button>
+        </div>
+
+        <div style="margin: 2rem 0 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.8rem;">Key Feature
+            Cards</h3>
+        </div>
+        <div class="list-container" id="about-cards-list">
+          <!-- Cards added dynamically -->
+        </div>
+        <button class="list-add-btn" onclick="addAboutCard()">➕ Add Feature Card</button>
+      </div>
+
+      <!-- CAPABILITIES TAB -->
+      <div id="tab-capabilities" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Capabilities &amp; Skills</h2>
+          <p class="section-desc">Manage your skillset categories (e.g. Data, Cybersecurity) and items within them.
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="skills-title">Section Title</label>
+          <input type="text" id="skills-title" />
+        </div>
+        <div class="form-group">
+          <label for="skills-subtitle">Section Subtitle</label>
+          <textarea id="skills-subtitle"></textarea>
+        </div>
+
+        <div style="margin: 2rem 0 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.8rem;">Skill
+            Categories</h3>
+        </div>
+        <div class="list-container" id="skills-categories-list">
+          <!-- Dynamic categories -->
+        </div>
+        <button class="list-add-btn" onclick="addSkillCategory()">➕ Add Skill Category</button>
+      </div>
+
+      <!-- PROJECTS TAB -->
+      <div id="tab-projects" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Research Projects</h2>
+          <p class="section-desc">Add, edit, or reorder your research projects, case studies, or reports.</p>
+        </div>
+        <div class="form-group">
+          <label for="projects-title">Section Title</label>
+          <input type="text" id="projects-title" />
+        </div>
+        <div class="form-group">
+          <label for="projects-subtitle">Section Subtitle</label>
+          <textarea id="projects-subtitle"></textarea>
+        </div>
+
+        <div class="list-container" id="projects-list">
+          <!-- Dynamic projects list -->
+        </div>
+        <button class="list-add-btn" onclick="addProject()">➕ Add Project Card</button>
+      </div>
+
+      <!-- EDUCATION TAB -->
+      <div id="tab-education" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Academic Background</h2>
+          <p class="section-desc">Manage your formal educational qualifications and timelines.</p>
+        </div>
+        <div class="form-group">
+          <label for="education-title">Section Title</label>
+          <input type="text" id="education-title" />
+        </div>
+        <div class="form-group">
+          <label for="education-subtitle">Section Subtitle</label>
+          <textarea id="education-subtitle"></textarea>
+        </div>
+
+        <div class="list-container" id="education-list">
+          <!-- Dynamic education list -->
+        </div>
+        <button class="list-add-btn" onclick="addEducation()">➕ Add Education Entry</button>
+      </div>
+
+      <!-- CERTIFICATIONS TAB -->
+      <div id="tab-certifications" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Credentials &amp; Certifications</h2>
+          <p class="section-desc">Manage professional certifications from providers like Google, IBM, Microsoft, etc.
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="certs-title">Section Title</label>
+          <input type="text" id="certs-title" />
+        </div>
+        <div class="form-group">
+          <label for="certs-subtitle">Section Subtitle</label>
+          <textarea id="certs-subtitle"></textarea>
+        </div>
+
+        <div class="list-container" id="certs-list">
+          <!-- Dynamic credentials list -->
+        </div>
+        <button class="list-add-btn" onclick="addCertification()">➕ Add Certification Card</button>
+      </div>
+
+      <!-- BUILDING TAB -->
+      <div id="tab-building" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Currently Building</h2>
+          <p class="section-desc">List courses, toolkits, or topics you are currently investing time and learning in.
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="building-title">Section Title</label>
+          <input type="text" id="building-title" />
+        </div>
+        <div class="form-group">
+          <label for="building-subtitle">Section Subtitle</label>
+          <textarea id="building-subtitle"></textarea>
+        </div>
+
+        <div class="list-container" id="building-list">
+          <!-- Dynamic current building items -->
+        </div>
+        <button class="list-add-btn" onclick="addBuildingItem()">➕ Add Learning Topic</button>
+      </div>
+
+      <!-- CONTACT TAB -->
+      <div id="tab-contact" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Contact &amp; Footer Settings</h2>
+          <p class="section-desc">Manage your email, phone, social handles, physical location, and CTA elements.</p>
+        </div>
+        <div class="form-group">
+          <label for="contact-title">Section Title</label>
+          <input type="text" id="contact-title" placeholder="e.g. Let's connect" />
+        </div>
+        <div class="form-group">
+          <label for="contact-subtitle">Section Subtitle</label>
+          <textarea id="contact-subtitle"></textarea>
+        </div>
+
+        <div class="form-group grid-2">
+          <div>
+            <label for="contact-email">Email Address</label>
+            <input type="email" id="contact-email" />
+          </div>
+          <div>
+            <label for="contact-phone">Phone Number</label>
+            <input type="text" id="contact-phone" placeholder="e.g. +91 6283 370 364" />
+          </div>
+        </div>
+        <div class="form-group grid-2">
+          <div>
+            <label for="contact-linkedin">LinkedIn URL</label>
+            <input type="text" id="contact-linkedin" />
+          </div>
+          <div>
+            <label for="contact-linkedin-label">LinkedIn Display Username</label>
+            <input type="text" id="contact-linkedin-label" placeholder="e.g. /in/username" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contact-location">Location details (HTML supported)</label>
+          <input type="text" id="contact-location"
+            placeholder="e.g. Greater Noida, UP &nbsp;·&nbsp; Hoshiarpur, Punjab" />
+        </div>
+
+        <div style="margin: 2rem 0 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
+          <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.8rem;">Call to
+            Action (CTA) Card</h3>
+        </div>
+        <div class="form-group">
+          <label for="contact-cta-title">CTA Title</label>
+          <input type="text" id="contact-cta-title" placeholder="e.g. Open to the right opportunity" />
+        </div>
+        <div class="form-group">
+          <label for="contact-cta-text">CTA Body Text (This also updates the footer text)</label>
+          <textarea id="contact-cta-text" class="tall"></textarea>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- GITHUB SETTINGS MODAL -->
+  <div id="githubModal" class="modal-overlay">
+    <div class="modal-card">
+      <h3>GitHub API Integration</h3>
+      <p class="modal-desc">To save edits directly on your live website, paste a GitHub Personal Access Token (classic)
+        with <code>repo</code> access scopes. This token is saved securely in your browser's local storage and is never
+        transmitted to third parties.</p>
+      <div class="form-group" style="margin-top: 1.2rem; margin-bottom: 0.4rem;">
+        <label for="github-token-input">Personal Access Token (PAT)</label>
+        <input type="text" id="github-token-input" placeholder="ghp_..." style="font-family: monospace;" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeGithubModal()">Close</button>
+        <button class="btn btn-primary" onclick="saveGithubToken()">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">
+    <!-- Icon and message injected dynamically -->
+  </div>
+
+  <script>
+    let portfolioData = {};
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // Helper: SVG Icons for controls
+    const upIcon = `<svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15" /></svg>`;
+    const downIcon = `<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg>`;
+    const deleteIcon = `<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>`;
+    const checkIcon = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>`;
+    const alertIcon = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>`;
+
+    // Switch Tabs
+    function switchTab(tabId) {
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+
+      event.currentTarget.classList.add('active');
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+    }
+
+    // Toast alerts
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        ${type === 'success' ? checkIcon : alertIcon}
+        <span>${message}</span>
+      `;
+      toast.classList.add('visible');
+
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 3000);
+    }
+
+    // Modal controllers
+    function openGithubModal() {
+      document.getElementById('githubModal').classList.add('visible');
+      document.getElementById('github-token-input').value = localStorage.getItem('github_pat') || '';
+    }
+
+    function closeGithubModal() {
+      document.getElementById('githubModal').classList.remove('visible');
+    }
+
+    function saveGithubToken() {
+      const token = document.getElementById('github-token-input').value.trim();
+      if (token) {
+        localStorage.setItem('github_pat', token);
+        showToast('GitHub token configuration saved.');
+      } else {
+        localStorage.removeItem('github_pat');
+        showToast('GitHub token removed. Direct saves are disabled.', 'error');
+      }
+      closeGithubModal();
+    }
+
+    // Load dynamic data on entry
+    async function loadData() {
+      const fetchUrl = isLocal ? '/api/data' : 'data.json';
+      try {
+        const response = await fetch(fetchUrl);
+        if (!response.ok) throw new Error('Fetch failed');
+        portfolioData = await response.json();
+        populateForm();
+
+        // Alert user on live environment status
+        if (!isLocal) {
+          const storedToken = localStorage.getItem('github_pat');
+          if (!storedToken) {
+            showToast('Running on live site. Please configure GitHub settings to save changes.', 'error');
+            setTimeout(openGithubModal, 1000);
+          } else {
+            showToast('Running on live site. GitHub API is linked.', 'success');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load portfolio data:', error);
+        showToast('Failed to load data. Make sure data.json exists in this folder.', 'error');
+      }
+    }
+
+    // Populate all forms with existing JSON data
+    function populateForm() {
+      if (!portfolioData) return;
+
+      // 1. Hero
+      if (portfolioData.hero) {
+        document.getElementById('hero-eyebrow').value = portfolioData.hero.eyebrow || '';
+        document.getElementById('hero-name').value = portfolioData.hero.name || '';
+        document.getElementById('hero-description').value = portfolioData.hero.description || '';
+        document.getElementById('hero-resume').value = portfolioData.hero.resumeLink || '';
+
+        if (portfolioData.hero.institution) {
+          document.getElementById('inst-label').value = portfolioData.hero.institution.label || '';
+          document.getElementById('inst-name').value = portfolioData.hero.institution.name || '';
+          document.getElementById('inst-sub').value = portfolioData.hero.institution.sub || '';
+          document.getElementById('inst-tags').value = (portfolioData.hero.institution.tags || []).join(', ');
+        }
+
+        renderStatsList(portfolioData.hero.stats || []);
+      }
+
+      // 2. About
+      if (portfolioData.about) {
+        document.getElementById('about-title').value = portfolioData.about.title || '';
+        renderAboutParagraphs(portfolioData.about.paragraphs || []);
+        renderAboutCards(portfolioData.about.cards || []);
+      }
+
+      // 3. Capabilities
+      if (portfolioData.capabilities) {
+        document.getElementById('skills-title').value = portfolioData.capabilities.title || '';
+        document.getElementById('skills-subtitle').value = portfolioData.capabilities.subtitle || '';
+        renderSkillCategories(portfolioData.capabilities.categories || []);
+      }
+
+      // 4. Projects
+      if (portfolioData.projects) {
+        document.getElementById('projects-title').value = portfolioData.projects.title || '';
+        document.getElementById('projects-subtitle').value = portfolioData.projects.subtitle || '';
+        renderProjectsList(portfolioData.projects.items || []);
+      }
+
+      // 5. Education
+      if (portfolioData.education) {
+        document.getElementById('education-title').value = portfolioData.education.title || '';
+        document.getElementById('education-subtitle').value = portfolioData.education.subtitle || '';
+        renderEducationList(portfolioData.education.items || []);
+      }
+
+      // 6. Certifications
+      if (portfolioData.certifications) {
+        document.getElementById('certs-title').value = portfolioData.certifications.title || '';
+        document.getElementById('certs-subtitle').value = portfolioData.certifications.subtitle || '';
+        renderCertificationsList(portfolioData.certifications.items || []);
+      }
+
+      // 7. Currently Building
+      if (portfolioData.building) {
+        document.getElementById('building-title').value = portfolioData.building.title || '';
+        document.getElementById('building-subtitle').value = portfolioData.building.subtitle || '';
+        renderBuildingList(portfolioData.building.items || []);
+      }
+
+      // 8. Contact
+      if (portfolioData.contact) {
+        document.getElementById('contact-title').value = portfolioData.contact.title || '';
+        document.getElementById('contact-subtitle').value = portfolioData.contact.subtitle || '';
+        document.getElementById('contact-email').value = portfolioData.contact.email || '';
+        document.getElementById('contact-phone').value = portfolioData.contact.phone || '';
+        document.getElementById('contact-linkedin').value = portfolioData.contact.linkedin || '';
+        document.getElementById('contact-linkedin-label').value = portfolioData.contact.linkedinLabel || '';
+        document.getElementById('contact-location').value = portfolioData.contact.location || '';
+        document.getElementById('contact-cta-title').value = portfolioData.contact.ctaTitle || '';
+        document.getElementById('contact-cta-text').value = portfolioData.contact.ctaText || '';
+      }
+    }
+
+    /* LIST RENDERING AND UTILS */
+
+    function createListItemWrapper(idx, moveUpFnName, moveDownFnName, deleteFnName, count) {
+      return `
+        <div class="list-item-controls">
+          ${idx > 0 ? `<button type="button" class="control-btn" onclick="${moveUpFnName}(${idx})">${upIcon}</button>` : ''}
+          ${idx < count - 1 ? `<button type="button" class="control-btn" onclick="${moveDownFnName}(${idx})">${downIcon}</button>` : ''}
+          <button type="button" class="control-btn btn-delete" onclick="${deleteFnName}(${idx})">${deleteIcon}</button>
+        </div>
+      `;
+    }
+
+    // HERO STATS
+    function renderStatsList(stats) {
+      const container = document.getElementById('hero-stats-list');
+      container.innerHTML = stats.map((s, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveStat', 'moveStatDown', 'deleteStat', stats.length)}
+          <div class="form-group grid-2">
+            <div>
+              <label>Stat Number/Text</label>
+              <input type="text" class="stat-num-input" value="${s.num || ''}" placeholder="e.g. 9.3" />
+            </div>
+            <div>
+              <label>Superscript (Optional)</label>
+              <input type="text" class="stat-sup-input" value="${s.sup || ''}" placeholder="e.g. /10" />
+            </div>
+          </div>
+          <div class="form-group grid-2">
+            <div>
+              <label>Label</label>
+              <input type="text" class="stat-label-input" value="${s.label || ''}" placeholder="e.g. CGPA" />
+            </div>
+            <div>
+              <label>Context Info</label>
+              <input type="text" class="stat-context-input" value="${s.context || ''}" placeholder="e.g. BBA at AIMT" />
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ABOUT PARAGRAPHS
+    function renderAboutParagraphs(paragraphs) {
+      const container = document.getElementById('about-paragraphs-list');
+      container.innerHTML = paragraphs.map((p, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveParagraph', 'moveParagraphDown', 'deleteParagraph', paragraphs.length)}
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Paragraph #${idx + 1}</label>
+            <textarea class="about-p-input">${p}</textarea>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addAboutParagraph() {
+      const paragraphs = Array.from(document.querySelectorAll('.about-p-input')).map(el => el.value);
+      paragraphs.push('');
+      portfolioData.about.paragraphs = paragraphs;
+      renderAboutParagraphs(paragraphs);
+    }
+
+    function deleteParagraph(idx) {
+      const paragraphs = Array.from(document.querySelectorAll('.about-p-input')).map(el => el.value);
+      paragraphs.splice(idx, 1);
+      portfolioData.about.paragraphs = paragraphs;
+      renderAboutParagraphs(paragraphs);
+    }
+
+    function moveParagraph(idx) {
+      const paragraphs = Array.from(document.querySelectorAll('.about-p-input')).map(el => el.value);
+      const temp = paragraphs[idx];
+      paragraphs[idx] = paragraphs[idx - 1];
+      paragraphs[idx - 1] = temp;
+      portfolioData.about.paragraphs = paragraphs;
+      renderAboutParagraphs(paragraphs);
+    }
+
+    function moveParagraphDown(idx) {
+      moveParagraph(idx + 1);
+    }
+
+    // ABOUT CARDS
+    function renderAboutCards(cards) {
+      const container = document.getElementById('about-cards-list');
+      container.innerHTML = cards.map((c, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveAboutCard', 'moveAboutCardDown', 'deleteAboutCard', cards.length)}
+          <div class="form-group">
+            <label>Card Title</label>
+            <input type="text" class="about-card-title-input" value="${c.title || ''}" />
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Card Description Text</label>
+            <textarea class="about-card-text-input">${c.text || ''}</textarea>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addAboutCard() {
+      const cards = getAboutCardsFromDOM();
+      cards.push({ title: '', text: '' });
+      portfolioData.about.cards = cards;
+      renderAboutCards(cards);
+    }
+
+    function getAboutCardsFromDOM() {
+      const titleEls = document.querySelectorAll('.about-card-title-input');
+      const textEls = document.querySelectorAll('.about-card-text-input');
+      const cards = [];
+      titleEls.forEach((el, idx) => {
+        cards.push({
+          title: el.value,
+          text: textEls[idx].value
+        });
+      });
+      return cards;
+    }
+
+    function deleteAboutCard(idx) {
+      const cards = getAboutCardsFromDOM();
+      cards.splice(idx, 1);
+      portfolioData.about.cards = cards;
+      renderAboutCards(cards);
+    }
+
+    function moveAboutCard(idx) {
+      const cards = getAboutCardsFromDOM();
+      const temp = cards[idx];
+      cards[idx] = cards[idx - 1];
+      cards[idx - 1] = temp;
+      portfolioData.about.cards = cards;
+      renderAboutCards(cards);
+    }
+
+    function moveAboutCardDown(idx) {
+      moveAboutCard(idx + 1);
+    }
+
+    // SKILL CATEGORIES
+    function renderSkillCategories(categories) {
+      const container = document.getElementById('skills-categories-list');
+      container.innerHTML = categories.map((cat, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveSkillCat', 'moveSkillCatDown', 'deleteSkillCat', categories.length)}
+          <div class="form-group grid-2">
+            <div>
+              <label>Category Name</label>
+              <input type="text" class="skill-cat-name-input" value="${cat.name || ''}" />
+            </div>
+            <div>
+              <label>Icon</label>
+              <select class="skill-cat-icon-input">
+                <option value="book" ${cat.icon === 'book' ? 'selected' : ''}>Open Book</option>
+                <option value="table" ${cat.icon === 'table' ? 'selected' : ''}>Grid / Excel Table</option>
+                <option value="shield" ${cat.icon === 'shield' ? 'selected' : ''}>Shield / Security</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Skills (one per line. Add " — BadgeText" to include a badge)</label>
+            <textarea class="skill-cat-items-input" style="font-family: monospace; min-height: 120px;" placeholder="e.g.&#10;Microsoft Excel — Advanced&#10;Pivot Tables&#10;Python — Learning">${(cat.skills || []).join('\n')}</textarea>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getSkillCategoriesFromDOM() {
+      const nameEls = document.querySelectorAll('.skill-cat-name-input');
+      const iconEls = document.querySelectorAll('.skill-cat-icon-input');
+      const itemsEls = document.querySelectorAll('.skill-cat-items-input');
+      const categories = [];
+      nameEls.forEach((el, idx) => {
+        categories.push({
+          name: el.value,
+          icon: iconEls[idx].value,
+          skills: itemsEls[idx].value.split('\n').map(s => s.trim()).filter(s => s.length > 0)
+        });
+      });
+      return categories;
+    }
+
+    function addSkillCategory() {
+      const categories = getSkillCategoriesFromDOM();
+      categories.push({ name: '', icon: 'book', skills: [] });
+      portfolioData.capabilities.categories = categories;
+      renderSkillCategories(categories);
+    }
+
+    function deleteSkillCat(idx) {
+      const categories = getSkillCategoriesFromDOM();
+      categories.splice(idx, 1);
+      portfolioData.capabilities.categories = categories;
+      renderSkillCategories(categories);
+    }
+
+    function moveSkillCat(idx) {
+      const categories = getSkillCategoriesFromDOM();
+      const temp = categories[idx];
+      categories[idx] = categories[idx - 1];
+      categories[idx - 1] = temp;
+      portfolioData.capabilities.categories = categories;
+      renderSkillCategories(categories);
+    }
+
+    function moveSkillCatDown(idx) {
+      moveSkillCat(idx + 1);
+    }
+
+    // PROJECTS LIST
+    function renderProjectsList(projects) {
+      const container = document.getElementById('projects-list');
+      container.innerHTML = projects.map((p, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveProject', 'moveProjectDown', 'deleteProject', projects.length)}
+          <div class="form-group grid-2">
+            <div>
+              <label>Project Index (e.g. 01)</label>
+              <input type="text" class="project-idx-input" value="${p.index || ''}" />
+            </div>
+            <div>
+              <label>Period / Dates</label>
+              <input type="text" class="project-period-input" value="${p.period || ''}" placeholder="e.g. Jan 2025 – May 2025" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Project Title</label>
+            <input type="text" class="project-title-input" value="${p.title || ''}" />
+          </div>
+          <div class="form-group">
+            <label>Description Text</label>
+            <textarea class="project-desc-input">${p.description || ''}</textarea>
+          </div>
+          <div class="form-group grid-2">
+            <div>
+              <label>Tags (comma separated)</label>
+              <input type="text" class="project-tags-input" value="${(p.tags || []).join(', ')}" />
+            </div>
+            <div>
+              <label>Report Link (URL)</label>
+              <input type="text" class="project-link-input" value="${p.link || ''}" />
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getProjectsFromDOM() {
+      const indexEls = document.querySelectorAll('.project-idx-input');
+      const periodEls = document.querySelectorAll('.project-period-input');
+      const titleEls = document.querySelectorAll('.project-title-input');
+      const descEls = document.querySelectorAll('.project-desc-input');
+      const tagsEls = document.querySelectorAll('.project-tags-input');
+      const linkEls = document.querySelectorAll('.project-link-input');
+
+      const projects = [];
+      titleEls.forEach((el, idx) => {
+        projects.push({
+          index: indexEls[idx].value,
+          period: periodEls[idx].value,
+          title: el.value,
+          description: descEls[idx].value,
+          tags: tagsEls[idx].value.split(',').map(s => s.trim()).filter(s => s.length > 0),
+          link: linkEls[idx].value
+        });
+      });
+      return projects;
+    }
+
+    function addProject() {
+      const projects = getProjectsFromDOM();
+      projects.push({ index: (projects.length + 1).toString().padStart(2, '0'), period: '', title: '', description: '', tags: [], link: '' });
+      portfolioData.projects.items = projects;
+      renderProjectsList(projects);
+    }
+
+    function deleteProject(idx) {
+      const projects = getProjectsFromDOM();
+      projects.splice(idx, 1);
+      portfolioData.projects.items = projects;
+      renderProjectsList(projects);
+    }
+
+    function moveProject(idx) {
+      const projects = getProjectsFromDOM();
+      const temp = projects[idx];
+      projects[idx] = projects[idx - 1];
+      projects[idx - 1] = temp;
+      portfolioData.projects.items = projects;
+      renderProjectsList(projects);
+    }
+
+    function moveProjectDown(idx) {
+      moveProject(idx + 1);
+    }
+
+    // EDUCATION LIST
+    function renderEducationList(items) {
+      const container = document.getElementById('education-list');
+      container.innerHTML = items.map((edu, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveEdu', 'moveEduDown', 'deleteEdu', items.length)}
+          <div class="form-group grid-2">
+            <div>
+              <label>Timeline Period</label>
+              <input type="text" class="edu-period-input" value="${edu.period || ''}" placeholder="e.g. 2023 – Present" />
+            </div>
+            <div>
+              <label>School / Institution</label>
+              <input type="text" class="edu-school-input" value="${edu.school || ''}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Degree / Qualification</label>
+            <input type="text" class="edu-degree-input" value="${edu.degree || ''}" />
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Badges / Highlights (e.g. Rank 1, Specialization)</label>
+            <div class="edu-badges-container">
+              <div id="edu-badges-list-${idx}">
+                ${(edu.badges || []).map((b, bIdx) => `
+                  <div class="edu-badge-row">
+                    <input type="text" class="edu-badge-text-input-${idx}" value="${b.text || ''}" placeholder="Badge Text" />
+                    <select class="edu-badge-type-input-${idx}">
+                      <option value="normal" ${b.type !== 'gold' ? 'selected' : ''}>Normal (Gray)</option>
+                      <option value="gold" ${b.type === 'gold' ? 'selected' : ''}>Highlight (Gold)</option>
+                    </select>
+                    <button type="button" class="control-btn btn-delete" onclick="deleteEduBadge(${idx}, ${bIdx})">${deleteIcon}</button>
+                  </div>
+                `).join('')}
+              </div>
+              <button type="button" class="btn btn-secondary" style="margin-top: 0.5rem; padding: 0.35rem 0.8rem;" onclick="addEduBadge(${idx})">➕ Add Badge</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getEducationFromDOM() {
+      const periodEls = document.querySelectorAll('.edu-period-input');
+      const schoolEls = document.querySelectorAll('.edu-school-input');
+      const degreeEls = document.querySelectorAll('.edu-degree-input');
+      const items = [];
+
+      periodEls.forEach((el, idx) => {
+        const badgeTextEls = document.querySelectorAll(`.edu-badge-text-input-${idx}`);
+        const badgeTypeEls = document.querySelectorAll(`.edu-badge-type-input-${idx}`);
+        const badges = [];
+        badgeTextEls.forEach((badgeEl, bIdx) => {
+          if (badgeEl.value.trim().length > 0) {
+            badges.push({
+              text: badgeEl.value,
+              type: badgeTypeEls[bIdx].value
+            });
+          }
+        });
+
+        items.push({
+          period: el.value,
+          school: schoolEls[idx].value,
+          degree: degreeEls[idx].value,
+          badges: badges
+        });
+      });
+      return items;
+    }
+
+    function addEducation() {
+      const items = getEducationFromDOM();
+      items.push({ period: '', school: '', degree: '', badges: [] });
+      portfolioData.education.items = items;
+      renderEducationList(items);
+    }
+
+    function deleteEdu(idx) {
+      const items = getEducationFromDOM();
+      items.splice(idx, 1);
+      portfolioData.education.items = items;
+      renderEducationList(items);
+    }
+
+    function moveEdu(idx) {
+      const items = getEducationFromDOM();
+      const temp = items[idx];
+      items[idx] = items[idx - 1];
+      items[idx - 1] = temp;
+      portfolioData.education.items = items;
+      renderEducationList(items);
+    }
+
+    function moveEduDown(idx) {
+      moveEdu(idx + 1);
+    }
+
+    function addEduBadge(eduIdx) {
+      const items = getEducationFromDOM();
+      items[eduIdx].badges.push({ text: '', type: 'normal' });
+      portfolioData.education.items = items;
+      renderEducationList(items);
+    }
+
+    function deleteEduBadge(eduIdx, badgeIdx) {
+      const items = getEducationFromDOM();
+      items[eduIdx].badges.splice(badgeIdx, 1);
+      portfolioData.education.items = items;
+      renderEducationList(items);
+    }
+
+    // CERTIFICATIONS
+    function renderCertificationsList(certs) {
+      const container = document.getElementById('certs-list');
+      container.innerHTML = certs.map((c, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveCert', 'moveCertDown', 'deleteCert', certs.length)}
+          <div class="form-group grid-2">
+            <div>
+              <label>Credential Issuer</label>
+              <input type="text" class="cert-issuer-input" value="${c.issuer || ''}" placeholder="e.g. IBM, Google" />
+            </div>
+            <div>
+              <label>Date Earned</label>
+              <input type="text" class="cert-date-input" value="${c.date || ''}" placeholder="e.g. April 2025" />
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Certification Title</label>
+            <input type="text" class="cert-name-input" value="${c.name || ''}" />
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getCertificationsFromDOM() {
+      const issuerEls = document.querySelectorAll('.cert-issuer-input');
+      const dateEls = document.querySelectorAll('.cert-date-input');
+      const nameEls = document.querySelectorAll('.cert-name-input');
+      const certs = [];
+      nameEls.forEach((el, idx) => {
+        certs.push({
+          issuer: issuerEls[idx].value,
+          date: dateEls[idx].value,
+          name: el.value
+        });
+      });
+      return certs;
+    }
+
+    function addCertification() {
+      const certs = getCertificationsFromDOM();
+      certs.push({ issuer: '', date: '', name: '' });
+      portfolioData.certifications.items = certs;
+      renderCertificationsList(certs);
+    }
+
+    function deleteCert(idx) {
+      const certs = getCertificationsFromDOM();
+      certs.splice(idx, 1);
+      portfolioData.certifications.items = certs;
+      renderCertificationsList(certs);
+    }
+
+    function moveCert(idx) {
+      const certs = getCertificationsFromDOM();
+      const temp = certs[idx];
+      certs[idx] = certs[idx - 1];
+      certs[idx - 1] = temp;
+      portfolioData.certifications.items = certs;
+      renderCertificationsList(certs);
+    }
+
+    function moveCertDown(idx) {
+      moveCert(idx + 1);
+    }
+
+    // CURRENTLY BUILDING
+    function renderBuildingList(items) {
+      const container = document.getElementById('building-list');
+      container.innerHTML = items.map((b, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveBuilding', 'moveBuildingDown', 'deleteBuilding', items.length)}
+          <div class="form-group">
+            <label>Topic / Skill Title</label>
+            <input type="text" class="building-title-input" value="${b.title || ''}" />
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Details / Learning Content</label>
+            <input type="text" class="building-desc-input" value="${b.description || ''}" />
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getBuildingItemsFromDOM() {
+      const titleEls = document.querySelectorAll('.building-title-input');
+      const descEls = document.querySelectorAll('.building-desc-input');
+      const items = [];
+      titleEls.forEach((el, idx) => {
+        items.push({
+          title: el.value,
+          description: descEls[idx].value
+        });
+      });
+      return items;
+    }
+
+    function addBuildingItem() {
+      const items = getBuildingItemsFromDOM();
+      items.push({ title: '', description: '' });
+      portfolioData.building.items = items;
+      renderBuildingList(items);
+    }
+
+    function deleteBuilding(idx) {
+      const items = getBuildingItemsFromDOM();
+      items.splice(idx, 1);
+      portfolioData.building.items = items;
+      renderBuildingList(items);
+    }
+
+    function moveBuilding(idx) {
+      const items = getBuildingItemsFromDOM();
+      const temp = items[idx];
+      items[idx] = items[idx - 1];
+      items[idx - 1] = temp;
+      portfolioData.building.items = items;
+      renderBuildingList(items);
+    }
+
+    function moveBuildingDown(idx) {
+      moveBuilding(idx + 1);
+    }
+
+    // STATS LIST DOM COLLECTORS AND MOVERS
+    function getStatsFromDOM() {
+      const numEls = document.querySelectorAll('.stat-num-input');
+      const supEls = document.querySelectorAll('.stat-sup-input');
+      const labelEls = document.querySelectorAll('.stat-label-input');
+      const contextEls = document.querySelectorAll('.stat-context-input');
+
+      const stats = [];
+      numEls.forEach((el, idx) => {
+        stats.push({
+          num: el.value,
+          sup: supEls[idx].value,
+          label: labelEls[idx].value,
+          context: contextEls[idx].value
+        });
+      });
+      return stats;
+    }
+
+    function deleteStat(idx) {
+      const stats = getStatsFromDOM();
+      stats.splice(idx, 1);
+      portfolioData.hero.stats = stats;
+      renderStatsList(stats);
+    }
+
+    function moveStat(idx) {
+      const stats = getStatsFromDOM();
+      const temp = stats[idx];
+      stats[idx] = stats[idx - 1];
+      stats[idx - 1] = temp;
+      portfolioData.hero.stats = stats;
+      renderStatsList(stats);
+    }
+
+    function moveStatDown(idx) {
+      moveStat(idx + 1);
+    }
+
+    /* SAVE DATA ON SERVER / GITHUB */
+
+    function restoreButtonState(saveButton, originalIcon, saveText) {
+      const spinner = saveButton.querySelector('.spinner');
+      if (spinner) {
+        const tempNode = document.createElement('div');
+        tempNode.innerHTML = originalIcon;
+        saveButton.insertBefore(tempNode.firstElementChild, saveButton.firstElementChild);
+        spinner.remove();
+      }
+      saveButton.disabled = false;
+      saveText.textContent = 'Save Changes';
+    }
+
+    async function saveData() {
+      const saveButton = document.getElementById('saveButton');
+      const saveIcon = document.getElementById('saveIcon');
+      const saveText = saveButton.querySelector('span');
+
+      // 1. Enter Loading state
+      saveButton.disabled = true;
+      saveText.textContent = 'Saving...';
+      const originalIcon = saveIcon.outerHTML;
+      saveIcon.outerHTML = `<div class="spinner"></div>`;
+
+      // 2. Build updated data payload
+      const updatedData = {
+        hero: {
+          eyebrow: document.getElementById('hero-eyebrow').value,
+          name: document.getElementById('hero-name').value,
+          description: document.getElementById('hero-description').value,
+          resumeLink: document.getElementById('hero-resume').value,
+          stats: getStatsFromDOM(),
+          institution: {
+            label: document.getElementById('inst-label').value,
+            name: document.getElementById('inst-name').value,
+            sub: document.getElementById('inst-sub').value,
+            tags: document.getElementById('inst-tags').value.split(',').map(s => s.trim()).filter(s => s.length > 0)
+          }
+        },
+        about: {
+          title: document.getElementById('about-title').value,
+          paragraphs: Array.from(document.querySelectorAll('.about-p-input')).map(el => el.value),
+          cards: getAboutCardsFromDOM()
+        },
+        capabilities: {
+          title: document.getElementById('skills-title').value,
+          subtitle: document.getElementById('skills-subtitle').value,
+          categories: getSkillCategoriesFromDOM()
+        },
+        projects: {
+          title: document.getElementById('projects-title').value,
+          subtitle: document.getElementById('projects-subtitle').value,
+          items: getProjectsFromDOM()
+        },
+        education: {
+          title: document.getElementById('education-title').value,
+          subtitle: document.getElementById('education-subtitle').value,
+          items: getEducationFromDOM()
+        },
+        certifications: {
+          title: document.getElementById('certs-title').value,
+          subtitle: document.getElementById('certs-subtitle').value,
+          items: getCertificationsFromDOM()
+        },
+        building: {
+          title: document.getElementById('building-title').value,
+          subtitle: document.getElementById('building-subtitle').value,
+          items: getBuildingItemsFromDOM()
+        },
+        contact: {
+          title: document.getElementById('contact-title').value,
+          subtitle: document.getElementById('contact-subtitle').value,
+          email: document.getElementById('contact-email').value,
+          phone: document.getElementById('contact-phone').value,
+          linkedin: document.getElementById('contact-linkedin').value,
+          linkedinLabel: document.getElementById('contact-linkedin-label').value,
+          location: document.getElementById('contact-location').value,
+          ctaTitle: document.getElementById('contact-cta-title').value,
+          ctaText: document.getElementById('contact-cta-text').value
+        }
+      };
+
+      if (isLocal) {
+        // --- LOCAL DEV SERVER SAVE ---
+        try {
+          const response = await fetch('/api/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedData)
+          });
+
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || 'Server rejected changes');
+
+          portfolioData = updatedData;
+          showToast('Portfolio changes saved successfully!');
+        } catch (error) {
+          console.error('Save failed:', error);
+          showToast(error.message || 'Failed to save changes. Make sure server is running locally!', 'error');
+        } finally {
+          restoreButtonState(saveButton, originalIcon, saveText);
+        }
+      } else {
+        // --- LIVE PRODUCTION GITHUB SAVE ---
+        const token = localStorage.getItem('github_pat');
+        if (!token) {
+          showToast('GitHub token is missing. Click the "GitHub Token" button in the header.', 'error');
+          openGithubModal();
+          restoreButtonState(saveButton, originalIcon, saveText);
+          return;
+        }
+
+        try {
+          const repo = 'Mr-Hkds/Portfolio-website';
+          const filePath = 'data.json';
+          const githubApiUrl = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+          // Fetch the SHA of the current file first
+          const refResponse = await fetch(githubApiUrl, {
+            headers: {
+              'Authorization': `token ${token}`,
+              'Accept': 'application/vnd.github.v3+json'
+            }
+          });
+
+          if (refResponse.status === 401 || refResponse.status === 403) {
+            throw new Error('Invalid or expired GitHub Token. Open header settings and update your token.');
+          }
+          if (!refResponse.ok) {
+            throw new Error('Failed to retrieve project file metadata from GitHub.');
+          }
+
+          const fileMetadata = await refResponse.json();
+          const sha = fileMetadata.sha;
+
+          // Convert content to Base64 (supporting special characters/UTF-8)
+          const jsonString = JSON.stringify(updatedData, null, 2);
+          const base64Content = btoa(unescape(encodeURIComponent(jsonString)));
+
+          // Submit commit to GitHub
+          const saveResponse = await fetch(githubApiUrl, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${token}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github.v3+json'
+            },
+            body: JSON.stringify({
+              message: 'Update portfolio content via live admin panel',
+              content: base64Content,
+              sha: sha,
+              branch: 'main'
+            })
+          });
+
+          const saveResult = await saveResponse.json();
+          if (!saveResponse.ok) {
+            throw new Error(saveResult.message || 'GitHub failed to save changes.');
+          }
+
+          portfolioData = updatedData;
+          showToast('Changes committed to GitHub! Live site will update in ~30s.');
+        } catch (error) {
+          console.error('GitHub API Save failed:', error);
+          showToast(error.message || 'Failed to save changes to the live site.', 'error');
+        } finally {
+          restoreButtonState(saveButton, originalIcon, saveText);
+        }
+      }
+    }
+
+    // Startup
+    document.getElementById('saveButton').addEventListener('click', saveData);
+    window.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+
+</html>

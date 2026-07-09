@@ -1965,41 +1965,373 @@
   </footer>
 
   <script>
-    // Reveal animations
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    // Reveal animations and scroll features initializer
+    function initAnimationsAndScroll() {
+      // Reveal animations
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { 
+            e.target.classList.add('visible'); 
+            io.unobserve(e.target); 
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+      // Active nav tracking + scroll progress + back-to-top
+      const sections = document.querySelectorAll('section[id]');
+      const navAs = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+      const scrollProgress = document.getElementById('scrollProgress');
+      const backToTop = document.getElementById('backToTop');
+
+      window.addEventListener('scroll', () => {
+        let cur = '';
+        sections.forEach(s => { if (window.scrollY >= s.offsetTop - 90) cur = s.id; });
+        navAs.forEach(a => {
+          const on = a.getAttribute('href') === '#' + cur;
+          a.style.color = on ? 'var(--navy)' : '';
+          a.style.fontWeight = on ? '600' : '';
+        });
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        scrollProgress.style.width = progress + '%';
+        if (scrollTop > 500) backToTop.classList.add('visible');
+        else backToTop.classList.remove('visible');
+      }, { passive: true });
+
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    }
 
-    // Active nav tracking + scroll progress + back-to-top
-    const sections = document.querySelectorAll('section[id]');
-    const navAs = document.querySelectorAll('.nav-links a:not(.nav-cta)');
-    const scrollProgress = document.getElementById('scrollProgress');
-    const backToTop = document.getElementById('backToTop');
+    // Render dynamic content from data.json
+    function renderPortfolio(data) {
+      if (!data) return;
 
-    window.addEventListener('scroll', () => {
-      let cur = '';
-      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 90) cur = s.id; });
-      navAs.forEach(a => {
-        const on = a.getAttribute('href') === '#' + cur;
-        a.style.color = on ? 'var(--navy)' : '';
-        a.style.fontWeight = on ? '600' : '';
-      });
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      scrollProgress.style.width = progress + '%';
-      if (scrollTop > 500) backToTop.classList.add('visible');
-      else backToTop.classList.remove('visible');
-    }, { passive: true });
+      // Hero Section
+      if (data.hero) {
+        if (data.hero.name) {
+          document.querySelectorAll('.nav-brand').forEach(el => el.textContent = data.hero.name);
+          document.querySelectorAll('.footer-brand-name').forEach(el => el.textContent = data.hero.name);
+          const heroNameEl = document.querySelector('.hero-name');
+          if (heroNameEl) heroNameEl.innerHTML = `<strong>${data.hero.name}</strong>`;
+        }
+        if (data.hero.eyebrow) {
+          const heroEyebrowEl = document.querySelector('.hero-eyebrow');
+          if (heroEyebrowEl) heroEyebrowEl.textContent = data.hero.eyebrow;
+        }
+        if (data.hero.description) {
+          const heroDescEl = document.querySelector('.hero-desc');
+          if (heroDescEl) heroDescEl.innerHTML = data.hero.description;
+        }
+        if (data.hero.resumeLink) {
+          const resumeLinks = document.querySelectorAll('a[href*="export=download"]');
+          resumeLinks.forEach(el => el.href = data.hero.resumeLink);
+        }
+        if (data.hero.stats && Array.isArray(data.hero.stats)) {
+          const statsGrid = document.querySelector('.hero-stats');
+          if (statsGrid) {
+            statsGrid.innerHTML = data.hero.stats.map(s => `
+              <div class="stat-box">
+                <div class="stat-num">${s.num}<sup>${s.sup}</sup></div>
+                <div class="stat-label">${s.label}</div>
+                <div class="stat-context">${s.context}</div>
+              </div>
+            `).join('');
+          }
+        }
+        if (data.hero.institution) {
+          const instName = document.querySelector('.hero-inst-name');
+          if (instName) instName.textContent = data.hero.institution.name;
+          const instSub = document.querySelector('.hero-inst-sub');
+          if (instSub) instSub.innerHTML = data.hero.institution.sub;
+          const instDetails = document.querySelector('.hero-inst-details');
+          if (instDetails && Array.isArray(data.hero.institution.tags)) {
+            instDetails.innerHTML = data.hero.institution.tags.map(t => `<span class="hero-inst-tag">${t}</span>`).join('');
+          }
+        }
+      }
 
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+      // About Section
+      if (data.about) {
+        if (data.about.title) {
+          const aboutTitle = document.querySelector('#about .section-title');
+          if (aboutTitle) aboutTitle.textContent = data.about.title;
+        }
+        if (data.about.paragraphs && Array.isArray(data.about.paragraphs)) {
+          const aboutText = document.querySelector('.about-text');
+          if (aboutText) {
+            aboutText.innerHTML = data.about.paragraphs.map(p => `<p>${p}</p>`).join('');
+          }
+        }
+        if (data.about.cards && Array.isArray(data.about.cards)) {
+          const aboutCards = document.querySelector('.about-cards');
+          if (aboutCards) {
+            aboutCards.innerHTML = data.about.cards.map(c => `
+              <div class="about-card">
+                <h4>${c.title}</h4>
+                <p>${c.text}</p>
+              </div>
+            `).join('');
+          }
+        }
+      }
 
-    // Mobile menu
+      // Capabilities (Skills) Section
+      if (data.capabilities) {
+        if (data.capabilities.title) {
+          const skillsTitle = document.querySelector('#skills .section-title');
+          if (skillsTitle) skillsTitle.textContent = data.capabilities.title;
+        }
+        if (data.capabilities.subtitle) {
+          const skillsSubtitle = document.querySelector('#skills .section-subtitle');
+          if (skillsSubtitle) skillsSubtitle.textContent = data.capabilities.subtitle;
+        }
+        if (data.capabilities.categories && Array.isArray(data.capabilities.categories)) {
+          const skillsGrid = document.querySelector('.skills-grid');
+          if (skillsGrid) {
+            const getIconSvg = (icon) => {
+              if (icon === 'table') {
+                return `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18M9 21V9" /></svg>`;
+              } else if (icon === 'shield') {
+                return `<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>`;
+              } else {
+                return `<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></svg>`;
+              }
+            };
+            skillsGrid.innerHTML = data.capabilities.categories.map((cat, idx) => `
+              <div class="skill-cat reveal ${idx === 1 ? 'd1' : idx === 2 ? 'd2' : ''}">
+                <div class="skill-cat-icon">
+                  ${getIconSvg(cat.icon)}
+                </div>
+                <h3>${cat.name}</h3>
+                <ul class="skill-list">
+                  ${cat.skills.map(sk => {
+                    const parts = sk.split(' — ');
+                    if (parts.length > 1) {
+                      return `<li>${parts[0]} <span class="skill-badge">${parts[1]}</span></li>`;
+                    }
+                    return `<li>${sk}</li>`;
+                  }).join('')}
+                </ul>
+              </div>
+            `).join('');
+          }
+        }
+      }
+
+      // Projects Section
+      if (data.projects) {
+        if (data.projects.title) {
+          const projectsTitle = document.querySelector('#projects .section-title');
+          if (projectsTitle) projectsTitle.textContent = data.projects.title;
+        }
+        if (data.projects.subtitle) {
+          const projectsSubtitle = document.querySelector('#projects .section-subtitle');
+          if (projectsSubtitle) projectsSubtitle.textContent = data.projects.subtitle;
+        }
+        if (data.projects.items && Array.isArray(data.projects.items)) {
+          const projectsGrid = document.querySelector('.projects-grid');
+          if (projectsGrid) {
+            projectsGrid.innerHTML = data.projects.items.map((p, idx) => `
+              <div class="project-card reveal ${idx % 2 === 1 ? 'd1' : ''}">
+                <div class="project-meta">
+                  <span class="project-period">${p.period}</span>
+                  <span class="project-index">${p.index || (idx + 1).toString().padStart(2, '0')}</span>
+                </div>
+                <h3>${p.title}</h3>
+                <p>${p.description}</p>
+                <div class="project-tags">
+                  ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                </div>
+                <a href="${p.link}" target="_blank" class="project-link">
+                  View Report <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                </a>
+              </div>
+            `).join('');
+          }
+        }
+      }
+
+      // Education Section
+      if (data.education) {
+        if (data.education.title) {
+          const educationTitle = document.querySelector('#education .section-title');
+          if (educationTitle) educationTitle.textContent = data.education.title;
+        }
+        if (data.education.subtitle) {
+          const educationSubtitle = document.querySelector('#education .section-subtitle');
+          if (educationSubtitle) educationSubtitle.textContent = data.education.subtitle;
+        }
+        if (data.education.items && Array.isArray(data.education.items)) {
+          const eduTimeline = document.querySelector('.edu-timeline');
+          if (eduTimeline) {
+            eduTimeline.innerHTML = data.education.items.map((edu, idx) => `
+              <div class="edu-item reveal ${idx === 1 ? 'd1' : idx === 2 ? 'd2' : ''}">
+                <div class="edu-period">${edu.period}</div>
+                <div class="edu-degree">${edu.degree}</div>
+                <div class="edu-school">${edu.school}</div>
+                <div class="edu-badges">
+                  ${edu.badges.map(b => `<span class="edu-badge ${b.type === 'gold' ? 'gold' : ''}">${b.text}</span>`).join('')}
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+      }
+
+      // Certifications Section
+      if (data.certifications) {
+        if (data.certifications.title) {
+          const certTitle = document.querySelector('#certifications .section-title');
+          if (certTitle) certTitle.textContent = data.certifications.title;
+        }
+        if (data.certifications.subtitle) {
+          const certSubtitle = document.querySelector('#certifications .section-subtitle');
+          if (certSubtitle) certSubtitle.textContent = data.certifications.subtitle;
+        }
+        if (data.certifications.items && Array.isArray(data.certifications.items)) {
+          const certsGrid = document.querySelector('.certs-grid');
+          if (certsGrid) {
+            certsGrid.innerHTML = data.certifications.items.map((c, idx) => `
+              <div class="cert-card reveal ${idx % 3 === 1 ? 'd1' : idx % 3 === 2 ? 'd2' : ''}">
+                <div class="cert-issuer">${c.issuer}</div>
+                <div class="cert-name">${c.name}</div>
+                <div class="cert-date">${c.date}</div>
+              </div>
+            `).join('');
+          }
+        }
+      }
+
+      // Currently Building Section
+      if (data.building) {
+        if (data.building.title) {
+          const buildingTitle = document.querySelector('#building .section-title');
+          if (buildingTitle) buildingTitle.textContent = data.building.title;
+        }
+        if (data.building.subtitle) {
+          const buildingSubtitle = document.querySelector('#building .section-subtitle');
+          if (buildingSubtitle) buildingSubtitle.textContent = data.building.subtitle;
+        }
+        if (data.building.items && Array.isArray(data.building.items)) {
+          const buildingGrid = document.querySelector('.building-grid');
+          if (buildingGrid) {
+            buildingGrid.innerHTML = data.building.items.map((b, idx) => `
+              <div class="building-item reveal ${idx % 4 === 1 ? 'd1' : idx % 4 === 2 ? 'd2' : idx % 4 === 3 ? 'd3' : ''}">
+                <h4>${b.title}</h4>
+                <p>${b.description}</p>
+              </div>
+            `).join('');
+          }
+        }
+      }
+
+      // Contact Section & Footer
+      if (data.contact) {
+        if (data.contact.title) {
+          const contactTitle = document.querySelector('#contact .section-title');
+          if (contactTitle) contactTitle.textContent = data.contact.title;
+        }
+        if (data.contact.subtitle) {
+          const contactSubtitle = document.querySelector('#contact .section-subtitle');
+          if (contactSubtitle) contactSubtitle.textContent = data.contact.subtitle;
+        }
+        
+        if (data.contact.email) {
+          const emailLink = document.querySelector('.contact-info a[href^="mailto:"]');
+          if (emailLink) {
+            emailLink.href = `mailto:${data.contact.email}`;
+            const val = emailLink.querySelector('.contact-row-value');
+            if (val) val.textContent = data.contact.email;
+          }
+          const ctaBtn = document.querySelector('.contact-cta .btn-gold');
+          if (ctaBtn) ctaBtn.href = `mailto:${data.contact.email}`;
+          
+          const footerEmail = document.querySelector('.footer-socials a[href^="mailto:"]');
+          if (footerEmail) footerEmail.href = `mailto:${data.contact.email}`;
+          const footerQuickEmail = document.querySelector('.footer-col a[href^="mailto:"]');
+          if (footerQuickEmail) {
+            footerQuickEmail.href = `mailto:${data.contact.email}`;
+            footerQuickEmail.textContent = data.contact.email;
+          }
+        }
+        
+        if (data.contact.phone) {
+          const phoneLink = document.querySelector('.contact-info a[href^="tel:"]');
+          if (phoneLink) {
+            phoneLink.href = `tel:${data.contact.phone.replace(/\s+/g, '')}`;
+            const val = phoneLink.querySelector('.contact-row-value');
+            if (val) val.textContent = data.contact.phone;
+          }
+          const footerPhone = document.querySelector('.footer-socials a[href^="tel:"]');
+          if (footerPhone) footerPhone.href = `tel:${data.contact.phone.replace(/\s+/g, '')}`;
+          const footerQuickPhone = document.querySelector('.footer-col a[href^="tel:"]');
+          if (footerQuickPhone) {
+            footerQuickPhone.href = `tel:${data.contact.phone.replace(/\s+/g, '')}`;
+            footerQuickPhone.textContent = data.contact.phone;
+          }
+        }
+
+        if (data.contact.linkedin) {
+          const liLink = document.querySelector('.contact-info a[href*="linkedin.com"]');
+          if (liLink) {
+            liLink.href = data.contact.linkedin;
+            const val = liLink.querySelector('.contact-row-value');
+            if (val) val.textContent = data.contact.linkedinLabel || '/in/harkamal-deep-singh';
+          }
+          const footerLi = document.querySelector('.footer-socials a[href*="linkedin.com"]');
+          if (footerLi) footerLi.href = data.contact.linkedin;
+          const footerQuickLi = document.querySelector('.footer-col a[href*="linkedin.com"]');
+          if (footerQuickLi) footerQuickLi.href = data.contact.linkedin;
+        }
+
+        if (data.contact.location) {
+          const locVal = document.querySelector('.contact-info .no-link .contact-row-value');
+          if (locVal) locVal.innerHTML = data.contact.location;
+        }
+
+        if (data.contact.ctaTitle) {
+          const ctaTitle = document.querySelector('.contact-cta h3');
+          if (ctaTitle) ctaTitle.textContent = data.contact.ctaTitle;
+        }
+
+        if (data.contact.ctaText) {
+          const ctaText = document.querySelector('.contact-cta p');
+          if (ctaText) ctaText.textContent = data.contact.ctaText;
+          
+          const footerDesc = document.querySelector('.footer-brand-desc');
+          if (footerDesc) footerDesc.textContent = data.contact.ctaText;
+        }
+      }
+
+      // Initialize animations and scrolling after content load
+      initAnimationsAndScroll();
+    }
+
+    // Fetch portfolio data from server or local file
+    async function loadPortfolioData() {
+      try {
+        const response = await fetch('/api/data');
+        if (!response.ok) throw new Error('Server API failed');
+        const data = await response.json();
+        renderPortfolio(data);
+      } catch (error) {
+        console.warn('Could not load portfolio data from server, trying data.json directly...', error);
+        try {
+          const response = await fetch('data.json');
+          if (!response.ok) throw new Error('Local fetch failed');
+          const data = await response.json();
+          renderPortfolio(data);
+        } catch (localError) {
+          console.error('Failed to load portfolio data. Running with static HTML fallbacks.', localError);
+          initAnimationsAndScroll(); // run animations on fallback HTML
+        }
+      }
+    }
+
+    // Mobile menu handlers
     const navHamburger = document.getElementById('navHamburger');
     const mobileMenu = document.getElementById('mobileMenu');
     navHamburger.addEventListener('click', () => {
@@ -2013,7 +2345,8 @@
       document.body.style.overflow = '';
     }
 
-
+    // Load dynamic data on page startup
+    document.addEventListener('DOMContentLoaded', loadPortfolioData);
   </script>
 </body>
 
