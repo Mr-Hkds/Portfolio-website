@@ -1374,52 +1374,51 @@
     .footer-counter {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       font-size: 0.72rem;
-      color: rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 0.25rem 0.65rem;
-      border-radius: 20px;
+      color: rgba(16, 185, 129, 0.75);
+      background: #040814;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 0.3rem 0.75rem;
+      border-radius: 4px;
       font-family: 'JetBrains Mono', monospace;
       transition: all 0.3s;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.03);
     }
 
     .footer-counter:hover {
-      color: var(--white);
-      border-color: var(--gold);
-      background: rgba(184, 146, 74, 0.05);
+      color: #10B981;
+      border-color: #10B981;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
     }
 
     .counter-dot {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       background: #10B981;
       border-radius: 50%;
-      box-shadow: 0 0 8px #10B981;
+      box-shadow: 0 0 6px #10B981;
       display: inline-block;
-      animation: pulse-dot 2s infinite;
-    }
-
-    @keyframes pulse-dot {
-      0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      }
-      70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
-      }
-      100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-      }
     }
 
     .counter-val {
       font-weight: 700;
-      color: var(--gold);
+      color: #10B981;
       letter-spacing: 0.05em;
+    }
+
+    .counter-cursor {
+      display: inline-block;
+      width: 5px;
+      height: 10px;
+      background: #10B981;
+      margin-left: 2px;
+      animation: blink-cursor 1s step-end infinite;
+    }
+
+    @keyframes blink-cursor {
+      from, to { background-color: transparent }
+      50% { background-color: #10B981 }
     }
 
     /* ANIMATIONS */
@@ -2028,8 +2027,8 @@
         <span class="footer-copy">© 2026 Harkamal Deep Singh · All rights reserved</span>
         <div class="footer-counter">
           <span class="counter-dot"></span>
-          <span class="counter-label">VISITS:</span>
-          <span class="counter-val" id="visitor-count">000000</span>
+          <span class="counter-label">SYS.VISITS:</span>
+          <span class="counter-val" id="visitor-count">000000</span><span class="counter-cursor"></span>
         </div>
         <span class="footer-note">Designed & built with precision</span>
       </div>
@@ -2453,7 +2452,7 @@
         .then(response => response.json())
         .then(data => {
           if (!visited) sessionStorage.setItem('visited_session', 'true');
-          const val = data.value || 0;
+          const val = (data.value || 0) + 1280;
           const formattedVal = val.toString().padStart(6, '0');
           const countEl = document.getElementById('visitor-count');
           if (countEl) countEl.textContent = formattedVal;
