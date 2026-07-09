@@ -1837,10 +1837,14 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
       container.innerHTML = items.map((exp, idx) => `
         <div class="list-item">
           ${createListItemWrapper(idx, 'moveExperience', 'moveExperienceDown', 'deleteExperience', items.length)}
-          <div class="form-group grid-2">
+          <div class="form-group grid-3">
             <div>
               <label>Timeline Period</label>
               <input type="text" class="exp-period-input" value="${exp.period || ''}" placeholder="e.g. May 2026 – July 2026" />
+            </div>
+            <div>
+              <label>Duration</label>
+              <input type="text" class="exp-duration-input" value="${exp.duration || ''}" placeholder="e.g. 3 months" />
             </div>
             <div>
               <label>Company / Organization</label>
@@ -1866,6 +1870,7 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 
     function getExperienceFromDOM() {
       const periodEls = document.querySelectorAll('.exp-period-input');
+      const durationEls = document.querySelectorAll('.exp-duration-input');
       const companyEls = document.querySelectorAll('.exp-company-input');
       const roleEls = document.querySelectorAll('.exp-role-input');
       const descEls = document.querySelectorAll('.exp-desc-input');
@@ -1876,6 +1881,7 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
         roleEls.forEach((el, idx) => {
           items.push({
             period: periodEls[idx].value,
+            duration: durationEls[idx].value,
             company: companyEls[idx].value,
             role: el.value,
             description: descEls[idx].value,
@@ -1890,6 +1896,7 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
       const items = getExperienceFromDOM();
       items.push({
         period: '2026',
+        duration: '3 months',
         company: 'Company/Organization Name',
         role: 'Role Title',
         description: 'Detail your achievements, data analyzed, and tools used.',
@@ -2503,10 +2510,11 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
           const cleanRole = cleanLatex(exp.role);
           const cleanCompany = cleanLatex(exp.company);
           const cleanPeriod = cleanLatex(exp.period);
+          const cleanDuration = cleanLatex(exp.duration);
           const cleanDesc = cleanLatex(exp.description);
           const cleanTags = exp.tags.map(t => cleanLatex(t)).join(', ');
           
-          latex += `    \\resumeSubheading{${cleanRole}}{${cleanPeriod}}{${cleanCompany}}{Greater Noida, India}
+          latex += `    \\resumeSubheading{${cleanRole}}{${cleanPeriod}${cleanDuration ? ` (${cleanDuration})` : ''}}{${cleanCompany}}{Greater Noida, India}
       \\resumeItemListStart
         \\resumeItem{${cleanDesc}}
         \\resumeItem{Technologies/Frameworks: ${cleanTags}}
