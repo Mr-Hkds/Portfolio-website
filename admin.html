@@ -1128,6 +1128,7 @@
             <label>Status Templates</label>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('studying')" style="padding: 0.45rem 0.7rem; font-size: 0.72rem;">Studying</button>
+              <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('graduate')" style="padding: 0.45rem 0.7rem; font-size: 0.72rem;">Graduated</button>
               <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('seeking')" style="padding: 0.45rem 0.7rem; font-size: 0.72rem;">Seeking Roles</button>
               <button type="button" class="btn btn-secondary" onclick="setInstitutionStatus('working')" style="padding: 0.45rem 0.7rem; font-size: 0.72rem;">Working / Interning</button>
             </div>
@@ -1863,6 +1864,12 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
         subInput.value = 'BBA — Marketing Specialization · Greater Noida, India';
         tagsInput.value = '2023 – Present, Business Analytics';
         showToast('Helper: Set status to "Currently Studying"');
+      } else if (status === 'graduate') {
+        labelInput.value = 'Graduated From';
+        nameInput.value = 'Army Institute of Management & Technology';
+        subInput.value = 'Bachelor of Business Administration (BBA) · Marketing & Analytics';
+        tagsInput.value = 'Batch of 2026, CGPA: 9.49';
+        showToast('Helper: Set status to "Graduated"');
       } else if (status === 'seeking') {
         labelInput.value = 'Currently Seeking';
         nameInput.value = 'Business Analyst & Security Opportunities';
