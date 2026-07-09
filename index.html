@@ -2525,6 +2525,14 @@
       loadPortfolioData();
       initVisitorCounter();
     });
+
+    // Secret shortcut (Ctrl + Shift + A) to access admin panel
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        window.location.href = 'admin.html';
+      }
+    });
   </script>
 </body>
 
