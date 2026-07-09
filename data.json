@@ -252,6 +252,11 @@
       }
     ]
   },
+  "experience": {
+    "title": "Professional Experience",
+    "subtitle": "My professional history, internships, and roles.",
+    "items": []
+  },
   "contact": {
     "title": "Let's connect",
     "subtitle": "Open to roles in business analysis, cybersecurity, and research — where technical and business judgment are both valued.",

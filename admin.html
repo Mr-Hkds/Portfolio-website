@@ -676,6 +676,14 @@
         Research Projects
         <span class="nav-badge" id="badge-projects">0</span>
       </div>
+      <div class="nav-item" onclick="switchTab('experience')">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+        </svg>
+        Experience
+        <span class="nav-badge" id="badge-experience">0</span>
+      </div>
       <div class="nav-item" onclick="switchTab('education')">
         <svg viewBox="0 0 24 24">
           <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
@@ -871,6 +879,27 @@
           <!-- Dynamic projects list -->
         </div>
         <button class="list-add-btn" onclick="addProject()">➕ Add Project Card</button>
+      </div>
+
+      <!-- EXPERIENCE TAB -->
+      <div id="tab-experience" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Professional Experience</h2>
+          <p class="section-desc">Manage your professional timeline, internships, and roles.</p>
+        </div>
+        <div class="form-group">
+          <label for="experience-title">Section Title</label>
+          <input type="text" id="experience-title" />
+        </div>
+        <div class="form-group">
+          <label for="experience-subtitle">Section Subtitle</label>
+          <textarea id="experience-subtitle"></textarea>
+        </div>
+
+        <div class="list-container" id="experience-list">
+          <!-- Dynamic experience list -->
+        </div>
+        <button class="list-add-btn" onclick="addExperience()">➕ Add Experience Card</button>
       </div>
 
       <!-- EDUCATION TAB -->
@@ -1359,6 +1388,13 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
         renderProjectsList(portfolioData.projects.items || []);
       }
 
+      // Experience
+      if (portfolioData.experience) {
+        document.getElementById('experience-title').value = portfolioData.experience.title || '';
+        document.getElementById('experience-subtitle').value = portfolioData.experience.subtitle || '';
+        renderExperienceList(portfolioData.experience.items || []);
+      }
+
       // 5. Education
       if (portfolioData.education) {
         document.getElementById('education-title').value = portfolioData.education.title || '';
@@ -1443,6 +1479,10 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
       // 4. Projects count
       const projectTitleEls = document.querySelectorAll('.project-title-input');
       document.getElementById('badge-projects').textContent = projectTitleEls.length;
+
+      // Experience count
+      const expRoleEls = document.querySelectorAll('.exp-role-input');
+      document.getElementById('badge-experience').textContent = expRoleEls.length;
 
       // 5. Education count
       const eduPeriodEls = document.querySelectorAll('.edu-period-input');
@@ -1789,6 +1829,95 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
         </div>
       `).join('');
       updateSidebarBadges();
+    }
+
+    // EXPERIENCE LIST EDITORS
+    function renderExperienceList(items) {
+      const container = document.getElementById('experience-list');
+      container.innerHTML = items.map((exp, idx) => `
+        <div class="list-item">
+          ${createListItemWrapper(idx, 'moveExperience', 'moveExperienceDown', 'deleteExperience', items.length)}
+          <div class="form-group grid-2">
+            <div>
+              <label>Timeline Period</label>
+              <input type="text" class="exp-period-input" value="${exp.period || ''}" placeholder="e.g. May 2026 – July 2026" />
+            </div>
+            <div>
+              <label>Company / Organization</label>
+              <input type="text" class="exp-company-input" value="${exp.company || ''}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Role / Position</label>
+            <input type="text" class="exp-role-input" value="${exp.role || ''}" />
+          </div>
+          <div class="form-group">
+            <label>Role Description</label>
+            <textarea class="exp-desc-input">${exp.description || ''}</textarea>
+          </div>
+          <div class="form-group">
+            <label>Tags / Technologies (comma separated)</label>
+            <input type="text" class="exp-tags-input" value="${(exp.tags || []).join(', ')}" placeholder="e.g. Excel, Python, SQL" />
+          </div>
+        </div>
+      `).join('');
+      updateSidebarBadges();
+    }
+
+    function getExperienceFromDOM() {
+      const periodEls = document.querySelectorAll('.exp-period-input');
+      const companyEls = document.querySelectorAll('.exp-company-input');
+      const roleEls = document.querySelectorAll('.exp-role-input');
+      const descEls = document.querySelectorAll('.exp-desc-input');
+      const tagsEls = document.querySelectorAll('.exp-tags-input');
+      
+      const items = [];
+      if (roleEls) {
+        roleEls.forEach((el, idx) => {
+          items.push({
+            period: periodEls[idx].value,
+            company: companyEls[idx].value,
+            role: el.value,
+            description: descEls[idx].value,
+            tags: tagsEls[idx].value.split(',').map(s => s.trim()).filter(s => s.length > 0)
+          });
+        });
+      }
+      return items;
+    }
+
+    function addExperience() {
+      const items = getExperienceFromDOM();
+      items.push({
+        period: '2026',
+        company: 'Company/Organization Name',
+        role: 'Role Title',
+        description: 'Detail your achievements, data analyzed, and tools used.',
+        tags: ['Excel', 'Analytics']
+      });
+      if (!portfolioData.experience) portfolioData.experience = { title: 'Professional Experience', subtitle: '', items: [] };
+      portfolioData.experience.items = items;
+      renderExperienceList(items);
+    }
+
+    function deleteExperience(idx) {
+      const items = getExperienceFromDOM();
+      items.splice(idx, 1);
+      portfolioData.experience.items = items;
+      renderExperienceList(items);
+    }
+
+    function moveExperience(idx) {
+      const items = getExperienceFromDOM();
+      const temp = items[idx];
+      items[idx] = items[idx - 1];
+      items[idx - 1] = temp;
+      portfolioData.experience.items = items;
+      renderExperienceList(items);
+    }
+
+    function moveExperienceDown(idx) {
+      moveExperience(idx + 1);
     }
 
     function getEducationFromDOM() {
@@ -2246,6 +2375,7 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
       
       const skillsCategories = getSkillCategoriesFromDOM();
       const projects = getProjectsFromDOM();
+      const experience = getExperienceFromDOM();
       const education = getEducationFromDOM();
       const certifications = getCertificationsFromDOM();
       const building = getBuildingItemsFromDOM();
@@ -2351,13 +2481,28 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
 `;
       });
 
-      latex += `  \\resumeSubHeadingListEnd
+      latex += `  \\resumeSubHeadingListEnd\n\n`;
 
+      if (experience && experience.length > 0) {
+        latex += `%-----------PROFESSIONAL EXPERIENCE-----------------\n\\section{Professional Experience}\n  \\resumeSubHeadingListStart\n`;
+        experience.forEach(exp => {
+          const cleanRole = cleanLatex(exp.role);
+          const cleanCompany = cleanLatex(exp.company);
+          const cleanPeriod = cleanLatex(exp.period);
+          const cleanDesc = cleanLatex(exp.description);
+          const cleanTags = exp.tags.map(t => cleanLatex(t)).join(', ');
+          
+          latex += `    \\resumeSubheading{${cleanRole}}{${cleanPeriod}}{${cleanCompany}}{Greater Noida, India}
+      \\resumeItemListStart
+        \\resumeItem{${cleanDesc}}
+        \\resumeItem{Technologies/Frameworks: ${cleanTags}}
+      \\resumeItemListEnd
+`;
+        });
+        latex += `  \\resumeSubHeadingListEnd\n\n`;
+      }
 
-%-----------TECHNICAL SKILLS-----------------
-\\section{Technical Skills}
-  \\resumeSubHeadingListStart
-    \\item\\small{
+      latex += `%-----------TECHNICAL SKILLS-----------------\n\\section{Technical Skills}\n  \\resumeSubHeadingListStart\n    \\item\\small{\n`;
 `;
 
       skillsCategories.forEach((cat, idx) => {
@@ -2513,6 +2658,11 @@ Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json bloc
           title: document.getElementById('projects-title').value,
           subtitle: document.getElementById('projects-subtitle').value,
           items: getProjectsFromDOM()
+        },
+        experience: {
+          title: document.getElementById('experience-title').value,
+          subtitle: document.getElementById('experience-subtitle').value,
+          items: getExperienceFromDOM()
         },
         education: {
           title: document.getElementById('education-title').value,

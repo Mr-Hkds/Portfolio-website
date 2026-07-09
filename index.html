@@ -1365,16 +1365,15 @@
     }
 
     .footer-note {
-      font-size: 0.68rem;
-      color: rgba(16, 185, 129, 0.4);
-      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.28);
       font-weight: 400;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
       transition: color 0.3s;
     }
 
     .footer-note:hover {
-      color: rgba(16, 185, 129, 0.85);
+      color: rgba(255, 255, 255, 0.65);
     }
 
     .footer-counter {
@@ -1799,6 +1798,18 @@
     </div>
   </section>
 
+  <!-- EXPERIENCE -->
+  <section id="experience" style="display: none;">
+    <div class="section-inner">
+      <span class="section-label">Experience</span>
+      <h2 class="section-title">Professional Experience</h2>
+      <p class="section-subtitle">My professional history, internships, and roles.</p>
+      <div class="edu-timeline" id="experience-list-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </section>
+
   <!-- EDUCATION -->
   <section id="education">
     <div class="section-inner">
@@ -2036,7 +2047,7 @@
           <span class="counter-label">SYS.VISITS:</span>
           <span class="counter-val" id="visitor-count">000000</span><span class="counter-cursor"></span>
         </div>
-        <span class="footer-note">fsociety@harkamal:~$ exit(0); // crafted with precision</span>
+        <span class="footer-note">Designed with heart, engineered with precision</span>
       </div>
     </div>
   </footer>
@@ -2250,6 +2261,38 @@
               </div>
             `).join('');
           }
+        }
+      }
+
+      // Experience Section
+      const expSection = document.getElementById('experience');
+      if (expSection) {
+        if (data.experience && data.experience.items && data.experience.items.length > 0) {
+          expSection.style.display = 'block';
+          if (data.experience.title) {
+            const expTitle = expSection.querySelector('.section-title');
+            if (expTitle) expTitle.textContent = data.experience.title;
+          }
+          if (data.experience.subtitle) {
+            const expSubtitle = expSection.querySelector('.section-subtitle');
+            if (expSubtitle) expSubtitle.textContent = data.experience.subtitle;
+          }
+          const expContainer = document.getElementById('experience-list-container');
+          if (expContainer) {
+            expContainer.innerHTML = data.experience.items.map((exp, idx) => `
+              <div class="edu-item reveal ${idx === 1 ? 'd1' : idx === 2 ? 'd2' : ''}">
+                <div class="edu-period">${exp.period || ''}</div>
+                <div class="edu-degree">${exp.role || ''}</div>
+                <div class="edu-school">${exp.company || ''}</div>
+                <p style="font-size: 0.88rem; color: rgba(255,255,255,0.45); margin-top: 0.4rem; line-height: 1.6;">${exp.description || ''}</p>
+                <div class="edu-badges" style="margin-top: 0.6rem;">
+                  ${(exp.tags || []).map(t => `<span class="edu-badge">${t}</span>`).join('')}
+                </div>
+              </div>
+            `).join('');
+          }
+        } else {
+          expSection.style.display = 'none';
         }
       }
 
