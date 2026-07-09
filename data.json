@@ -6,7 +6,7 @@
     "resumeLink": "https://drive.google.com/uc?export=download&id=1wOO11EmowR66rMWnV6szgDec-pkIDWpc",
     "stats": [
       {
-        "num": "9.3",
+        "num": "9.49",
         "sup": "/10",
         "label": "CGPA — Rank 1",
         "context": "BBA at AIMT, Greater Noida"
@@ -34,7 +34,10 @@
       "label": "Currently Studying At",
       "name": "Army Institute of Management & Technology",
       "sub": "BBA — Marketing Specialization &nbsp;·&nbsp; Greater Noida, India",
-      "tags": ["2023 – Present", "Business Analytics"]
+      "tags": [
+        "2023 – Present",
+        "Business Analytics"
+      ]
     }
   },
   "about": {
@@ -112,19 +115,29 @@
     "subtitle": "Independent research conducted with full ownership — methodology, data collection, analysis, and final deliverables.",
     "items": [
       {
-        "period": "Jan 2025 – May 2025",
         "index": "01",
+        "period": "Jan 2025 – May 2025",
         "title": "Digital Payment Adoption Analysis",
         "description": "Examined how Indian consumers adopted digital payment platforms following UPI expansion. Mapped transaction behavior across demographics, identified friction points in the adoption curve, and built an Excel-based analytical framework from scratch to produce actionable business recommendations.",
-        "tags": ["Excel", "Data Analysis", "Consumer Behavior", "Fintech"],
+        "tags": [
+          "Excel",
+          "Data Analysis",
+          "Consumer Behavior",
+          "Fintech"
+        ],
         "link": "https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk"
       },
       {
-        "period": "Jan 2024 – May 2024",
         "index": "02",
+        "period": "Jan 2024 – May 2024",
         "title": "Social Media Usage Pattern Analysis",
         "description": "Designed and deployed a structured survey measuring the relationship between social media consumption patterns and academic output among 500+ students. Built the instrument independently, interpreted behavioral trends, and delivered findings with institutional policy implications.",
-        "tags": ["Survey Design", "Data Interpretation", "Behavioral Research", "Statistics"],
+        "tags": [
+          "Survey Design",
+          "Data Interpretation",
+          "Behavioral Research",
+          "Statistics"
+        ],
         "link": "https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk"
       }
     ]
@@ -135,28 +148,43 @@
     "items": [
       {
         "period": "2023 – Present",
-        "degree": "Bachelor of Business Administration",
         "school": "Army Institute of Management & Technology, Greater Noida",
+        "degree": "Bachelor of Business Administration",
         "badges": [
-          { "text": "Rank 1 · CGPA 9.3 / 10", "type": "gold" },
-          { "text": "Marketing Specialization", "type": "normal" },
-          { "text": "Business Analytics", "type": "normal" }
+          {
+            "text": "Rank 1 · CGPA 9.3 / 10",
+            "type": "gold"
+          },
+          {
+            "text": "Marketing Specialization",
+            "type": "normal"
+          },
+          {
+            "text": "Business Analytics",
+            "type": "normal"
+          }
         ]
       },
       {
         "period": "2022 – 2023",
-        "degree": "Higher Secondary — Commerce Stream",
         "school": "Army Public School, Unchi Bassi",
+        "degree": "Higher Secondary — Commerce Stream",
         "badges": [
-          { "text": "Stream Topper · 94.7%", "type": "gold" }
+          {
+            "text": "Stream Topper · 94.7%",
+            "type": "gold"
+          }
         ]
       },
       {
         "period": "2021 – 2022",
-        "degree": "Secondary Education — Class X",
         "school": "Army Public School, Unchi Bassi",
+        "degree": "Secondary Education — Class X",
         "badges": [
-          { "text": "88% Aggregate", "type": "normal" }
+          {
+            "text": "88% Aggregate",
+            "type": "normal"
+          }
         ]
       }
     ]
@@ -167,33 +195,33 @@
     "items": [
       {
         "issuer": "NPTEL — IIT Kharagpur",
-        "name": "Integrated Marketing Communication",
-        "date": "April 2025"
+        "date": "April 2025",
+        "name": "Integrated Marketing Communication"
       },
       {
         "issuer": "Bajaj Finserv & UpGrad",
-        "name": "Certified Professional — Banking, Finance & Insurance",
-        "date": "2025"
+        "date": "2025",
+        "name": "Certified Professional — Banking, Finance & Insurance"
       },
       {
         "issuer": "NPTEL — IIT Madras",
-        "name": "Business Development: From Start to Scale",
-        "date": "April 2024"
+        "date": "April 2024",
+        "name": "Business Development: From Start to Scale"
       },
       {
         "issuer": "IBM",
-        "name": "Cybersecurity Fundamentals",
-        "date": "2024"
+        "date": "2024",
+        "name": "Cybersecurity Fundamentals"
       },
       {
         "issuer": "Microsoft",
-        "name": "Office Specialist: Excel Associate (MOS)",
-        "date": "2024"
+        "date": "2024",
+        "name": "Office Specialist: Excel Associate (MOS)"
       },
       {
         "issuer": "Google",
-        "name": "Google Ads for Beginners",
-        "date": "2024"
+        "date": "2024",
+        "name": "Google Ads for Beginners"
       }
     ]
   },
