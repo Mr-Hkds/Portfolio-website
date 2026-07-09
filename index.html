@@ -891,7 +891,35 @@
       color: rgba(255, 255, 255, 0.48);
       line-height: 1.85;
       font-weight: 300;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Project impact stat chips */
+    .project-impact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .impact-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      background: rgba(184,146,74,0.1);
+      border: 1px solid rgba(184,146,74,0.2);
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .impact-chip::before {
+      content: '↑';
+      font-size: 0.65rem;
+      opacity: 0.7;
     }
 
     .project-tags {
@@ -1037,45 +1065,155 @@
     .certs-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
     .cert-card {
       background: var(--white);
-      border: 1px solid var(--border-light);
-      border-radius: 6px;
-      padding: 1.3rem 1.4rem;
-      transition: box-shadow 0.2s, transform 0.2s;
+      border: 1px solid rgba(10, 25, 47, 0.06);
+      border-radius: 14px;
+      padding: 1.5rem 1.6rem 1.3rem;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
+      gap: 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.025);
+    }
+
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--cert-color, var(--navy));
+      border-radius: 14px 14px 0 0;
     }
 
     .cert-card:hover {
-      box-shadow: var(--shadow);
-      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(10,25,47,0.08);
+      transform: translateY(-4px);
+      border-color: rgba(10,25,47,0.1);
+    }
+
+    .cert-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .cert-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      background: var(--cert-color, var(--navy));
+      flex-shrink: 0;
+    }
+
+    .cert-date-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: rgba(10,25,47,0.04);
+      border: 1px solid rgba(10,25,47,0.07);
+      padding: 0.18rem 0.55rem;
+      border-radius: 20px;
     }
 
     .cert-issuer {
-      font-size: 0.66rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--cert-color, var(--navy));
+      margin-bottom: 0.35rem;
+      opacity: 0.8;
     }
 
     .cert-name {
       font-size: 0.88rem;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--navy);
-      line-height: 1.4;
+      line-height: 1.35;
+      margin-bottom: 1rem;
     }
 
-    .cert-date {
-      font-size: 0.74rem;
-      color: var(--text-light);
-      font-weight: 300;
-      margin-top: 0.1rem;
+    .cert-verify {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--cert-color, var(--navy));
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s, gap 0.2s;
+    }
+
+    .cert-verify:hover {
+      opacity: 1;
+      gap: 0.5rem;
+    }
+
+    .cert-verify svg {
+      width: 11px;
+      height: 11px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Floating Download CV button */
+    .fab-cv {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: var(--navy);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 0.7rem 1.2rem 0.7rem 1rem;
+      border-radius: 50px;
+      box-shadow: 0 6px 24px rgba(13,27,62,0.22), 0 2px 6px rgba(13,27,62,0.14);
+      transition: all 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .fab-cv:hover {
+      background: var(--gold);
+      color: var(--white);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 36px rgba(184,146,74,0.28), 0 4px 10px rgba(184,146,74,0.16);
+    }
+
+    .fab-cv svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
     }
 
     /* CURRENTLY BUILDING */
@@ -1812,60 +1950,66 @@
   </section>
 
   <!-- PROJECTS -->
-  <section id="projects">
-    <div class="section-inner">
-      <span class="section-label">Work</span>
-      <h2 class="section-title" style="color:var(--white);">Research projects</h2>
-      <p class="section-subtitle" style="color:rgba(255,255,255,0.42);">Independent research conducted with full
-        ownership — methodology, data collection, analysis, and final deliverables.</p>
-      <div class="projects-grid">
-        <div class="project-card reveal">
-          <div class="project-meta">
-            <span class="project-period">Jan 2025 – May 2025</span>
-            <span class="project-index">01</span>
-          </div>
-          <h3>Digital Payment Adoption Analysis</h3>
-          <p>Examined how Indian consumers adopted digital payment platforms following UPI expansion. Mapped transaction
-            behavior across demographics, identified friction points in the adoption curve, and built an Excel-based
-            analytical framework from scratch to produce actionable business recommendations.</p>
-          <div class="project-tags">
-            <span class="tag">Excel</span>
-            <span class="tag">Data Analysis</span>
-            <span class="tag">Consumer Behavior</span>
-            <span class="tag">Fintech</span>
-          </div>
-          <a href="https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk" target="_blank"
-            class="project-link">
-            View Report <svg viewBox="0 0 24 24">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
+<section id="projects">
+  <div class="section-inner">
+    <span class="section-label">Work</span>
+    <h2 class="section-title" style="color:var(--white);">Research projects</h2>
+    <p class="section-subtitle" style="color:rgba(255,255,255,0.42);">Independent research conducted with full
+      ownership — methodology, data collection, analysis, and final deliverables.</p>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-meta">
+          <span class="project-period">Jan 2025 – May 2025</span>
+          <span class="project-index">01</span>
         </div>
-        <div class="project-card reveal d1">
-          <div class="project-meta">
-            <span class="project-period">Jan 2024 – May 2024</span>
-            <span class="project-index">02</span>
-          </div>
-          <h3>Social Media Usage Pattern Analysis</h3>
-          <p>Designed and deployed a structured survey measuring the relationship between social media consumption
-            patterns and academic output among 500+ students. Built the instrument independently, interpreted behavioral
-            trends, and delivered findings with institutional policy implications.</p>
-          <div class="project-tags">
-            <span class="tag">Survey Design</span>
-            <span class="tag">Data Interpretation</span>
-            <span class="tag">Behavioral Research</span>
-            <span class="tag">Statistics</span>
-          </div>
-          <a href="https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk" target="_blank"
-            class="project-link">
-            View Report <svg viewBox="0 0 24 24">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
+        <h3>Digital Payment Adoption Analysis</h3>
+        <div class="project-impact">
+          <span class="impact-chip">1,000+ consumers surveyed</span>
+          <span class="impact-chip">5 UPI platforms analyzed</span>
+          <span class="impact-chip">Actionable business report</span>
         </div>
+        <p>Examined how Indian consumers adopted digital payment platforms following UPI expansion. Mapped transaction
+          behavior across demographics, identified friction points in the adoption curve, and built an Excel-based
+          analytical framework from scratch.</p>
+        <div class="project-tags">
+          <span class="tag">Excel</span>
+          <span class="tag">Data Analysis</span>
+          <span class="tag">Consumer Behavior</span>
+          <span class="tag">Fintech</span>
+        </div>
+        <a href="https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk" target="_blank"
+          class="project-link">
+          View Report <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+        </a>
+      </div>
+      <div class="project-card reveal d1">
+        <div class="project-meta">
+          <span class="project-period">Jan 2024 – May 2024</span>
+          <span class="project-index">02</span>
+        </div>
+        <h3>Social Media Usage Pattern Analysis</h3>
+        <div class="project-impact">
+          <span class="impact-chip">500+ students surveyed</span>
+          <span class="impact-chip">Behavioral trend mapping</span>
+          <span class="impact-chip">Institutional policy implications</span>
+        </div>
+        <p>Designed and deployed a structured survey measuring the relationship between social media consumption
+          patterns and academic output. Built the instrument independently, interpreted behavioral trends, and
+          delivered findings with institutional policy implications.</p>
+        <div class="project-tags">
+          <span class="tag">Survey Design</span>
+          <span class="tag">Data Interpretation</span>
+          <span class="tag">Behavioral Research</span>
+          <span class="tag">Statistics</span>
+        </div>
+        <a href="https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk" target="_blank"
+          class="project-link">
+          View Report <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+        </a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- EXPERIENCE -->
   <section id="experience" style="display: none;">
@@ -1916,47 +2060,77 @@
     </div>
   </section>
 
-  <!-- CERTIFICATIONS -->
-  <section id="certifications">
-    <div class="section-inner">
-      <span class="section-label">Credentials</span>
-      <h2 class="section-title">Certifications</h2>
-      <p class="section-subtitle">Professional certifications across analytics, marketing, cybersecurity, and business.
-      </p>
-      <div class="certs-grid">
-        <div class="cert-card reveal">
-          <div class="cert-issuer">NPTEL — IIT Kharagpur</div>
-          <div class="cert-name">Integrated Marketing Communication</div>
-          <div class="cert-date">April 2025</div>
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-inner">
+    <span class="section-label">Credentials</span>
+    <h2 class="section-title">Certifications</h2>
+    <p class="section-subtitle">Professional certifications across analytics, marketing, cybersecurity, and business.</p>
+    <div class="certs-grid">
+
+      <div class="cert-card reveal" style="--cert-color:#E85D04;">
+        <div class="cert-card-top">
+          <div class="cert-logo">N</div>
+          <span class="cert-date-pill">Apr 2025</span>
         </div>
-        <div class="cert-card reveal d1">
-          <div class="cert-issuer">Bajaj Finserv &amp; UpGrad</div>
-          <div class="cert-name">Certified Professional — Banking, Finance &amp; Insurance</div>
-          <div class="cert-date">2025</div>
-        </div>
-        <div class="cert-card reveal d2">
-          <div class="cert-issuer">NPTEL — IIT Madras</div>
-          <div class="cert-name">Business Development: From Start to Scale</div>
-          <div class="cert-date">April 2024</div>
-        </div>
-        <div class="cert-card reveal">
-          <div class="cert-issuer">IBM</div>
-          <div class="cert-name">Cybersecurity Fundamentals</div>
-          <div class="cert-date">2024</div>
-        </div>
-        <div class="cert-card reveal d1">
-          <div class="cert-issuer">Microsoft</div>
-          <div class="cert-name">Office Specialist: Excel Associate (MOS)</div>
-          <div class="cert-date">2024</div>
-        </div>
-        <div class="cert-card reveal d2">
-          <div class="cert-issuer">Google</div>
-          <div class="cert-name">Google Ads for Beginners</div>
-          <div class="cert-date">2024</div>
-        </div>
+        <div class="cert-issuer">NPTEL — IIT Kharagpur</div>
+        <div class="cert-name">Integrated Marketing Communication</div>
+        <a href="#" class="cert-verify">Credential <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
       </div>
+
+      <div class="cert-card reveal d1" style="--cert-color:#4A90D9;">
+        <div class="cert-card-top">
+          <div class="cert-logo">BF</div>
+          <span class="cert-date-pill">2025</span>
+        </div>
+        <div class="cert-issuer">Bajaj Finserv &amp; UpGrad</div>
+        <div class="cert-name">Certified Professional — Banking, Finance &amp; Insurance</div>
+        <a href="#" class="cert-verify">Credential <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+
+      <div class="cert-card reveal d2" style="--cert-color:#E85D04;">
+        <div class="cert-card-top">
+          <div class="cert-logo">N</div>
+          <span class="cert-date-pill">Apr 2024</span>
+        </div>
+        <div class="cert-issuer">NPTEL — IIT Madras</div>
+        <div class="cert-name">Business Development: From Start to Scale</div>
+        <a href="#" class="cert-verify">Credential <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+
+      <div class="cert-card reveal" style="--cert-color:#1F70C1;">
+        <div class="cert-card-top">
+          <div class="cert-logo">IBM</div>
+          <span class="cert-date-pill">2024</span>
+        </div>
+        <div class="cert-issuer">IBM</div>
+        <div class="cert-name">Cybersecurity Fundamentals</div>
+        <a href="https://www.credly.com/" target="_blank" class="cert-verify">Verify on Credly <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+
+      <div class="cert-card reveal d1" style="--cert-color:#00A4EF;">
+        <div class="cert-card-top">
+          <div class="cert-logo">MS</div>
+          <span class="cert-date-pill">2024</span>
+        </div>
+        <div class="cert-issuer">Microsoft</div>
+        <div class="cert-name">Office Specialist: Excel Associate (MOS)</div>
+        <a href="https://learn.microsoft.com/en-us/certifications/" target="_blank" class="cert-verify">Verify on Microsoft <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+
+      <div class="cert-card reveal d2" style="--cert-color:#4285F4;">
+        <div class="cert-card-top">
+          <div class="cert-logo">G</div>
+          <span class="cert-date-pill">2024</span>
+        </div>
+        <div class="cert-issuer">Google</div>
+        <div class="cert-name">Google Ads for Beginners</div>
+        <a href="https://skillshop.google.com/" target="_blank" class="cert-verify">Verify on Skillshop <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- CURRENTLY BUILDING -->
   <section id="building">
@@ -2638,6 +2812,16 @@
       }
     });
   </script>
+
+  <!-- Floating Download CV -->
+  <a href="https://drive.google.com/uc?export=download&id=1wOO11EmowR66rMWnV6szgDec-pkIDWpc"
+     class="fab-cv"
+     id="fab-cv-btn"
+     title="Download Resume">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Download CV
+  </a>
+
 </body>
 
 </html>
