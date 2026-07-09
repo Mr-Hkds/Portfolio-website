@@ -2045,6 +2045,13 @@
           const resumeLinks = document.querySelectorAll('a[href*="export=download"]');
           resumeLinks.forEach(el => el.href = data.hero.resumeLink);
         }
+        if (data.hero.profileImage) {
+          const profileImg = document.querySelector('#heroPhoto img');
+          if (profileImg) {
+            profileImg.src = data.hero.profileImage;
+            profileImg.parentElement.style.display = 'block';
+          }
+        }
         if (data.hero.stats && Array.isArray(data.hero.stats)) {
           const statsGrid = document.querySelector('.hero-stats');
           if (statsGrid) {
@@ -2058,6 +2065,8 @@
           }
         }
         if (data.hero.institution) {
+          const instLabel = document.querySelector('.hero-inst-label');
+          if (instLabel) instLabel.textContent = data.hero.institution.label || 'Currently Studying At';
           const instName = document.querySelector('.hero-inst-name');
           if (instName) instName.textContent = data.hero.institution.name;
           const instSub = document.querySelector('.hero-inst-sub');

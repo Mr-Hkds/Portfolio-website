@@ -727,9 +727,15 @@
           <textarea id="hero-description" class="tall"
             placeholder="A short summary of what you do. HTML tags like <strong> are supported."></textarea>
         </div>
-        <div class="form-group">
-          <label for="hero-resume">Resume Download Link (Google Drive / URL)</label>
-          <input type="text" id="hero-resume" placeholder="Google Drive direct download link or PDF path" />
+        <div class="form-group grid-2">
+          <div>
+            <label for="hero-resume">Resume Download Link (Google Drive / URL)</label>
+            <input type="text" id="hero-resume" placeholder="Google Drive direct download link or PDF path" />
+          </div>
+          <div>
+            <label for="hero-photo">Profile Image Path / URL</label>
+            <input type="text" id="hero-photo" placeholder="e.g. assets/photo.jpg or online URL" />
+          </div>
         </div>
 
         <div style="margin: 2rem 0 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">
@@ -1085,6 +1091,7 @@
         document.getElementById('hero-name').value = portfolioData.hero.name || '';
         document.getElementById('hero-description').value = portfolioData.hero.description || '';
         document.getElementById('hero-resume').value = portfolioData.hero.resumeLink || '';
+        document.getElementById('hero-photo').value = portfolioData.hero.profileImage || '';
 
         if (portfolioData.hero.institution) {
           document.getElementById('inst-label').value = portfolioData.hero.institution.label || '';
@@ -1851,6 +1858,7 @@
           name: document.getElementById('hero-name').value,
           description: document.getElementById('hero-description').value,
           resumeLink: document.getElementById('hero-resume').value,
+          profileImage: document.getElementById('hero-photo').value,
           stats: getStatsFromDOM(),
           institution: {
             label: document.getElementById('inst-label').value,
