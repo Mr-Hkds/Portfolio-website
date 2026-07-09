@@ -259,6 +259,15 @@
       margin-top: 0.2rem;
     }
 
+    /* AI COPILOT CARD */
+    .copilot-card {
+      background: linear-gradient(135deg, rgba(184, 146, 74, 0.04) 0%, rgba(13, 27, 62, 0.01) 100%);
+      border: 1.5px dashed var(--gold);
+      border-radius: 6px;
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 1.6rem;
+    }
+
     /* FORM STYLING */
     .form-group {
       margin-bottom: 1.4rem;
@@ -290,6 +299,7 @@
     input[type="text"],
     input[type="email"],
     input[type="tel"],
+    input[type="password"],
     textarea,
     select {
       width: 100%;
@@ -306,6 +316,7 @@
     input[type="text"]:focus,
     input[type="email"]:focus,
     input[type="tel"]:focus,
+    input[type="password"]:focus,
     textarea:focus,
     select:focus {
       outline: none;
@@ -608,14 +619,14 @@
       <div class="header-badge">Admin Panel</div>
     </div>
     <div class="header-actions">
-      <!-- GitHub Token settings -->
+      <!-- Settings modal -->
       <button class="btn btn-secondary" id="githubSettingsButton" onclick="openGithubModal()">
         <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
-          <path
-            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
         </svg>
-        <span>GitHub Token</span>
+        <span>Settings</span>
       </button>
 
       <a href="/" target="_blank" class="btn btn-secondary">
@@ -703,10 +714,33 @@
         </svg>
         Contact &amp; Footer
       </div>
+      <div class="nav-item" onclick="switchTab('resume')">
+        <svg viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
+        </svg>
+        Resume Export (LaTeX)
+      </div>
     </aside>
 
     <!-- CONTENT -->
     <main>
+      <!-- AI COPILOT CARD -->
+      <div class="copilot-card">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="var(--gold)" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
+          <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em;">AI Copilot Assistant</h3>
+          <span style="font-size: 0.7rem; color: var(--text-muted); margin-left: auto;">Enter changes below to automatically update form fields</span>
+        </div>
+        <div style="display: flex; gap: 0.8rem; margin-top: 0.5rem;">
+          <input type="text" id="copilot-input" placeholder="Type prompt (e.g. 'Add a Google Ads certification from April 2026', 'Mark Python completed')" style="flex: 1; padding: 0.5rem 0.8rem; font-size: 0.8rem;" onkeydown="if(event.key==='Enter') runCopilot()" />
+          <button type="button" class="btn btn-primary" onclick="runCopilot()" id="copilotBtn" style="padding: 0.5rem 1rem; font-size: 0.76rem;">Ask Copilot</button>
+        </div>
+      </div>
+
       <!-- HERO TAB -->
       <div id="tab-hero" class="tab-content active">
         <div class="section-header">
@@ -777,6 +811,7 @@
         <div class="list-container" id="hero-stats-list">
           <!-- Stats rows added dynamically -->
         </div>
+        <button class="list-add-btn" onclick="addStat()">➕ Add Stat</button>
       </div>
 
       <!-- ABOUT TAB -->
@@ -973,19 +1008,38 @@
           <textarea id="contact-cta-text" class="tall"></textarea>
         </div>
       </div>
+
+      <!-- RESUME TAB -->
+      <div id="tab-resume" class="tab-content">
+        <div class="section-header">
+          <h2 class="section-title">Resume Export (ATS LaTeX)</h2>
+          <p class="section-desc">Generate a professional, ATS-friendly LaTeX resume populated with your live data. You can copy the code or download the .tex file to compile on Overleaf.</p>
+        </div>
+        <div style="display: flex; gap: 0.8rem; margin-bottom: 1.2rem;">
+          <button type="button" class="btn btn-primary" onclick="generateResumeLaTeX()">🔄 Generate Resume</button>
+          <button type="button" class="btn btn-secondary" onclick="copyResumeLaTeX()" id="copyResumeBtn">Copy LaTeX Code</button>
+          <button type="button" class="btn btn-secondary" onclick="downloadResumeLaTeX()">Download .tex File</button>
+        </div>
+        <div class="form-group">
+          <label for="resume-latex-output">LaTeX Code Output</label>
+          <textarea id="resume-latex-output" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; height: 450px; background: #1C1C2E; color: #A5B4FC; border-color: #312E81;" readonly></textarea>
+        </div>
+      </div>
     </main>
   </div>
 
   <!-- GITHUB SETTINGS MODAL -->
   <div id="githubModal" class="modal-overlay">
     <div class="modal-card">
-      <h3>GitHub API Integration</h3>
-      <p class="modal-desc">To save edits directly on your live website, paste a GitHub Personal Access Token (classic)
-        with <code>repo</code> access scopes. This token is saved securely in your browser's local storage and is never
-        transmitted to third parties.</p>
-      <div class="form-group" style="margin-top: 1.2rem; margin-bottom: 0.4rem;">
-        <label for="github-token-input">Personal Access Token (PAT)</label>
+      <h3>GitHub &amp; AI Copilot settings</h3>
+      <p class="modal-desc">Configure your GitHub Personal Access Token to save changes live. You can also add a Gemini API Key to enable the in-dashboard AI Copilot.</p>
+      <div class="form-group" style="margin-top: 1.2rem;">
+        <label for="github-token-input">GitHub Personal Access Token (PAT)</label>
         <input type="text" id="github-token-input" placeholder="ghp_..." style="font-family: monospace;" />
+      </div>
+      <div class="form-group" style="margin-top: 0.8rem; margin-bottom: 0.4rem;">
+        <label for="gemini-key-input">Gemini API Key (For AI Copilot)</label>
+        <input type="password" id="gemini-key-input" placeholder="AIzaSy..." style="font-family: monospace;" />
       </div>
       <div class="modal-actions">
         <button class="btn btn-secondary" onclick="closeGithubModal()">Close</button>
@@ -1017,6 +1071,11 @@
 
       event.currentTarget.classList.add('active');
       document.getElementById(`tab-${tabId}`).classList.add('active');
+      
+      // Auto-generate resume LaTeX if entering the tab
+      if (tabId === 'resume') {
+        generateResumeLaTeX();
+      }
     }
 
     // Toast alerts
@@ -1038,6 +1097,119 @@
     function openGithubModal() {
       document.getElementById('githubModal').classList.add('visible');
       document.getElementById('github-token-input').value = localStorage.getItem('github_pat') || '';
+      document.getElementById('gemini-key-input').value = localStorage.getItem('gemini_key') || '';
+    }
+
+    // AI Copilot Integration
+    async function runCopilot() {
+      const prompt = document.getElementById('copilot-input').value.trim();
+      const apiKey = localStorage.getItem('gemini_key');
+      if (!prompt) return;
+      if (!apiKey) {
+        showToast('Please configure your Gemini API Key in the settings modal.', 'error');
+        openGithubModal();
+        return;
+      }
+
+      const copilotBtn = document.getElementById('copilotBtn');
+      const originalText = copilotBtn.textContent;
+      copilotBtn.disabled = true;
+      copilotBtn.textContent = 'AI is writing...';
+
+      // Gather current state from DOM
+      const currentData = {
+        hero: {
+          eyebrow: document.getElementById('hero-eyebrow').value,
+          name: document.getElementById('hero-name').value,
+          description: document.getElementById('hero-description').value,
+          resumeLink: document.getElementById('hero-resume').value,
+          profileImage: document.getElementById('hero-photo').value,
+          stats: getStatsFromDOM(),
+          institution: {
+            label: document.getElementById('inst-label').value,
+            name: document.getElementById('inst-name').value,
+            sub: document.getElementById('inst-sub').value,
+            tags: document.getElementById('inst-tags').value.split(',').map(s => s.trim()).filter(s => s.length > 0)
+          }
+        },
+        about: {
+          title: document.getElementById('about-title').value,
+          paragraphs: Array.from(document.querySelectorAll('.about-p-input')).map(el => el.value),
+          cards: getAboutCardsFromDOM()
+        },
+        capabilities: {
+          title: document.getElementById('skills-title').value,
+          subtitle: document.getElementById('skills-subtitle').value,
+          categories: getSkillCategoriesFromDOM()
+        },
+        projects: {
+          title: document.getElementById('projects-title').value,
+          subtitle: document.getElementById('projects-subtitle').value,
+          items: getProjectsFromDOM()
+        },
+        education: {
+          title: document.getElementById('education-title').value,
+          subtitle: document.getElementById('education-subtitle').value,
+          items: getEducationFromDOM()
+        },
+        certifications: {
+          title: document.getElementById('certs-title').value,
+          subtitle: document.getElementById('certs-subtitle').value,
+          items: getCertificationsFromDOM()
+        },
+        building: {
+          title: document.getElementById('building-title').value,
+          subtitle: document.getElementById('building-subtitle').value,
+          items: getBuildingItemsFromDOM()
+        },
+        contact: {
+          title: document.getElementById('contact-title').value,
+          subtitle: document.getElementById('contact-subtitle').value,
+          email: document.getElementById('contact-email').value,
+          phone: document.getElementById('contact-phone').value,
+          linkedin: document.getElementById('contact-linkedin').value,
+          linkedinLabel: document.getElementById('contact-linkedin-label').value,
+          location: document.getElementById('contact-location').value,
+          ctaTitle: document.getElementById('contact-cta-title').value,
+          ctaText: document.getElementById('contact-cta-text').value
+        }
+      };
+
+      const systemText = `You are a precise JSON data editor for Harkamal Deep Singh's portfolio website. 
+Take the current data.json structure:
+${JSON.stringify(currentData)}
+
+And update it according to this instruction: "${prompt}"
+
+Return ONLY the raw updated JSON object. Do not wrap in markdown \`\`\`json blocks. Do not add any conversational text.`;
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: systemText }] }],
+            generationConfig: {
+              responseMimeType: "application/json"
+            }
+          })
+        });
+
+        if (!response.ok) throw new Error('Gemini API call failed');
+        const result = await response.json();
+        const cleanText = result.candidates[0].content.parts[0].text.trim();
+        
+        portfolioData = JSON.parse(cleanText);
+        populateForm();
+        showToast('AI Copilot updated your forms! Click "Save Changes" to publish.');
+        document.getElementById('copilot-input').value = '';
+      } catch (error) {
+        console.error(error);
+        showToast('AI Copilot failed. Please check your Gemini API key.', 'error');
+      } finally {
+        copilotBtn.disabled = false;
+        copilotBtn.textContent = originalText;
+      }
     }
 
     function closeGithubModal() {
@@ -1046,13 +1218,21 @@
 
     function saveGithubToken() {
       const token = document.getElementById('github-token-input').value.trim();
+      const geminiKey = document.getElementById('gemini-key-input').value.trim();
+      
       if (token) {
         localStorage.setItem('github_pat', token);
-        showToast('GitHub token configuration saved.');
       } else {
         localStorage.removeItem('github_pat');
-        showToast('GitHub token removed. Direct saves are disabled.', 'error');
       }
+      
+      if (geminiKey) {
+        localStorage.setItem('gemini_key', geminiKey);
+      } else {
+        localStorage.removeItem('gemini_key');
+      }
+      
+      showToast('Settings saved successfully.');
       closeGithubModal();
     }
 
@@ -1162,7 +1342,7 @@
       updateSidebarBadges();
     }
 
-    // Institution Status Helper
+    // Status helper
     function setInstitutionStatus(status) {
       const labelInput = document.getElementById('inst-label');
       const nameInput = document.getElementById('inst-name');
@@ -1188,6 +1368,7 @@
         tagsInput.value = '2026 – Present';
         showToast('Helper: Set status to "Working / Interning" (please customize company details)');
       }
+      updateSidebarBadges();
     }
 
     // Dynamic Sidebar Counts
@@ -1360,16 +1541,16 @@
       renderAboutCards(cards);
     }
 
+    function moveAboutCardDown(idx) {
+      moveAboutCard(idx + 1);
+    }
+
     // HERO STATS HELPER
     function addStat() {
       const stats = getStatsFromDOM();
       stats.push({ num: '0', sup: '', label: 'New Stat', context: 'Context Detail' });
       portfolioData.hero.stats = stats;
       renderStatsList(stats);
-    }
-
-    function moveAboutCardDown(idx) {
-      moveAboutCard(idx + 1);
     }
 
     // SKILL CATEGORIES
@@ -1828,6 +2009,231 @@
       moveBuilding(idx + 1);
     }
 
+    /* LATEX RESUME GENERATOR */
+    function generateResumeLaTeX() {
+      const name = document.getElementById('hero-name').value;
+      const email = document.getElementById('contact-email').value;
+      const phone = document.getElementById('contact-phone').value;
+      const linkedin = document.getElementById('contact-linkedin').value;
+      const location = document.getElementById('contact-location').value.replace(/&nbsp;/g, ' ').replace(/·/g, '|');
+      
+      const skillsCategories = getSkillCategoriesFromDOM();
+      const projects = getProjectsFromDOM();
+      const education = getEducationFromDOM();
+      const certifications = getCertificationsFromDOM();
+      const building = getBuildingItemsFromDOM();
+
+      let latex = `%-------------------------
+% Resume in Latex (ATS-Friendly)
+% Generated dynamically from Harkamal's Portfolio Database
+%------------------------
+
+\\documentclass[letterpaper,10pt]{article}
+
+\\usepackage{latexsym}
+\\usepackage[empty]{fullpage}
+\\usepackage{titlesec}
+\\usepackage{marvosym}
+\\usepackage[usenames,dvipsnames]{color}
+\\usepackage{verbatim}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+\\usepackage{fancyhdr}
+\\usepackage[english]{babel}
+\\usepackage{tabularx}
+\\usepackage{geometry}
+
+\\geometry{left=0.6in, top=0.6in, right=0.6in, bottom=0.6in}
+
+\\pagestyle{fancy}
+\\fancyhf{} % clear all header and footer fields
+\\fancyfoot{}
+\\renewcommand{\\headrulewidth}{0pt}
+\\renewcommand{\\footrulewidth}{0pt}
+
+% Adjust margins
+\\addtolength{\\oddsidemargin}{-0.15in}
+\\addtolength{\\evensidemargin}{-0.15in}
+\\addtolength{\\textwidth}{0.3in}
+\\addtolength{\\topmargin}{-0.15in}
+\\addtolength{\\textheight}{0.3in}
+
+\\urlstyle{same}
+
+\\raggedbottom
+\\raggedright
+\\cleanlook
+
+% Sections formatting
+\\titleformat{\\section}{
+  \\vspace{-4pt}\\scshape\\raggedright\\large
+}{}{0em}{}[\\color{black}\\titlerule \\vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\\newcommand{\\resumeItem}[1]{
+  \\item\\small{
+    {#1 \\vspace{-2pt}}
+  }
+}
+
+\\newcommand{\\resumeSubheading}[4]{
+  \\vspace{-1pt}\\item
+    \\begin{tabular*}{0.97\\textwidth}[t]{l@{\\extracolsep{\\fill}}r}
+      \\textbf{#1} & #2 \\\\
+      \\textit{\\small#3} & \\textit{\\small #4} \\\\
+    \\end{tabular*}\\vspace{-5pt}
+}
+
+\\newcommand{\\resumeSubItem}[2]{\\resumeItem{#1}{#2}\\vspace{-4pt}}
+
+\\renewcommand{\\subitem}[1]{\\item#1\\vspace{-4pt}}
+
+\\newcommand{\\resumeSubHeadingListStart}{\\begin{itemize}[leftmargin=*]}
+\\newcommand{\\resumeSubHeadingListEnd}{\\end{itemize}}
+\\newcommand{\\resumeItemListStart}{\\begin{itemize}}
+\\newcommand{\\resumeItemListEnd}{\\end{itemize}\\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\\begin{document}
+
+%----------HEADING-----------------
+\\begin{center}
+  \\textbf{\\Huge \\scshape ${name}} \\\\ \\vspace{4pt}
+  \\small ${location} $|$ \\href{mailto:${email}}{${email}} $|$ ${phone} $|$ \\href{${linkedin}}{LinkedIn}
+\\end{center}
+
+
+%-----------EDUCATION-----------------
+\\section{Education}
+  \\resumeSubHeadingListStart
+`;
+
+      education.forEach(edu => {
+        const cleanSchool = edu.school.replace(/&/g, '\\&');
+        const cleanDegree = edu.degree.replace(/&/g, '\\&');
+        const cleanPeriod = edu.period.replace(/–/g, '--');
+        const badgeTexts = edu.badges.map(b => b.text).join(' | ').replace(/·/g, '|').replace(/&/g, '\\&');
+        
+        latex += `    \\resumeSubheading{${cleanSchool}}{${cleanPeriod}}{${cleanDegree}}{Greater Noida, India}
+      \\resumeItemListStart
+        \\resumeItem{Highlights: ${badgeTexts}}
+      \\resumeItemListEnd
+`;
+      });
+
+      latex += `  \\resumeSubHeadingListEnd
+
+
+%-----------TECHNICAL SKILLS-----------------
+\\section{Technical Skills}
+  \\resumeSubHeadingListStart
+    \\item\\small{
+`;
+
+      skillsCategories.forEach((cat, idx) => {
+        const cleanCatName = cat.name.replace(/&/g, '\\&');
+        const cleanSkills = cat.skills.map(s => s.split(' — ')[0]).join(', ').replace(/&/g, '\\&');
+        latex += `      \\textbf{${cleanCatName}}{: ${cleanSkills}} ${idx < skillsCategories.length - 1 ? '\\\\' : ''}\n`;
+      });
+
+      latex += `    }
+  \\resumeSubHeadingListEnd
+
+
+%-----------EXPERIENCE & RESEARCH PROJECTS-----------------
+\\section{Research Projects}
+  \\resumeSubHeadingListStart
+`;
+
+      projects.forEach(p => {
+        const cleanTitle = p.title.replace(/&/g, '\\&');
+        const cleanPeriod = p.period.replace(/–/g, '--');
+        const cleanDesc = p.description.replace(/&/g, '\\&').replace(/—/g, '---');
+        const cleanTags = p.tags.join(', ').replace(/&/g, '\\&');
+        
+        latex += `    \\resumeSubheading{${cleanTitle}}{${cleanPeriod}}{Independent Research Project}{Greater Noida, India}
+      \\resumeItemListStart
+        \\resumeItem{${cleanDesc}}
+        \\resumeItem{Technologies/Frameworks used: ${cleanTags}}
+      \\resumeItemListEnd
+`;
+      });
+
+      latex += `  \\resumeSubHeadingListEnd
+
+
+%-----------CERTIFICATIONS & CREDENTIALS-----------------
+\\section{Certifications}
+  \\resumeSubHeadingListStart
+`;
+
+      certifications.forEach(c => {
+        const cleanIssuer = c.issuer.replace(/&/g, '\\&');
+        const cleanName = c.name.replace(/&/g, '\\&');
+        const cleanDate = c.date;
+        latex += `    \\item\\small{
+      \\textbf{${cleanName}} --- \\textit{${cleanIssuer}} \\hfill ${cleanDate}
+    }\\vspace{-2pt}\n`;
+      });
+
+      latex += `  \\resumeSubHeadingListEnd
+
+
+%-----------CURRENT AREAS OF LEARNING-----------------
+\\section{Currently Learning}
+  \\resumeSubHeadingListStart
+`;
+
+      building.forEach(b => {
+        const cleanTitle = b.title.replace(/&/g, '\\&');
+        const cleanDesc = b.description.replace(/&/g, '\\&');
+        const statusText = b.completed ? 'Completed' : 'In Progress';
+        latex += `    \\item\\small{
+      \\textbf{${cleanTitle}} --- ${cleanDesc} \\hfill \\textit{${statusText}}
+    }\\vspace{-2pt}\n`;
+      });
+
+      latex += `  \\resumeSubHeadingListEnd
+
+\\end{document}
+`;
+
+      document.getElementById('resume-latex-output').value = latex;
+    }
+
+    function copyResumeLaTeX() {
+      const textarea = document.getElementById('resume-latex-output');
+      textarea.select();
+      document.execCommand('copy');
+      
+      const copyBtn = document.getElementById('copyResumeBtn');
+      const originalText = copyBtn.textContent;
+      copyBtn.textContent = 'Copied!';
+      showToast('LaTeX code copied to clipboard!');
+      
+      setTimeout(() => {
+        copyBtn.textContent = originalText;
+      }, 2000);
+    }
+
+    function downloadResumeLaTeX() {
+      const latex = document.getElementById('resume-latex-output').value;
+      if (!latex) {
+        showToast('Please generate the LaTeX resume first.', 'error');
+        return;
+      }
+      const blob = new Blob([latex], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Harkamal_Deep_Singh_Resume.tex';
+      link.click();
+      showToast('Downloaded Harkamal_Deep_Singh_Resume.tex');
+    }
+
     /* SAVE DATA ON SERVER / GITHUB */
 
     function restoreButtonState(saveButton, originalIcon, saveText) {
@@ -1932,7 +2338,7 @@
       } else {
         const token = localStorage.getItem('github_pat');
         if (!token) {
-          showToast('GitHub token is missing. Click the "GitHub Token" button in the header.', 'error');
+          showToast('GitHub token is missing. Click the settings button in the header.', 'error');
           openGithubModal();
           restoreButtonState(saveButton, originalIcon, saveText);
           return;
@@ -1951,7 +2357,7 @@
           });
 
           if (refResponse.status === 401 || refResponse.status === 403) {
-            throw new Error('Invalid or expired GitHub Token. Open header settings and update your token.');
+            throw new Error('Invalid or expired GitHub Token. Open settings and update your token.');
           }
           if (!refResponse.ok) {
             throw new Error('Failed to retrieve project file metadata from GitHub.');

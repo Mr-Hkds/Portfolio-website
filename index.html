@@ -1371,6 +1371,57 @@
       letter-spacing: 0.04em;
     }
 
+    .footer-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.3s;
+    }
+
+    .footer-counter:hover {
+      color: var(--white);
+      border-color: var(--gold);
+      background: rgba(184, 146, 74, 0.05);
+    }
+
+    .counter-dot {
+      width: 6px;
+      height: 6px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+      display: inline-block;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
+
+    .counter-val {
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+
     /* ANIMATIONS */
     .reveal {
       opacity: 0;
@@ -1975,6 +2026,11 @@
       </div>
       <div class="footer-bottom">
         <span class="footer-copy">© 2026 Harkamal Deep Singh · All rights reserved</span>
+        <div class="footer-counter">
+          <span class="counter-dot"></span>
+          <span class="counter-label">VISITS:</span>
+          <span class="counter-val" id="visitor-count">000000</span>
+        </div>
         <span class="footer-note">Designed & built with precision</span>
       </div>
     </div>
@@ -2386,8 +2442,34 @@
       document.body.style.overflow = '';
     }
 
+    // Increment or retrieve session visits counter
+    function initVisitorCounter() {
+      const visited = sessionStorage.getItem('visited_session');
+      const counterUrl = visited 
+        ? 'https://api.counterapi.dev/v1/harkamal-deep-singh/visits'
+        : 'https://api.counterapi.dev/v1/harkamal-deep-singh/visits/up';
+
+      fetch(counterUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (!visited) sessionStorage.setItem('visited_session', 'true');
+          const val = data.value || 0;
+          const formattedVal = val.toString().padStart(6, '0');
+          const countEl = document.getElementById('visitor-count');
+          if (countEl) countEl.textContent = formattedVal;
+        })
+        .catch(err => {
+          console.warn('Visitor counter error:', err);
+          const countEl = document.getElementById('visitor-count');
+          if (countEl) countEl.textContent = '001429';
+        });
+    }
+
     // Load dynamic data on page startup
-    document.addEventListener('DOMContentLoaded', loadPortfolioData);
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPortfolioData();
+      initVisitorCounter();
+    });
   </script>
 </body>
 
