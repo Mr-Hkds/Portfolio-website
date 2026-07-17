@@ -4,7 +4,7 @@
     "eyebrow": "Portfolio — Business Analytics & Cybersecurity",
     "name": "Harkamal Deep Singh",
     "description": "I analyze systems — consumer behavior, data patterns, and organizational processes — and translate findings into <strong>decisions that hold up under scrutiny.</strong> Building depth in cybersecurity alongside a strong foundation in analytics, market research, and business strategy.",
-    "resumeLink": "https://drive.google.com/uc?export=download&id=1wOO11EmowR66rMWnV6szcDec-pkIDWpc",
+    "resumeLink": "https://drive.google.com/file/d/122145yHx4xeQIxKkrHlnPJVj78YM9K9L/view?usp=drivesdk",
     "profileImage": "assets/photo.jpg",
     "stats": [
       {
@@ -26,7 +26,7 @@
         "context": "IBM · Microsoft · NPTEL · Google"
       },
       {
-        "num": "3",
+        "num": "5",
         "sup": "",
         "label": "Research Projects",
         "context": "Independent, end-to-end"
@@ -75,7 +75,6 @@
       {
         "name": "Data & Analytics",
         "icon": "table",
-        "headline": "Microsoft Certified Excel Associate & Generative AI builder. Built 12+ reports/dashboards.",
         "skills": [
           "Microsoft Excel Associate (MOS) — Certified",
           "Generative & Agentic AI (Python) — Certified",
@@ -89,7 +88,6 @@
       {
         "name": "Cybersecurity",
         "icon": "shield",
-        "headline": "IBM Certified in Cybersecurity Fundamentals. Coursework in threat modeling and defense.",
         "skills": [
           "Cybersecurity Fundamentals (IBM) — Certified",
           "Threat Awareness & Attack Modeling — Proficient",
@@ -103,7 +101,6 @@
       {
         "name": "Business & Strategy",
         "icon": "book",
-        "headline": "IIT & Bajaj Finserv Certified. Applied in consulting simulations and academic research.",
         "skills": [
           "Integrated Marketing Communication — Certified",
           "Banking, Finance & Insurance (CPBFI) — Certified",
@@ -133,8 +130,7 @@
           "Fintech"
         ],
         "link": "https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk",
-        "category": "research",
-        "linkLabel": "View Report"
+        "linkLabel": ""
       },
       {
         "index": "02",
@@ -148,8 +144,7 @@
           "Statistics"
         ],
         "link": "https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk",
-        "category": "research",
-        "linkLabel": "View Report"
+        "linkLabel": ""
       },
       {
         "index": "03",
@@ -165,14 +160,13 @@
           "Statistical Analysis"
         ],
         "link": "https://drive.google.com/file/d/1qdopFzsvBypUMGcij5R9RpmIc16vmvEp/view?usp=drivesdk",
-        "category": "research",
-        "linkLabel": "View Report"
+        "linkLabel": ""
       },
       {
         "index": "04",
         "period": "July 2026",
         "title": "LORE-V2: Digital Forensics Web Archive",
-        "description": "An atmospheric digital mystery database cataloging urban legends and historical files. Built a Turso SQLite database sync pipeline, implemented an AI story generation workflow, and optimized React Context state synchronization. Open-source on GitHub at github.com/MrHkds/LORE.",
+        "description": "Designed and built an atmospheric digital mystery database. Developed a remote SQLite data pipeline with Turso, managed image fallback cascades, and optimized React Context state to prevent local storage overwrites and maintain full consistency across sessions.",
         "tags": [
           "React",
           "Vite",
@@ -180,9 +174,8 @@
           "Turso DB",
           "Node.js"
         ],
-        "link": "https://sevendescents.vercel.app/",
-        "linkLabel": "Launch Web App",
-        "category": "technical"
+        "link": "https://github.com/Mr-Hkds/lore-v2",
+        "linkLabel": "View Repository"
       },
       {
         "index": "05",
@@ -198,8 +191,7 @@
           "GitHub API"
         ],
         "link": "https://github.com/Mr-Hkds/Portfolio-website",
-        "linkLabel": "View Repository",
-        "category": "technical"
+        "linkLabel": "View Repository"
       }
     ]
   },
