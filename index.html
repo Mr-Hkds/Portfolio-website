@@ -2057,59 +2057,28 @@
 <section id="projects">
   <div class="section-inner">
     <span class="section-label">Work</span>
-    <h2 class="section-title" style="color:var(--white);">Research projects</h2>
-    <p class="section-subtitle" style="color:rgba(255,255,255,0.42);">Independent research conducted with full
-      ownership — methodology, data collection, analysis, and final deliverables.</p>
-    <div class="projects-grid">
-      <div class="project-card reveal">
-        <div class="project-meta">
-          <span class="project-period">Jan 2025 – May 2025</span>
-          <span class="project-index">01</span>
-        </div>
-        <h3>Digital Payment Adoption Analysis</h3>
-        <div class="project-impact">
-          <span class="impact-chip">1,000+ consumers surveyed</span>
-          <span class="impact-chip">5 UPI platforms analyzed</span>
-          <span class="impact-chip">Actionable business report</span>
-        </div>
-        <p>Examined how Indian consumers adopted digital payment platforms following UPI expansion. Mapped transaction
-          behavior across demographics, identified friction points in the adoption curve, and built an Excel-based
-          analytical framework from scratch.</p>
-        <div class="project-tags">
-          <span class="tag">Excel</span>
-          <span class="tag">Data Analysis</span>
-          <span class="tag">Consumer Behavior</span>
-          <span class="tag">Fintech</span>
-        </div>
-        <a href="https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk" target="_blank"
-          class="project-link">
-          View Report <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-        </a>
+    <h2 class="section-title" style="color:var(--white);">Projects & Case Studies</h2>
+    <p class="section-subtitle" style="color:rgba(255,255,255,0.42);">A collection of software engineering builds, systems, and independent analytical research.</p>
+    
+    <!-- Technical Projects Sub-section -->
+    <div class="project-subsection" style="margin-top: 2rem;">
+      <h3 class="project-subsection-title" style="font-size: 1.15rem; font-weight: 700; color: #B8924A; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem;">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" style="display:inline-block; vertical-align:middle;"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Technical & Software Projects
+      </h3>
+      <div class="projects-grid" id="technical-projects-grid">
+        <!-- Rendered dynamically -->
       </div>
-      <div class="project-card reveal d1">
-        <div class="project-meta">
-          <span class="project-period">Jan 2024 – May 2024</span>
-          <span class="project-index">02</span>
-        </div>
-        <h3>Social Media Usage Pattern Analysis</h3>
-        <div class="project-impact">
-          <span class="impact-chip">500+ students surveyed</span>
-          <span class="impact-chip">Behavioral trend mapping</span>
-          <span class="impact-chip">Institutional policy implications</span>
-        </div>
-        <p>Designed and deployed a structured survey measuring the relationship between social media consumption
-          patterns and academic output. Built the instrument independently, interpreted behavioral trends, and
-          delivered findings with institutional policy implications.</p>
-        <div class="project-tags">
-          <span class="tag">Survey Design</span>
-          <span class="tag">Data Interpretation</span>
-          <span class="tag">Behavioral Research</span>
-          <span class="tag">Statistics</span>
-        </div>
-        <a href="https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk" target="_blank"
-          class="project-link">
-          View Report <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-        </a>
+    </div>
+
+    <!-- Analytical / Research Projects Sub-section -->
+    <div class="project-subsection" style="margin-top: 3.5rem;">
+      <h3 class="project-subsection-title" style="font-size: 1.15rem; font-weight: 700; color: #B8924A; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.5rem;">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" style="display:inline-block; vertical-align:middle;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytical & Research Projects
+      </h3>
+      <div class="projects-grid" id="research-projects-grid">
+        <!-- Rendered dynamically -->
       </div>
     </div>
   </div>
@@ -2622,24 +2591,34 @@
           if (projectsSubtitle) projectsSubtitle.textContent = data.projects.subtitle;
         }
         if (data.projects.items && Array.isArray(data.projects.items)) {
-          const projectsGrid = document.querySelector('.projects-grid');
-          if (projectsGrid) {
-            projectsGrid.innerHTML = data.projects.items.map((p, idx) => `
-              <div class="project-card reveal ${idx % 2 === 1 ? 'd1' : ''}">
-                <div class="project-meta">
-                  <span class="project-period">${p.period}</span>
-                  <span class="project-index">${p.index || (idx + 1).toString().padStart(2, '0')}</span>
-                </div>
-                <h3>${p.title}</h3>
-                <p>${p.description}</p>
-                <div class="project-tags">
-                  ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
-                </div>
-                <a href="${p.link}" target="_blank" class="project-link">
-                  ${p.linkLabel || 'View Project'} <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                </a>
+          const techGrid = document.getElementById('technical-projects-grid');
+          const researchGrid = document.getElementById('research-projects-grid');
+
+          const renderCard = (p, idx) => `
+            <div class="project-card reveal ${idx % 2 === 1 ? 'd1' : ''}">
+              <div class="project-meta">
+                <span class="project-period">${p.period}</span>
+                <span class="project-index">${p.index || (idx + 1).toString().padStart(2, '0')}</span>
               </div>
-            `).join('');
+              <h3>${p.title}</h3>
+              <p>${p.description}</p>
+              <div class="project-tags">
+                ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+              </div>
+              <a href="${p.link}" target="_blank" class="project-link">
+                ${p.linkLabel || 'View Project'} <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </a>
+            </div>
+          `;
+
+          const techItems = data.projects.items.filter(p => p.category === 'technical');
+          const researchItems = data.projects.items.filter(p => p.category === 'research' || !p.category);
+
+          if (techGrid) {
+            techGrid.innerHTML = techItems.map((p, idx) => renderCard(p, idx)).join('');
+          }
+          if (researchGrid) {
+            researchGrid.innerHTML = researchItems.map((p, idx) => renderCard(p, idx)).join('');
           }
         }
       }

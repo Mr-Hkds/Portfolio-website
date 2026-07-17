@@ -132,7 +132,9 @@
           "Consumer Behavior",
           "Fintech"
         ],
-        "link": "https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk"
+        "link": "https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk",
+        "category": "research",
+        "linkLabel": "View Report"
       },
       {
         "index": "02",
@@ -145,7 +147,9 @@
           "Behavioral Research",
           "Statistics"
         ],
-        "link": "https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk"
+        "link": "https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk",
+        "category": "research",
+        "linkLabel": "View Report"
       },
       {
         "index": "03",
@@ -160,13 +164,15 @@
           "Marketing Research",
           "Statistical Analysis"
         ],
-        "link": "https://drive.google.com/file/d/1qdopFzsvBypUMGcij5R9RpmIc16vmvEp/view?usp=drivesdk"
+        "link": "https://drive.google.com/file/d/1qdopFzsvBypUMGcij5R9RpmIc16vmvEp/view?usp=drivesdk",
+        "category": "research",
+        "linkLabel": "View Report"
       },
       {
         "index": "04",
         "period": "July 2026",
         "title": "LORE-V2: Digital Forensics Web Archive",
-        "description": "Designed and built an atmospheric digital mystery database. Developed a remote SQLite data pipeline with Turso, managed image fallback cascades, and optimized React Context state to prevent local storage overwrites and maintain full consistency across sessions.",
+        "description": "An atmospheric digital mystery database cataloging urban legends and historical files. Built a Turso SQLite database sync pipeline, implemented an AI story generation workflow, and optimized React Context state synchronization. Open-source on GitHub at github.com/MrHkds/LORE.",
         "tags": [
           "React",
           "Vite",
@@ -174,8 +180,9 @@
           "Turso DB",
           "Node.js"
         ],
-        "link": "https://github.com/Mr-Hkds/lore-v2",
-        "linkLabel": "View Repository"
+        "link": "https://sevendescents.vercel.app/",
+        "linkLabel": "Launch Web App",
+        "category": "technical"
       },
       {
         "index": "05",
@@ -191,7 +198,8 @@
           "GitHub API"
         ],
         "link": "https://github.com/Mr-Hkds/Portfolio-website",
-        "linkLabel": "View Repository"
+        "linkLabel": "View Repository",
+        "category": "technical"
       }
     ]
   },
