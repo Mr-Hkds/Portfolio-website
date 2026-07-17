@@ -2448,12 +2448,18 @@
               <input type="text" class="project-link-label-input" value="${p.linkLabel || ''}" placeholder="View Project" />
             </div>
           </div>
-          <div class="form-group">
-            <label>Project Category</label>
-            <select class="project-category-select" style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.05); color:#fff; border:1px solid rgba(255,255,255,0.15); border-radius:6px; font-size:0.8rem; outline:none;">
-              <option value="technical" ${p.category === 'technical' ? 'selected' : ''} style="background:#1C1C2E; color:#fff;">Technical & Software Projects</option>
-              <option value="research" ${p.category === 'research' || !p.category ? 'selected' : ''} style="background:#1C1C2E; color:#fff;">Analytical & Research Projects</option>
-            </select>
+          <div class="form-group grid-2">
+            <div>
+              <label>Impact Stat Chips (comma separated)</label>
+              <input type="text" class="project-impact-input" value="${(p.impact || []).join(', ')}" placeholder="e.g. 1,000+ surveyed, UPI analyzed" />
+            </div>
+            <div>
+              <label>Project Category</label>
+              <select class="project-category-select" style="width:100%; padding:0.5rem; background:rgba(255,255,255,0.05); color:#fff; border:1px solid rgba(255,255,255,0.15); border-radius:6px; font-size:0.8rem; outline:none; height: 38px;">
+                <option value="technical" ${p.category === 'technical' ? 'selected' : ''} style="background:#1C1C2E; color:#fff;">Technical & Software Projects</option>
+                <option value="research" ${p.category === 'research' || !p.category ? 'selected' : ''} style="background:#1C1C2E; color:#fff;">Analytical & Research Projects</option>
+              </select>
+            </div>
           </div>
         </div>
       `).join('');
@@ -2469,6 +2475,7 @@
       const linkEls = document.querySelectorAll('.project-link-input');
       const labelEls = document.querySelectorAll('.project-link-label-input');
       const categoryEls = document.querySelectorAll('.project-category-select');
+      const impactEls = document.querySelectorAll('.project-impact-input');
 
       const projects = [];
       titleEls.forEach((el, idx) => {
@@ -2480,7 +2487,8 @@
           tags: tagsEls[idx].value.split(',').map(s => s.trim()).filter(s => s.length > 0),
           link: linkEls[idx].value,
           linkLabel: labelEls[idx] ? labelEls[idx].value.trim() : '',
-          category: categoryEls[idx] ? categoryEls[idx].value : 'research'
+          category: categoryEls[idx] ? categoryEls[idx].value : 'research',
+          impact: impactEls[idx] ? impactEls[idx].value.split(',').map(s => s.trim()).filter(s => s.length > 0) : []
         });
       });
       return projects;
@@ -2496,7 +2504,8 @@
         tags: ['Excel', 'Data Analysis', 'Market Research'],
         link: '#',
         linkLabel: 'View Project',
-        category: 'research'
+        category: 'research',
+        impact: []
       });
       portfolioData.projects.items = projects;
       renderProjectsList(projects);

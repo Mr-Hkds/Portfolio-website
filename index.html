@@ -1152,6 +1152,7 @@
       mask-composite: exclude;
       opacity: 0;
       transition: opacity 0.4s ease;
+      pointer-events: none;
     }
 
     .cert-card:hover {
@@ -2594,22 +2595,30 @@
           const techGrid = document.getElementById('technical-projects-grid');
           const researchGrid = document.getElementById('research-projects-grid');
 
-          const renderCard = (p, idx) => `
-            <div class="project-card reveal ${idx % 2 === 1 ? 'd1' : ''}">
-              <div class="project-meta">
-                <span class="project-period">${p.period}</span>
-                <span class="project-index">${p.index || (idx + 1).toString().padStart(2, '0')}</span>
+          const renderCard = (p, idx) => {
+            const impactHtml = p.impact && Array.isArray(p.impact) && p.impact.length > 0
+              ? `<div class="project-impact">
+                  ${p.impact.map(imp => `<span class="impact-chip">${imp}</span>`).join('')}
+                 </div>`
+              : '';
+            return `
+              <div class="project-card reveal ${idx % 2 === 1 ? 'd1' : ''}">
+                <div class="project-meta">
+                  <span class="project-period">${p.period}</span>
+                  <span class="project-index">${p.index || (idx + 1).toString().padStart(2, '0')}</span>
+                </div>
+                <h3>${p.title}</h3>
+                ${impactHtml}
+                <p>${p.description}</p>
+                <div class="project-tags">
+                  ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                </div>
+                <a href="${p.link}" target="_blank" class="project-link">
+                  ${p.linkLabel || 'View Project'} <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                </a>
               </div>
-              <h3>${p.title}</h3>
-              <p>${p.description}</p>
-              <div class="project-tags">
-                ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
-              </div>
-              <a href="${p.link}" target="_blank" class="project-link">
-                ${p.linkLabel || 'View Project'} <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-              </a>
-            </div>
-          `;
+            `;
+          };
 
           const techItems = data.projects.items.filter(p => p.category === 'technical');
           const researchItems = data.projects.items.filter(p => p.category === 'research' || !p.category);

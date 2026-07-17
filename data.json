@@ -4,7 +4,7 @@
     "eyebrow": "Portfolio — Business Analytics & Cybersecurity",
     "name": "Harkamal Deep Singh",
     "description": "I analyze systems — consumer behavior, data patterns, and organizational processes — and translate findings into <strong>decisions that hold up under scrutiny.</strong> Building depth in cybersecurity alongside a strong foundation in analytics, market research, and business strategy.",
-    "resumeLink": "https://drive.google.com/file/d/122145yHx4xeQIxKkrHlnPJVj78YM9K9L/view?usp=drivesdk",
+    "resumeLink": "https://drive.google.com/uc?export=download&id=122145yHx4xeQIxKkrHlnPJVj78YM9K9L",
     "profileImage": "assets/photo.jpg",
     "stats": [
       {
@@ -26,7 +26,7 @@
         "context": "IBM · Microsoft · NPTEL · Google"
       },
       {
-        "num": "5",
+        "num": "3",
         "sup": "",
         "label": "Research Projects",
         "context": "Independent, end-to-end"
@@ -75,6 +75,7 @@
       {
         "name": "Data & Analytics",
         "icon": "table",
+        "headline": "Microsoft Certified Excel Associate & Generative AI builder. Built 12+ reports/dashboards.",
         "skills": [
           "Microsoft Excel Associate (MOS) — Certified",
           "Generative & Agentic AI (Python) — Certified",
@@ -88,6 +89,7 @@
       {
         "name": "Cybersecurity",
         "icon": "shield",
+        "headline": "IBM Certified in Cybersecurity Fundamentals. Coursework in threat modeling and defense.",
         "skills": [
           "Cybersecurity Fundamentals (IBM) — Certified",
           "Threat Awareness & Attack Modeling — Proficient",
@@ -101,10 +103,11 @@
       {
         "name": "Business & Strategy",
         "icon": "book",
+        "headline": "IIT & Bajaj Finserv Certified. Applied in consulting simulations and academic research.",
         "skills": [
           "Integrated Marketing Communication — Certified",
           "Banking, Finance & Insurance (CPBFI) — Certified",
-          "Business Development & Scaling — Certified",
+          "Business Development — Certified",
           "Google Ads & Search Campaigns — Certified",
           "Business Process Mapping & Analysis — Proficient",
           "Consumer Behavior Analysis — Advanced",
@@ -115,8 +118,8 @@
     ]
   },
   "projects": {
-    "title": "Research projects",
-    "subtitle": "Independent research conducted with full ownership — methodology, data collection, analysis, and final deliverables.",
+    "title": "Projects & Case Studies",
+    "subtitle": "A collection of software engineering builds, systems, and independent analytical research.",
     "items": [
       {
         "index": "01",
@@ -130,7 +133,13 @@
           "Fintech"
         ],
         "link": "https://drive.google.com/file/d/164W-tDzN3usH9a1qf8nFmjbLB9rhrZcf/view?usp=drivesdk",
-        "linkLabel": ""
+        "linkLabel": "View Report",
+        "category": "research",
+        "impact": [
+          "1,000+ consumers surveyed",
+          "5 UPI platforms analyzed",
+          "Actionable business report"
+        ]
       },
       {
         "index": "02",
@@ -144,7 +153,13 @@
           "Statistics"
         ],
         "link": "https://drive.google.com/file/d/164q5Pl997a6zjVIEZC-Zjmm6mBBa8iAa/view?usp=drivesdk",
-        "linkLabel": ""
+        "linkLabel": "View Report",
+        "category": "research",
+        "impact": [
+          "500+ students surveyed",
+          "Behavioral trend mapping",
+          "Institutional policy implications"
+        ]
       },
       {
         "index": "03",
@@ -160,13 +175,19 @@
           "Statistical Analysis"
         ],
         "link": "https://drive.google.com/file/d/1qdopFzsvBypUMGcij5R9RpmIc16vmvEp/view?usp=drivesdk",
-        "linkLabel": ""
+        "linkLabel": "View Report",
+        "category": "research",
+        "impact": [
+          "100+ consumers surveyed",
+          "Statistical significance tested",
+          "BBA thesis grade project"
+        ]
       },
       {
         "index": "04",
         "period": "July 2026",
-        "title": "LORE-V2: Digital Forensics Web Archive",
-        "description": "Designed and built an atmospheric digital mystery database. Developed a remote SQLite data pipeline with Turso, managed image fallback cascades, and optimized React Context state to prevent local storage overwrites and maintain full consistency across sessions.",
+        "title": "Seven Descents",
+        "description": "An atmospheric digital forensics mystery archive cataloging historical mysteries and urban legends. Engineered a Turso SQL serverless database integration, implemented an automated Wikipedia image crawler with fallback cascades, and resolved React Context state-loss during session transitions. Open-source on GitHub at github.com/MrHkds/LORE.",
         "tags": [
           "React",
           "Vite",
@@ -174,8 +195,14 @@
           "Turso DB",
           "Node.js"
         ],
-        "link": "https://github.com/Mr-Hkds/lore-v2",
-        "linkLabel": "View Repository"
+        "link": "https://sevendescents.vercel.app/",
+        "linkLabel": "Launch Web App",
+        "category": "technical",
+        "impact": [
+          "SQLite database sync",
+          "Wikipedia image resolver cascade",
+          "Atmospheric HSL dark theme"
+        ]
       },
       {
         "index": "05",
@@ -191,7 +218,13 @@
           "GitHub API"
         ],
         "link": "https://github.com/Mr-Hkds/Portfolio-website",
-        "linkLabel": "View Repository"
+        "linkLabel": "View Repository",
+        "category": "technical",
+        "impact": [
+          "Guided AI data insertion",
+          "PBKDF2 encrypted backups",
+          "ATS LaTeX Resume Generator"
+        ]
       }
     ]
   },
