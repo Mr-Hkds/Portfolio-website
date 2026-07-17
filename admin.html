@@ -1491,25 +1491,20 @@
   <!-- GITHUB SETTINGS MODAL -->
   <div id="githubModal" class="modal-overlay">
     <div class="modal-card">
-      <h3>GitHub &amp; AI Copilot settings</h3>
-      <p class="modal-desc">Configure your GitHub Personal Access Token to save changes live. You can also add a Gemini API Key to enable the in-dashboard AI Copilot.</p>
+      <h3>⚙️ GitHub Settings</h3>
+      <p class="modal-desc">Add your GitHub Personal Access Token so changes can be saved directly to your repository. The AI Copilot is fully automated — no configuration needed.</p>
       <div class="form-group" style="margin-top: 1.2rem;">
         <label for="github-token-input">GitHub Personal Access Token (PAT)</label>
         <input type="text" id="github-token-input" placeholder="ghp_..." style="font-family: monospace;" />
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">Generate at github.com → Settings → Developer settings → Personal access tokens</p>
       </div>
-      <div class="form-group" style="margin-top: 0.8rem;">
-        <label for="gemini-key-input">Gemini API Key (For AI Copilot)</label>
-        <input type="password" id="gemini-key-input" placeholder="AIzaSy..." style="font-family: monospace;" />
-      </div>
-      <div class="form-group" style="margin-top: 0.8rem; margin-bottom: 0.4rem;">
-        <label for="gemini-model-input">Gemini Model (Default: gemini-1.5-flash)</label>
-        <div style="display: flex; gap: 0.5rem; align-items: center;">
-          <input type="text" id="gemini-model-input" placeholder="gemini-1.5-flash" style="font-family: monospace; flex: 1;" />
-          <button type="button" class="btn btn-secondary" onclick="discoverModels()" id="discover-btn" style="padding: 0.6rem; font-size: 0.8rem; white-space: nowrap;">Discover</button>
-        </div>
-        <select id="gemini-model-select" style="display: none; margin-top: 0.5rem; width: 100%; padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border); background: var(--white); font-family: monospace;" onchange="document.getElementById('gemini-model-input').value = this.value">
-        </select>
-        <p id="discover-error" style="color: var(--error); font-size: 0.75rem; margin-top: 0.4rem; display: none;"></p>
+      <!-- Hidden fields kept for backward compat with saveGithubToken() -->
+      <input type="hidden" id="gemini-key-input" />
+      <input type="hidden" id="gemini-model-input" />
+      <select id="gemini-model-select" style="display:none;"></select>
+      <p id="discover-error" style="display:none;"></p>
+      <div style="background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.8rem;">
+        <p style="font-size: 0.8rem; color: #166534; margin: 0;">✅ <strong>AI Copilot is ready.</strong> Model auto-selection is active — no API key setup required.</p>
       </div>
       <div class="modal-actions">
         <button class="btn btn-secondary" onclick="closeGithubModal()">Close</button>
@@ -1691,11 +1686,11 @@
         // Alert user on live environment status
         if (!isLocal) {
           const storedToken = localStorage.getItem('github_pat');
-          if (!storedToken) {
-            showToast('Running on live site. Please configure GitHub settings to save changes.', 'error');
-            setTimeout(openGithubModal, 1000);
+          if (storedToken) {
+            showToast('✅ GitHub linked. AI Copilot ready.', 'success');
           } else {
-            showToast('Running on live site. GitHub API is linked.', 'success');
+            // Don't auto-open modal — just show a quiet toast
+            showToast('Tip: Add a GitHub PAT in Settings (⚙️) to enable saving.', 'info');
           }
         }
       } catch (error) {
@@ -2691,11 +2686,9 @@
       const apiKey = localStorage.getItem('gemini_key');
       
       if (!prompt) return;
-      if (!apiKey) {
-        showToast('Please configure your Gemini API Key in Settings.', 'error');
-        openGithubModal();
-        return;
-      }
+      // API key is auto-seeded — if somehow missing, set it now
+      const effectiveKey = apiKey || 'AIzaSyCzWbry_V9wN8qw4a2fxcUqvopOwgXETdo';
+      if (!apiKey) localStorage.setItem('gemini_key', effectiveKey);
 
       // Append user message
       appendChatMessage('You', prompt, true);
@@ -2801,7 +2794,7 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
 
       try {
         const payload = { contents: [{ parts: [{ text: systemText }] }] };
-        const result = await fetchWithModelFallback(apiKey, payload);
+        const result = await fetchWithModelFallback(effectiveKey, payload);
 
         typingBubble.remove();
         let cleanText = result.candidates[0].content.parts[0].text.trim();
@@ -3319,15 +3312,15 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
     document.getElementById('saveButton').addEventListener('click', saveData);
     window.addEventListener('DOMContentLoaded', loadData);
 
-    // Auto-seed Gemini key & best model if not already saved
+    // Always enforce correct API key + best model — fully automated
     (function autoSeedGemini() {
       const DEFAULT_KEY = 'AIzaSyCzWbry_V9wN8qw4a2fxcUqvopOwgXETdo';
       const DEFAULT_MODEL = 'gemini-2.5-flash';
-      if (!localStorage.getItem('gemini_key')) {
-        localStorage.setItem('gemini_key', DEFAULT_KEY);
-      }
-      // Always prefer gemini-2.5-flash unless user manually changed it
-      if (!localStorage.getItem('gemini_model')) {
+      // Always set the key so it's never missing
+      localStorage.setItem('gemini_key', DEFAULT_KEY);
+      // Set model only if user hasn't overridden it to something specific
+      const current = localStorage.getItem('gemini_model');
+      if (!current || current === 'gemini-1.5-flash' || current === 'gemini-2.0-flash-exp') {
         localStorage.setItem('gemini_model', DEFAULT_MODEL);
       }
     })();
@@ -3335,8 +3328,10 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
     // ─── AI OPTIMIZER FUNCTIONS ─────────────────────────────────────
 
     function getApiKey() {
-      const key = localStorage.getItem('gemini_key');
-      if (!key) { showToast('Please add your Gemini API Key in Settings.', 'error'); openGithubModal(); }
+      const DEFAULT_KEY = 'AIzaSyCzWbry_V9wN8qw4a2fxcUqvopOwgXETdo';
+      const key = localStorage.getItem('gemini_key') || DEFAULT_KEY;
+      // Ensure it's always saved
+      if (!localStorage.getItem('gemini_key')) localStorage.setItem('gemini_key', DEFAULT_KEY);
       return key;
     }
 
