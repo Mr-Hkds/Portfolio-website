@@ -1062,103 +1062,137 @@
       background: var(--cream);
     }
 
+    /* section cert count badge */
+    .certs-count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--navy);
+      color: var(--gold);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .certs-count-badge span {
+      color: rgba(255,255,255,0.5);
+      font-weight: 400;
+    }
+
     .certs-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
+      gap: 1.4rem;
     }
 
     .cert-card {
       background: var(--white);
       border: 1px solid rgba(10, 25, 47, 0.08);
       border-radius: 16px;
-      padding: 1.8rem;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 1.6rem 1.6rem 1.4rem;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
-    
-    /* Clean gradient overlay on hover */
+
+    /* Shimmer overlay on hover */
     .cert-card::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(212,175,55,0.03) 0%, rgba(10,25,47,0.02) 100%);
+      background: linear-gradient(135deg, rgba(212,175,55,0.04) 0%, rgba(10,25,47,0.03) 100%);
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.35s ease;
       pointer-events: none;
     }
 
+    /* Gold top bar */
     .cert-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
-      background: var(--gold);
+      background: linear-gradient(90deg, var(--gold), var(--gold-light, #D4A96A));
       border-radius: 16px 16px 0 0;
-      transition: height 0.2s ease;
+      transition: height 0.25s ease;
     }
 
     .cert-card:hover {
-      transform: translateY(-8px) scale(1.01);
-      box-shadow: 0 22px 45px rgba(10, 25, 47, 0.08), 0 4px 10px rgba(0,0,0,0.03);
-      border-color: rgba(212, 175, 55, 0.4);
-    }
-    
-    .cert-card:hover::after {
-      opacity: 1;
+      transform: translateY(-8px) scale(1.015);
+      box-shadow: 0 20px 45px rgba(10, 25, 47, 0.09), 0 4px 12px rgba(0,0,0,0.04);
+      border-color: rgba(212, 175, 55, 0.35);
     }
 
-    .cert-card:hover::before {
-      height: 5px;
+    .cert-card:hover::after { opacity: 1; }
+    .cert-card:hover::before { height: 5px; }
+
+    /* Card number chip */
+    .cert-num {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: rgba(10,25,47,0.05);
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      transition: all 0.35s ease;
+      letter-spacing: 0.04em;
+    }
+
+    .cert-card:hover .cert-num {
+      background: var(--gold);
+      color: var(--navy);
     }
 
     .cert-card-top {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.1rem;
+      padding-right: 2.5rem; /* clear the num chip */
     }
 
     .cert-date-pill {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.63rem;
       font-weight: 600;
-      color: var(--navy-light);
-      background: rgba(10,25,47,0.04);
-      padding: 0.35rem 0.9rem;
+      color: var(--navy-light, #2A437E);
+      background: rgba(10,25,47,0.05);
+      padding: 0.3rem 0.8rem;
       border-radius: 20px;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
     }
 
     .cert-name {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--navy);
       line-height: 1.4;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.55rem;
       letter-spacing: -0.01em;
     }
 
     .cert-issuer {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
-      color: var(--navy-light);
+      color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 1.6rem;
+      letter-spacing: 0.07em;
+      margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    .cert-card:hover .cert-issuer {
-      color: var(--gold);
-      transform: translateX(4px);
     }
 
     .cert-issuer::before {
@@ -1168,28 +1202,33 @@
       height: 6px;
       border-radius: 50%;
       background: var(--gold);
-      opacity: 0.6;
+      opacity: 0.7;
+      flex-shrink: 0;
       transition: all 0.35s ease;
     }
-    
+
+    .cert-card:hover .cert-issuer {
+      color: var(--gold);
+      transform: translateX(4px);
+    }
+
     .cert-card:hover .cert-issuer::before {
       opacity: 1;
       transform: scale(1.5);
-      box-shadow: 0 0 8px rgba(212,175,55,0.4);
+      box-shadow: 0 0 7px rgba(212,175,55,0.5);
     }
 
     .cert-verify {
       margin-top: auto;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 0.4rem;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 600;
       color: var(--navy);
-      background: var(--cream);
+      background: rgba(10,25,47,0.05);
       border: 1px solid rgba(10,25,47,0.1);
-      padding: 0.6rem 1rem;
+      padding: 0.55rem 1rem;
       border-radius: 8px;
       text-decoration: none;
       transition: all 0.2s ease;
@@ -1197,8 +1236,8 @@
     }
 
     .cert-verify svg {
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       stroke: currentColor;
       fill: none;
       stroke-width: 2.2;
@@ -1211,9 +1250,17 @@
       border-color: var(--navy);
       transform: scale(0.97);
     }
-    
+
     .cert-verify:hover svg {
       transform: translateX(2px) translateY(-2px);
+    }
+
+    /* No-link placeholder */
+    .cert-no-link {
+      margin-top: auto;
+      font-size: 0.7rem;
+      color: rgba(10,25,47,0.25);
+      font-style: italic;
     }
 
 
@@ -1739,6 +1786,7 @@
       .certs-grid {
         grid-template-columns: 1fr 1fr;
       }
+      .cert-num { display: none; }
 
       .nav-links {
         display: none;
@@ -2108,67 +2156,53 @@
     <h2 class="section-title">Certifications</h2>
     <p class="section-subtitle">Professional certifications across analytics, marketing, cybersecurity, and business.</p>
     <div class="certs-grid">
-
-      <div class="cert-card reveal" style="--cert-color:#E85D04;">
-        <div class="cert-card-top">
-          <div class="cert-logo">N</div>
-          <span class="cert-date-pill">Apr 2025</span>
-        </div>
-        <div class="cert-issuer">NPTEL — IIT Kharagpur</div>
+      <div class="cert-card reveal">
+        <span class="cert-num">#01</span>
+        <div class="cert-card-top"><span class="cert-date-pill">Apr 2025</span></div>
         <div class="cert-name">Integrated Marketing Communication</div>
-        <a href="#" class="cert-verify">Credential <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+        <div class="cert-issuer">NPTEL - IIT Kharagpur</div>
+        <span class="cert-no-link">No credential link</span>
       </div>
 
-      <div class="cert-card reveal d1" style="--cert-color:#4A90D9;">
-        <div class="cert-card-top">
-          <div class="cert-logo">BF</div>
-          <span class="cert-date-pill">2025</span>
-        </div>
+      <div class="cert-card reveal d1">
+        <span class="cert-num">#02</span>
+        <div class="cert-card-top"><span class="cert-date-pill">2025</span></div>
+        <div class="cert-name">Certified Professional - Banking, Finance &amp; Insurance</div>
         <div class="cert-issuer">Bajaj Finserv &amp; UpGrad</div>
-        <div class="cert-name">Certified Professional — Banking, Finance &amp; Insurance</div>
-        <a href="#" class="cert-verify">Credential <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+        <span class="cert-no-link">No credential link</span>
       </div>
 
-      <div class="cert-card reveal d2" style="--cert-color:#E85D04;">
-        <div class="cert-card-top">
-          <div class="cert-logo">N</div>
-          <span class="cert-date-pill">Apr 2024</span>
-        </div>
-        <div class="cert-issuer">NPTEL — IIT Madras</div>
+      <div class="cert-card reveal d2">
+        <span class="cert-num">#03</span>
+        <div class="cert-card-top"><span class="cert-date-pill">Apr 2024</span></div>
         <div class="cert-name">Business Development: From Start to Scale</div>
-        <a href="#" class="cert-verify">Credential <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+        <div class="cert-issuer">NPTEL - IIT Madras</div>
+        <span class="cert-no-link">No credential link</span>
       </div>
 
-      <div class="cert-card reveal" style="--cert-color:#1F70C1;">
-        <div class="cert-card-top">
-          <div class="cert-logo">IBM</div>
-          <span class="cert-date-pill">2024</span>
-        </div>
-        <div class="cert-issuer">IBM</div>
+      <div class="cert-card reveal">
+        <span class="cert-num">#04</span>
+        <div class="cert-card-top"><span class="cert-date-pill">2024</span></div>
         <div class="cert-name">Cybersecurity Fundamentals</div>
+        <div class="cert-issuer">IBM</div>
         <a href="https://www.credly.com/" target="_blank" class="cert-verify">Verify on Credly <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
       </div>
 
-      <div class="cert-card reveal d1" style="--cert-color:#00A4EF;">
-        <div class="cert-card-top">
-          <div class="cert-logo">MS</div>
-          <span class="cert-date-pill">2024</span>
-        </div>
-        <div class="cert-issuer">Microsoft</div>
+      <div class="cert-card reveal d1">
+        <span class="cert-num">#05</span>
+        <div class="cert-card-top"><span class="cert-date-pill">2024</span></div>
         <div class="cert-name">Office Specialist: Excel Associate (MOS)</div>
+        <div class="cert-issuer">Microsoft</div>
         <a href="https://learn.microsoft.com/en-us/certifications/" target="_blank" class="cert-verify">Verify on Microsoft <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
       </div>
 
-      <div class="cert-card reveal d2" style="--cert-color:#4285F4;">
-        <div class="cert-card-top">
-          <div class="cert-logo">G</div>
-          <span class="cert-date-pill">2024</span>
-        </div>
-        <div class="cert-issuer">Google</div>
+      <div class="cert-card reveal d2">
+        <span class="cert-num">#06</span>
+        <div class="cert-card-top"><span class="cert-date-pill">2024</span></div>
         <div class="cert-name">Google Ads for Beginners</div>
+        <div class="cert-issuer">Google</div>
         <a href="https://skillshop.google.com/" target="_blank" class="cert-verify">Verify on Skillshop <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
       </div>
-
     </div>
   </div>
 </section>
@@ -2661,12 +2695,13 @@
           const certsGrid = document.querySelector('.certs-grid');
           if (certsGrid) {
             certsGrid.innerHTML = data.certifications.items.map((c, idx) => {
-              const linkHtml = c.link ? `
-                <a href="${c.link}" target="_blank" class="cert-verify">
-                  Verify Link <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                </a>` : '';
+              const num = String(idx + 1).padStart(2, '0');
+              const linkHtml = c.link
+                ? `<a href="${c.link}" target="_blank" class="cert-verify">Verify Credential <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`
+                : `<span class="cert-no-link">No credential link</span>`;
               return `
                 <div class="cert-card reveal ${idx % 3 === 1 ? 'd1' : idx % 3 === 2 ? 'd2' : ''}">
+                  <span class="cert-num">#${num}</span>
                   <div class="cert-card-top">
                     <span class="cert-date-pill">${c.date}</span>
                   </div>
@@ -2679,6 +2714,9 @@
           }
         }
       }
+
+      // Smart auto-count: patch hero stat boxes to match real data lengths
+      updateSmartCounts(data);
 
       // Currently Building Section
       if (data.building) {
@@ -2889,6 +2927,45 @@
     if (heroPhoto) {
       heroPhoto.addEventListener('click', handleSecretTap);
     }
+
+    // ─── Smart Counts: auto-update hero stat boxes when data loads ────
+    function updateSmartCounts(data) {
+      const statBoxes = document.querySelectorAll('.hero-stats .stat-box');
+      if (!statBoxes.length) return;
+      statBoxes.forEach(box => {
+        const label = (box.querySelector('.stat-label') || {}).textContent || '';
+        const numEl = box.querySelector('.stat-num');
+        if (!numEl) return;
+        if (/cert/i.test(label)) {
+          const count = (data.certifications && data.certifications.items) ? data.certifications.items.length : 0;
+          if (count > 0) animateCount(numEl, count, '+');
+        }
+        if (/project|research/i.test(label)) {
+          const count = (data.projects && data.projects.items) ? data.projects.items.length : 0;
+          if (count > 0) animateCount(numEl, count, '');
+        }
+      });
+    }
+
+    function animateCount(el, targetNum, suffix) {
+      const startNum = parseInt(el.textContent) || 0;
+      if (startNum === targetNum) return;
+      const steps = 18;
+      const stepTime = 40;
+      const increment = (targetNum - startNum) / steps;
+      let current = startNum;
+      let step = 0;
+      const sup = el.querySelector('sup');
+      const supHtml = sup ? sup.outerHTML : (suffix ? `<sup>${suffix}</sup>` : '');
+      const timer = setInterval(() => {
+        step++;
+        current += increment;
+        const display = step >= steps ? targetNum : Math.round(current);
+        el.innerHTML = `${display}${supHtml}`;
+        if (step >= steps) clearInterval(timer);
+      }, stepTime);
+    }
+
   </script>
 
   <!-- Floating Download CV -->
