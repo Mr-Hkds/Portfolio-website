@@ -3285,8 +3285,27 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
       }
     }
 
+    function autoSyncHeroStats() {
+      const certCount = getCertificationsFromDOM().length;
+      const projectCount = getProjectsFromDOM().length;
+
+      const numEls = document.querySelectorAll('.stat-num-input');
+      const labelEls = document.querySelectorAll('.stat-label-input');
+
+      numEls.forEach((numEl, idx) => {
+        if (!labelEls[idx]) return;
+        const label = (labelEls[idx].value || '').toLowerCase();
+        if (label.includes('cert')) {
+          numEl.value = certCount;
+        } else if (label.includes('project') || label.includes('research')) {
+          numEl.value = projectCount;
+        }
+      });
+    }
+
     async function saveData() {
       autoSyncHeroInstitution();
+      autoSyncHeroStats();
 
       const saveButton = document.getElementById('saveButton');
       const saveIcon = document.getElementById('saveIcon');
