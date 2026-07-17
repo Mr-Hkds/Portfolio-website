@@ -2706,9 +2706,10 @@
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
+    // Global session cache for discovered models to avoid duplicate list calls
+    window._discoveredModelsCache = null;
+
     async function fetchWithModelFallback(apiKey, payload) {
-      // Priority list — gemini-2.5-flash is confirmed working on this key
-      // Ordered: newest/most-likely-to-have-quota first
       const PRIORITY_MODELS = [
         'gemini-2.5-flash',
         'gemini-3.5-flash',
@@ -2721,32 +2722,42 @@
 
       let modelsToTry = [];
 
-      // 1. If user explicitly set a model, honour it first
-      const explicitModel = localStorage.getItem('gemini_model');
-      if (explicitModel && explicitModel.trim() !== '') {
-        modelsToTry.push(explicitModel.trim());
+      // 1. Always prefer the last successfully cached working model to avoid hitting fallbacks
+      const lastWorkingModel = localStorage.getItem('gemini_working_model') || localStorage.getItem('gemini_model');
+      if (lastWorkingModel && lastWorkingModel.trim() !== '') {
+        modelsToTry.push(lastWorkingModel.trim());
       }
 
       // 2. Add our priority list (skip duplicates)
       PRIORITY_MODELS.forEach(m => { if (!modelsToTry.includes(m)) modelsToTry.push(m); });
 
-      // 3. Optionally enrich with live model list from API (adds any new ones not in our list)
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-        if (res.ok) {
-          const data = await res.json();
-          const fetched = (data.models || [])
-            .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && m.name.includes('gemini'))
-            .map(m => m.name.replace('models/', ''));
-          fetched.forEach(m => { if (!modelsToTry.includes(m)) modelsToTry.push(m); });
+      // 3. Live models list (cached to prevent duplicate requests)
+      if (!window._discoveredModelsCache) {
+        try {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+          if (res.ok) {
+            const data = await res.json();
+            const fetched = (data.models || [])
+              .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && m.name.includes('gemini'))
+              .map(m => m.name.replace('models/', ''));
+            window._discoveredModelsCache = fetched;
+          }
+        } catch(e) { 
+          window._discoveredModelsCache = []; 
         }
-      } catch(e) { /* silently ignore */ }
+      }
+
+      // Enrich with cached list
+      if (window._discoveredModelsCache && window._discoveredModelsCache.length) {
+        window._discoveredModelsCache.forEach(m => { if (!modelsToTry.includes(m)) modelsToTry.push(m); });
+      }
 
       let lastError = null;
       let quotaCount = 0;
 
       for (const model of modelsToTry) {
         try {
+          // Adjust payload for older 1.5 models if needed (not needed for simple structures)
           const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
           const response = await fetch(url, {
             method: 'POST',
