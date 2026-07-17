@@ -575,29 +575,156 @@
       }
     }
 
-    /* RESPONSIVE */
+
+    /* ===== MOBILE RESPONSIVE ===== */
     @media (max-width: 768px) {
+      header {
+        padding: 0.7rem 1rem;
+      }
+
+      .header-title {
+        font-size: 1rem;
+      }
+
+      .header-badge {
+        display: none;
+      }
+
+      /* Hide text labels on small screens, show only icons in header actions */
+      .header-actions .btn span {
+        display: none;
+      }
+
+      /* Stack layout: sidebar on top as horizontal scroll nav */
       .admin-container {
         grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
       }
 
       aside {
         border-right: none;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 2px solid var(--border);
         flex-direction: row;
         overflow-x: auto;
-        padding: 0.8rem;
+        padding: 0.5rem 0.75rem;
+        gap: 0.25rem;
+        position: sticky;
+        top: 54px;
+        z-index: 90;
+        background: var(--white);
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      aside::-webkit-scrollbar {
+        display: none;
       }
 
       .nav-item {
         white-space: nowrap;
-        padding: 0.5rem 0.8rem;
+        padding: 0.45rem 0.8rem;
+        font-size: 0.78rem;
+        flex-shrink: 0;
+        border-radius: 20px;
+      }
+
+      .nav-item svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .nav-badge {
+        display: none;
       }
 
       main {
-        padding: 1.5rem;
+        padding: 1.25rem 1rem;
+      }
+
+      .tab-content {
+        max-width: 100%;
+      }
+
+      .form-group.grid-2,
+      .form-group.grid-3 {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+      }
+
+      .edu-badge-row {
+        grid-template-columns: 1fr 90px 36px;
+      }
+
+      .section-title {
+        font-size: 1.4rem;
+      }
+
+      /* AI Copilot full width on mobile */
+      #copilot-chat-input {
+        font-size: 16px; /* prevent zoom on iOS */
+      }
+
+      /* AI optimizer cards stack */
+      .opt-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      /* Toast anchored to bottom center on mobile */
+      .toast {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+        font-size: 0.8rem;
+      }
+
+      .modal-card {
+        padding: 1.25rem;
+        width: 95%;
+        margin: 0 auto;
+      }
+
+      .modal-actions {
+        flex-direction: column;
+      }
+
+      .modal-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .list-item-controls {
+        position: static;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: -0.3rem;
+      }
+
+      .control-btn {
+        width: 32px;
+        height: 32px;
       }
     }
+
+    @media (max-width: 480px) {
+      .header-title {
+        font-size: 0.9rem;
+      }
+
+      main {
+        padding: 1rem 0.75rem;
+      }
+
+      .nav-item span {
+        display: none;
+      }
+
+      .nav-item {
+        padding: 0.5rem;
+        border-radius: 8px;
+      }
+    }
+
     /* AI OPTIMIZER PREMIUM UI */
     .optimizer-card {
       background: var(--white);
@@ -1491,23 +1618,27 @@
   <!-- GITHUB SETTINGS MODAL -->
   <div id="githubModal" class="modal-overlay">
     <div class="modal-card">
-      <h3>⚙️ GitHub Settings</h3>
-      <p class="modal-desc">Add your GitHub Personal Access Token so changes can be saved directly to your repository. The AI Copilot is fully automated — no configuration needed.</p>
+      <h3>⚙️ Settings</h3>
+      <p class="modal-desc">Configure your GitHub PAT to save changes. Your Gemini API key is pre-loaded, but you can override it here.</p>
       <div class="form-group" style="margin-top: 1.2rem;">
         <label for="github-token-input">GitHub Personal Access Token (PAT)</label>
         <input type="text" id="github-token-input" placeholder="ghp_..." style="font-family: monospace;" />
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem;">Generate at github.com → Settings → Developer settings → Personal access tokens</p>
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">github.com → Settings → Developer settings → Personal access tokens</p>
       </div>
-      <!-- Hidden fields kept for backward compat with saveGithubToken() -->
-      <input type="hidden" id="gemini-key-input" />
+      <div class="form-group" style="margin-top: 0.8rem;">
+        <label for="gemini-key-input">Gemini API Key <span style="font-weight:400; text-transform:none; letter-spacing:0; color: var(--success);">&#10003; pre-loaded</span></label>
+        <input type="password" id="gemini-key-input" placeholder="AIzaSy... (leave blank to use default)" style="font-family: monospace;" />
+        <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">Only fill this if you want to use your own API key.</p>
+      </div>
+      <!-- Hidden fields for model compat -->
       <input type="hidden" id="gemini-model-input" />
       <select id="gemini-model-select" style="display:none;"></select>
       <p id="discover-error" style="display:none;"></p>
-      <div style="background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.8rem;">
-        <p style="font-size: 0.8rem; color: #166534; margin: 0;">✅ <strong>AI Copilot is ready.</strong> Model auto-selection is active — no API key setup required.</p>
+      <div style="background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.8rem;">
+        <p style="font-size: 0.79rem; color: #065f46; margin: 0;">✨ <strong>AI Copilot is fully automatic.</strong> Model auto-selects the best available — no manual picking needed.</p>
       </div>
       <div class="modal-actions">
-        <button class="btn btn-secondary" onclick="closeGithubModal()">Close</button>
+        <button class="btn btn-secondary" onclick="closeGithubModal()">Cancel</button>
         <button class="btn btn-primary" onclick="saveGithubToken()">Save Settings</button>
       </div>
     </div>
@@ -1649,28 +1780,26 @@
 
     function saveGithubToken() {
       const token = document.getElementById('github-token-input').value.trim();
-      const geminiKey = document.getElementById('gemini-key-input').value.trim();
-      const geminiModel = document.getElementById('gemini-model-input').value.trim();
-      
+      const geminiKeyInput = document.getElementById('gemini-key-input').value.trim();
+      const DEFAULT_KEY = 'AIzaSyCzWbry_V9wN8qw4a2fxcUqvopOwgXETdo';
+
       if (token) {
         localStorage.setItem('github_pat', token);
       } else {
         localStorage.removeItem('github_pat');
       }
-      
-      if (geminiKey) {
-        localStorage.setItem('gemini_key', geminiKey);
+
+      // If user entered a custom key, save it; otherwise keep the default
+      if (geminiKeyInput && geminiKeyInput !== DEFAULT_KEY) {
+        localStorage.setItem('gemini_key', geminiKeyInput);
+        showToast('Settings saved. Using your custom Gemini key.');
       } else {
-        localStorage.removeItem('gemini_key');
+        localStorage.setItem('gemini_key', DEFAULT_KEY);
+        showToast('Settings saved successfully.');
       }
 
-      if (geminiModel) {
-        localStorage.setItem('gemini_model', geminiModel);
-      } else {
-        localStorage.removeItem('gemini_model');
-      }
-      
-      showToast('Settings saved successfully.');
+      // Always keep model on best known working model
+      localStorage.setItem('gemini_model', 'gemini-2.5-flash');
       closeGithubModal();
     }
 
@@ -2797,12 +2926,8 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
         const result = await fetchWithModelFallback(effectiveKey, payload);
 
         typingBubble.remove();
-        let cleanText = result.candidates[0].content.parts[0].text.trim();
-        
-        // Strip markdown backticks if model returned them anyway
-        if (cleanText.startsWith('```')) {
-          cleanText = cleanText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
-        }
+        let rawText = result.candidates[0].content.parts[0].text || '';
+        let cleanText = extractJSON(rawText);
 
         const parsed = JSON.parse(cleanText);
         let dynamicMsg = 'Forms updated successfully.';
@@ -3335,6 +3460,52 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
       return key;
     }
 
+    // Bulletproof JSON extractor — handles markdown fences, trailing text, partial wraps
+    function extractJSON(raw) {
+      if (!raw) throw new Error('Empty response from AI');
+      let s = raw.trim();
+
+      // Strip markdown code fences like ```json ... ``` or ``` ... ```
+      s = s.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+
+      // If it now starts with { or [, try parsing directly
+      if (s.startsWith('{') || s.startsWith('[')) {
+        // Find the matching closing brace/bracket in case there's trailing garbage
+        try {
+          // Try direct parse first (fastest path)
+          return JSON.stringify(JSON.parse(s));
+        } catch(e) {
+          // Find the last } or ] and try up to that
+          const lastBrace = s.lastIndexOf(s.startsWith('{') ? '}' : ']');
+          if (lastBrace !== -1) {
+            const trimmed = s.substring(0, lastBrace + 1);
+            return JSON.stringify(JSON.parse(trimmed));
+          }
+        }
+      }
+
+      // Look for first { or [ and extract from there
+      const startBrace = s.indexOf('{');
+      const startBracket = s.indexOf('[');
+      let start = -1;
+      let closer = '';
+      if (startBrace !== -1 && (startBracket === -1 || startBrace < startBracket)) {
+        start = startBrace; closer = '}';
+      } else if (startBracket !== -1) {
+        start = startBracket; closer = ']';
+      }
+
+      if (start !== -1) {
+        const lastClose = s.lastIndexOf(closer);
+        if (lastClose > start) {
+          const extracted = s.substring(start, lastClose + 1);
+          return JSON.stringify(JSON.parse(extracted));
+        }
+      }
+
+      throw new Error('Could not extract valid JSON from AI response');
+    }
+
     async function callGemini(prompt, jsonMode = true) {
       const apiKey = getApiKey();
       if (!apiKey) return null;
@@ -3342,9 +3513,11 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
       const payload = { contents: [{ parts: [{ text: prompt }] }] };
       const data = await fetchWithModelFallback(apiKey, payload);
       
-      let raw = data.candidates[0].content.parts[0].text.trim();
-      if (jsonMode && raw.startsWith('```')) {
-        raw = raw.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
+      let raw = data.candidates[0].content.parts[0].text || '';
+      if (jsonMode) {
+        raw = extractJSON(raw);
+      } else {
+        raw = raw.trim();
       }
       return jsonMode ? JSON.parse(raw) : raw;
     }
