@@ -1620,24 +1620,54 @@
     <div class="modal-card">
       <h3>⚙️ Settings</h3>
       <p class="modal-desc">Configure your GitHub PAT to save changes. Your Gemini API key is pre-loaded, but you can override it here.</p>
+      
       <div class="form-group" style="margin-top: 1.2rem;">
         <label for="github-token-input">GitHub Personal Access Token (PAT)</label>
         <input type="text" id="github-token-input" placeholder="ghp_..." style="font-family: monospace;" />
         <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">github.com → Settings → Developer settings → Personal access tokens</p>
       </div>
+      
       <div class="form-group" style="margin-top: 0.8rem;">
         <label for="gemini-key-input">Gemini API Key <span style="font-weight:400; text-transform:none; letter-spacing:0; color: var(--success);">&#10003; pre-loaded</span></label>
         <input type="password" id="gemini-key-input" placeholder="AIzaSy... (leave blank to use default)" style="font-family: monospace;" />
         <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem;">Only fill this if you want to use your own API key.</p>
       </div>
+
       <!-- Hidden fields for model compat -->
       <input type="hidden" id="gemini-model-input" />
       <select id="gemini-model-select" style="display:none;"></select>
       <p id="discover-error" style="display:none;"></p>
-      <div style="background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.8rem;">
+
+      <div style="background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.2); border-radius: 8px; padding: 0.7rem 1rem; margin-top: 0.8rem; margin-bottom: 1.2rem;">
         <p style="font-size: 0.79rem; color: #065f46; margin: 0;">✨ <strong>AI Copilot is fully automatic.</strong> Model auto-selects the best available — no manual picking needed.</p>
       </div>
-      <div class="modal-actions">
+
+      <!-- CROSS-DEVICE SYNC SECTION -->
+      <div style="border-top: 1.5px dashed var(--border); padding-top: 1rem; margin-top: 1rem;">
+        <h4 style="font-size: 0.8rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.3rem;">
+          🔒 Cross-Device Sync
+        </h4>
+        
+        <!-- RESTORE PANEL (only visible if backup payload exists) -->
+        <div id="sync-restore-panel" style="display: none; background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 8px; padding: 0.8rem; margin-bottom: 0.8rem;">
+          <p style="font-size: 0.76rem; color: #78350F; margin: 0 0 0.5rem 0; font-weight: 500;">🔑 Encrypted backup found on GitHub. Enter passcode to restore settings:</p>
+          <div style="display: flex; gap: 0.4rem;">
+            <input type="password" id="sync-restore-passcode" placeholder="Enter passcode" style="padding: 0.45rem 0.6rem; font-size: 0.78rem; flex: 1;" />
+            <button type="button" class="btn btn-secondary" onclick="restoreEncryptedBackup()" style="padding: 0.45rem 0.8rem; font-size: 0.78rem;">Unlock</button>
+          </div>
+        </div>
+
+        <!-- BACKUP PANEL -->
+        <div style="background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem;">
+          <p style="font-size: 0.74rem; color: var(--text-muted); margin: 0 0 0.5rem 0;">Backup your current keys so you can restore them on a new device.</p>
+          <div style="display: flex; gap: 0.4rem; align-items: center;">
+            <input type="password" id="sync-backup-passcode" placeholder="Set backup passcode" style="padding: 0.45rem 0.6rem; font-size: 0.78rem; flex: 1;" />
+            <button type="button" class="btn btn-secondary" id="sync-backup-btn" onclick="createEncryptedBackup()" style="padding: 0.45rem 0.8rem; font-size: 0.78rem; white-space: nowrap;">Backup Keys</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 1.2rem;">
         <button class="btn btn-secondary" onclick="closeGithubModal()">Cancel</button>
         <button class="btn btn-primary" onclick="saveGithubToken()">Save Settings</button>
       </div>
@@ -1744,6 +1774,157 @@
       document.getElementById('github-token-input').value = localStorage.getItem('github_pat') || '';
       document.getElementById('gemini-key-input').value = localStorage.getItem('gemini_key') || '';
       document.getElementById('gemini-model-input').value = localStorage.getItem('gemini_model') || 'gemini-2.5-flash';
+      
+      // Toggle sync restore panel if encrypted backup exists
+      const restorePanel = document.getElementById('sync-restore-panel');
+      if (portfolioData && portfolioData.encryptedPat) {
+        restorePanel.style.display = 'block';
+      } else {
+        restorePanel.style.display = 'none';
+      }
+    }
+
+    // Cryptographic Helpers: PBKDF2 + AES-GCM
+    async function encryptData(plaintext, password) {
+      const enc = new TextEncoder();
+      const salt = window.crypto.getRandomValues(new Uint8Array(16));
+      const iv = window.crypto.getRandomValues(new Uint8Array(12));
+      
+      const baseKey = await window.crypto.subtle.importKey(
+        "raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]
+      );
+      const key = await window.crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt: salt, iterations: 100000, hash: "SHA-256" },
+        baseKey,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["encrypt"]
+      );
+      
+      const encrypted = await window.crypto.subtle.encrypt(
+        { name: "AES-GCM", iv: iv },
+        key,
+        enc.encode(plaintext)
+      );
+      
+      const combined = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
+      combined.set(salt, 0);
+      combined.set(iv, salt.length);
+      combined.set(new Uint8Array(encrypted), salt.length + iv.length);
+      
+      return Array.from(combined).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function decryptData(hexString, password) {
+      try {
+        const bytes = new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+        const salt = bytes.slice(0, 16);
+        const iv = bytes.slice(16, 28);
+        const ciphertext = bytes.slice(28);
+        
+        const enc = new TextEncoder();
+        const baseKey = await window.crypto.subtle.importKey(
+          "raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]
+        );
+        const key = await window.crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: salt, iterations: 100000, hash: "SHA-256" },
+          baseKey,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["decrypt"]
+        );
+        
+        const decrypted = await window.crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: iv },
+          key,
+          ciphertext
+        );
+        
+        return new TextDecoder().decode(decrypted);
+      } catch(e) {
+        throw new Error("Invalid passcode or corrupted data.");
+      }
+    }
+
+    // Backup current credentials to GitHub (encrypted)
+    async function createEncryptedBackup() {
+      const token = document.getElementById('github-token-input').value.trim() || localStorage.getItem('github_pat');
+      const passcode = document.getElementById('sync-backup-passcode').value.trim();
+      const apiKey = localStorage.getItem('gemini_key') || 'AIzaSyCzWbry_V9wN8qw4a2fxcUqvopOwgXETdo';
+
+      if (!token) {
+        showToast('Please enter a GitHub Token first to run backups.', 'error');
+        return;
+      }
+      if (!passcode) {
+        showToast('Please set a backup passcode first.', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('sync-backup-btn');
+      btn.disabled = true;
+      btn.textContent = 'Encrypting...';
+
+      try {
+        // Construct backup payload
+        const payloadObj = { github_pat: token, gemini_key: apiKey };
+        const encryptedHex = await encryptData(JSON.stringify(payloadObj), passcode);
+        
+        // Write to local model
+        portfolioData.encryptedPat = encryptedHex;
+        
+        showToast('Backup encrypted! Saving to GitHub...', 'success');
+        
+        // Trigger saveData immediately to commit data.json to repository
+        await saveData();
+        
+        document.getElementById('sync-backup-passcode').value = '';
+        btn.textContent = 'Backup Keys';
+        btn.disabled = false;
+        
+        // Toggle the restore panel on
+        document.getElementById('sync-restore-panel').style.display = 'block';
+      } catch(e) {
+        showToast('Backup failed: ' + e.message, 'error');
+        btn.textContent = 'Backup Keys';
+        btn.disabled = false;
+      }
+    }
+
+    // Restore credentials on a new device (decrypted)
+    async function restoreEncryptedBackup() {
+      const passcode = document.getElementById('sync-restore-passcode').value.trim();
+      const hexPayload = portfolioData ? portfolioData.encryptedPat : null;
+
+      if (!hexPayload) {
+        showToast('No encrypted backup found in portfolio data.', 'error');
+        return;
+      }
+      if (!passcode) {
+        showToast('Please enter your unlock passcode.', 'error');
+        return;
+      }
+
+      try {
+        const decryptedStr = await decryptData(hexPayload, passcode);
+        const credentials = JSON.parse(decryptedStr);
+        
+        if (credentials.github_pat) {
+          localStorage.setItem('github_pat', credentials.github_pat);
+        }
+        if (credentials.gemini_key) {
+          localStorage.setItem('gemini_key', credentials.gemini_key);
+        }
+        localStorage.setItem('gemini_model', 'gemini-2.5-flash');
+
+        showToast('Credentials decrypted & restored successfully!', 'success');
+        
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
+      } catch(e) {
+        showToast('Decryption failed! Incorrect passcode.', 'error');
+      }
     }
 
     // AI Copilot Chat log builder
@@ -1771,8 +1952,6 @@
       messagesContainer.appendChild(bubble);
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
-
-
 
     function closeGithubModal() {
       document.getElementById('githubModal').classList.remove('visible');
@@ -3317,6 +3496,7 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
       saveIcon.outerHTML = `<div class="spinner"></div>`;
 
       const updatedData = {
+        encryptedPat: portfolioData.encryptedPat || null,
         hero: {
           eyebrow: document.getElementById('hero-eyebrow').value,
           name: document.getElementById('hero-name').value,
