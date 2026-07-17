@@ -3490,7 +3490,7 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
       return key;
     }
 
-    // Bulletproof JSON extractor — handles markdown fences, trailing text, partial wraps
+    // Bulletproof JSON extractor — handles markdown fences, trailing text, partial wraps, escaped quotes
     function extractJSON(raw) {
       if (!raw) throw new Error('Empty response from AI');
       let s = raw.trim();
@@ -3498,38 +3498,65 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
       // Strip markdown code fences like ```json ... ``` or ``` ... ```
       s = s.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
 
-      // If it now starts with { or [, try parsing directly
-      if (s.startsWith('{') || s.startsWith('[')) {
-        // Find the matching closing brace/bracket in case there's trailing garbage
-        try {
-          // Try direct parse first (fastest path)
-          return JSON.stringify(JSON.parse(s));
-        } catch(e) {
-          // Find the last } or ] and try up to that
-          const lastBrace = s.lastIndexOf(s.startsWith('{') ? '}' : ']');
-          if (lastBrace !== -1) {
-            const trimmed = s.substring(0, lastBrace + 1);
-            return JSON.stringify(JSON.parse(trimmed));
+      const startBrace = s.indexOf('{');
+      const startBracket = s.indexOf('[');
+      let start = -1;
+      let openChar = '';
+      let closeChar = '';
+
+      if (startBrace !== -1 && (startBracket === -1 || startBrace < startBracket)) {
+        start = startBrace; openChar = '{'; closeChar = '}';
+      } else if (startBracket !== -1) {
+        start = startBracket; openChar = '['; closeChar = ']';
+      }
+
+      if (start === -1) {
+        throw new Error('No JSON structure found in AI response');
+      }
+
+      // Iterate and track depth to extract only the valid JSON block
+      let depth = 0;
+      let inString = false;
+      let escape = false;
+
+      for (let i = start; i < s.length; i++) {
+        const char = s[i];
+
+        if (inString) {
+          if (escape) {
+            escape = false;
+          } else if (char === '\\') {
+            escape = true;
+          } else if (char === '"') {
+            inString = false;
+          }
+        } else {
+          if (char === '"') {
+            inString = true;
+          } else if (char === openChar) {
+            depth++;
+          } else if (char === closeChar) {
+            depth--;
+            if (depth === 0) {
+              const candidate = s.substring(start, i + 1);
+              try {
+                return JSON.stringify(JSON.parse(candidate));
+              } catch(e) {
+                // If parsing failed (e.g. key/value syntax error), continue to see if there is another matching brace
+              }
+            }
           }
         }
       }
 
-      // Look for first { or [ and extract from there
-      const startBrace = s.indexOf('{');
-      const startBracket = s.indexOf('[');
-      let start = -1;
-      let closer = '';
-      if (startBrace !== -1 && (startBracket === -1 || startBrace < startBracket)) {
-        start = startBrace; closer = '}';
-      } else if (startBracket !== -1) {
-        start = startBracket; closer = ']';
-      }
-
-      if (start !== -1) {
-        const lastClose = s.lastIndexOf(closer);
-        if (lastClose > start) {
-          const extracted = s.substring(start, lastClose + 1);
+      // Fallback: substring up to the last closing character
+      const lastClose = s.lastIndexOf(closeChar);
+      if (lastClose > start) {
+        const extracted = s.substring(start, lastClose + 1);
+        try {
           return JSON.stringify(JSON.parse(extracted));
+        } catch(e) {
+          throw new Error('Failed to parse extracted JSON block: ' + e.message);
         }
       }
 
