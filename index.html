@@ -766,26 +766,30 @@
 
     /* Structured matrix list */
     .skill-matrix {
-      padding: 0.8rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      padding: 1.2rem 1.4rem 1.4rem;
     }
 
     .skill-matrix-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.75rem 1.6rem;
-      border-bottom: 1px solid rgba(13, 27, 62, 0.03);
-      transition: background 0.15s;
-    }
-    .skill-matrix-row:last-child {
-      border-bottom: none;
+      padding: 0.65rem 0.9rem;
+      background: rgba(13, 27, 62, 0.015);
+      border: 1px solid rgba(13, 27, 62, 0.05);
+      border-radius: 6px;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .skill-matrix-row:hover {
-      background: rgba(13, 27, 62, 0.02);
+      background: rgba(13, 27, 62, 0.04);
+      border-color: rgba(13, 27, 62, 0.12);
+      transform: translateY(-1px);
     }
 
     .skill-matrix-name {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 500;
       color: var(--text);
     }

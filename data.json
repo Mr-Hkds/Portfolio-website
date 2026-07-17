@@ -75,23 +75,23 @@
       {
         "name": "Data & Analytics",
         "icon": "table",
-        "headline": "Built 12+ dashboards and market reports used in academic research and live projects.",
+        "headline": "Microsoft Certified Excel Associate & Generative AI builder. Built 12+ reports/dashboards.",
         "skills": [
-          "Microsoft Excel (Pivot, VLOOKUP, Power Query) — Advanced",
+          "Microsoft Excel Associate (MOS) — Certified",
+          "Generative & Agentic AI (Python) — Certified",
           "Data Cleaning & Structuring — Advanced",
           "Statistical Analysis & Hypothesis Testing — Proficient",
           "Survey Design & Sampling Methodology — Advanced",
           "Business Intelligence Dashboards — Proficient",
-          "Market Research & Consumer Insights — Advanced",
           "Python (Pandas, NumPy) — Familiar"
         ]
       },
       {
         "name": "Cybersecurity",
         "icon": "shield",
-        "headline": "Cisco-certified. Completed structured coursework in threat modeling and network defense.",
+        "headline": "IBM Certified in Cybersecurity Fundamentals. Coursework in threat modeling and defense.",
         "skills": [
-          "Cybersecurity Fundamentals — Certified",
+          "Cybersecurity Fundamentals (IBM) — Certified",
           "Threat Awareness & Attack Modeling — Proficient",
           "Network Security Concepts — Proficient",
           "Social Engineering & Human-Factor Risk — Proficient",
@@ -103,13 +103,14 @@
       {
         "name": "Business & Strategy",
         "icon": "book",
-        "headline": "Applied in academic consulting simulations, marketing campaigns, and published research.",
+        "headline": "IIT & Bajaj Finserv Certified. Applied in consulting simulations and academic research.",
         "skills": [
+          "Integrated Marketing Communication — Certified",
+          "Banking, Finance & Insurance (CPBFI) — Certified",
+          "Business Development & Scaling — Certified",
+          "Google Ads & Search Campaigns — Certified",
           "Business Process Mapping & Analysis — Proficient",
-          "Integrated Marketing Communication — Advanced",
           "Consumer Behavior Analysis — Advanced",
-          "Digital Marketing & SEO/SEM — Advanced",
-          "Financial Services & Banking Concepts — Proficient",
           "Research Documentation & SOP Writing — Advanced",
           "Stakeholder Communication — Advanced"
         ]
