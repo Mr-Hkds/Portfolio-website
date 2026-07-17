@@ -1617,7 +1617,7 @@
       document.getElementById('githubModal').classList.add('visible');
       document.getElementById('github-token-input').value = localStorage.getItem('github_pat') || '';
       document.getElementById('gemini-key-input').value = localStorage.getItem('gemini_key') || '';
-      document.getElementById('gemini-model-input').value = localStorage.getItem('gemini_model') || 'gemini-1.5-flash';
+      document.getElementById('gemini-model-input').value = localStorage.getItem('gemini_model') || 'gemini-2.5-flash';
     }
 
     // AI Copilot Chat log builder
@@ -2583,32 +2583,44 @@
     }
 
     async function fetchWithModelFallback(apiKey, payload) {
+      // Priority list — gemini-2.5-flash is confirmed working on this key
+      // Ordered: newest/most-likely-to-have-quota first
+      const PRIORITY_MODELS = [
+        'gemini-2.5-flash',
+        'gemini-3.5-flash',
+        'gemini-2.0-flash',
+        'gemini-2.0-flash-lite',
+        'gemini-2.5-pro',
+        'gemini-2.0-flash-001',
+        'gemini-2.5-flash-lite',
+      ];
+
       let modelsToTry = [];
-      
-      // 1. If user explicitly selected a model, try it first
+
+      // 1. If user explicitly set a model, honour it first
       const explicitModel = localStorage.getItem('gemini_model');
       if (explicitModel && explicitModel.trim() !== '') {
         modelsToTry.push(explicitModel.trim());
       }
-      
-      // 2. Fetch live list of active models for this API key
+
+      // 2. Add our priority list (skip duplicates)
+      PRIORITY_MODELS.forEach(m => { if (!modelsToTry.includes(m)) modelsToTry.push(m); });
+
+      // 3. Optionally enrich with live model list from API (adds any new ones not in our list)
       try {
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
         if (res.ok) {
           const data = await res.json();
-          const fetched = data.models
-            .filter(m => m.supportedGenerationMethods.includes('generateContent') && m.name.includes('gemini'))
+          const fetched = (data.models || [])
+            .filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && m.name.includes('gemini'))
             .map(m => m.name.replace('models/', ''));
           fetched.forEach(m => { if (!modelsToTry.includes(m)) modelsToTry.push(m); });
         }
-      } catch(e) {}
-      
-      // 3. Absolute fallback list if fetch fails
-      if (modelsToTry.length === 0) {
-        modelsToTry = ['gemini-2.0-flash-exp', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.5-flash'];
-      }
-      
+      } catch(e) { /* silently ignore */ }
+
       let lastError = null;
+      let quotaCount = 0;
+
       for (const model of modelsToTry) {
         try {
           const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
@@ -2617,34 +2629,60 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
-          
+
           if (!response.ok) {
-            let errMsg = 'HTTP ' + response.status;
+            let errCode = response.status;
+            let errMsg = 'HTTP ' + errCode;
+            let errBody = null;
             try {
-              const errData = await response.json();
-              if (errData.error && errData.error.message) errMsg = errData.error.message;
+              errBody = await response.json();
+              if (errBody.error && errBody.error.message) errMsg = errBody.error.message;
             } catch(e) {}
-            // Throw so we can catch and try the next model
+
+            // 429 = quota exhausted for this model, skip to next immediately
+            if (errCode === 429) {
+              quotaCount++;
+              console.warn(`[Copilot] Model ${model} quota exhausted, trying next...`);
+              lastError = new Error(`Quota exhausted for ${model}`);
+              continue;
+            }
+            // 404 = model removed/not found, skip
+            if (errCode === 404) {
+              console.warn(`[Copilot] Model ${model} not found, skipping...`);
+              lastError = new Error(`Model not found: ${model}`);
+              continue;
+            }
+            // 503 = overloaded, skip
+            if (errCode === 503) {
+              console.warn(`[Copilot] Model ${model} overloaded, trying next...`);
+              lastError = new Error(`Model overloaded: ${model}`);
+              continue;
+            }
+
             throw new Error(errMsg);
           }
-          
+
           const result = await response.json();
-          
-          // Success! Save this model as the active one so it loads faster next time
+
+          // ✅ Success — cache this working model
           localStorage.setItem('gemini_model', model);
-          
-          // Optionally update the UI input if it exists
           const modelInput = document.getElementById('gemini-model-input');
           if (modelInput) modelInput.value = model;
-          
+          console.log(`[Copilot] ✅ Used model: ${model}`);
+
           return result;
         } catch(err) {
-          console.warn(`Model ${model} failed, trying next. Error:`, err);
+          console.warn(`[Copilot] Model ${model} failed:`, err.message);
           lastError = err;
         }
       }
-      
-      throw new Error(`All available models failed. Last error: ${lastError ? lastError.message : 'Unknown error'}`);
+
+      // All models failed — give a clean, human-readable error
+      const humanMsg = quotaCount > 0
+        ? `Your API key has run out of free-tier quota for today on all models. Try again after midnight (Pacific Time) or upgrade your Gemini API plan at ai.dev.`
+        : `Could not connect to Gemini API. Check your API key in Settings. Last error: ${lastError ? lastError.message : 'Unknown'}`;
+
+      throw new Error(humanMsg);
     }
 
     async function sendCopilotChatMessage() {
@@ -2788,8 +2826,7 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
       } catch (error) {
         console.error(error);
         typingBubble.remove();
-        const attemptedModel = localStorage.getItem('gemini_model') || 'gemini-1.5-flash';
-        appendChatMessage('AI Copilot', `Error: ${error.message}. Please check your API key in Settings and confirm it has access to ${attemptedModel}.`, false);
+        appendChatMessage('AI Copilot', `⚠️ ${error.message}`, false);
         showToast('AI Copilot error', 'error');
       }
     }
@@ -3281,6 +3318,19 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
     // Startup
     document.getElementById('saveButton').addEventListener('click', saveData);
     window.addEventListener('DOMContentLoaded', loadData);
+
+    // Auto-seed Gemini key & best model if not already saved
+    (function autoSeedGemini() {
+      const DEFAULT_KEY = 'AIzaSyCzWbry_V9wN8qw4a2fxcUqvopOwgXETdo';
+      const DEFAULT_MODEL = 'gemini-2.5-flash';
+      if (!localStorage.getItem('gemini_key')) {
+        localStorage.setItem('gemini_key', DEFAULT_KEY);
+      }
+      // Always prefer gemini-2.5-flash unless user manually changed it
+      if (!localStorage.getItem('gemini_model')) {
+        localStorage.setItem('gemini_model', DEFAULT_MODEL);
+      }
+    })();
 
     // ─── AI OPTIMIZER FUNCTIONS ─────────────────────────────────────
 
