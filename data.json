@@ -70,44 +70,48 @@
   },
   "capabilities": {
     "title": "Technical & Core Skill Set",
-    "subtitle": "A structured map of hard technical capabilities, data analytics expertise, and strategic soft skills.",
+    "subtitle": "A structured map of hard technical capabilities, data analytics expertise, and strategic business skills — with honest proficiency levels.",
     "categories": [
       {
-        "name": "Technical Skills",
+        "name": "Data & Analytics",
+        "icon": "table",
+        "headline": "Built 12+ dashboards and market reports used in academic research and live projects.",
+        "skills": [
+          "Microsoft Excel (Pivot, VLOOKUP, Power Query) — Advanced",
+          "Data Cleaning & Structuring — Advanced",
+          "Statistical Analysis & Hypothesis Testing — Proficient",
+          "Survey Design & Sampling Methodology — Advanced",
+          "Business Intelligence Dashboards — Proficient",
+          "Market Research & Consumer Insights — Advanced",
+          "Python (Pandas, NumPy) — Familiar"
+        ]
+      },
+      {
+        "name": "Cybersecurity",
         "icon": "shield",
+        "headline": "Cisco-certified. Completed structured coursework in threat modeling and network defense.",
         "skills": [
           "Cybersecurity Fundamentals — Certified",
-          "Threat Awareness & Modeling — Intermediate",
-          "Network Security Concepts — Core",
-          "Social Engineering Psychology — Core",
-          "Python Programming — Learning",
-          "Organizational Security Posture — Core"
+          "Threat Awareness & Attack Modeling — Proficient",
+          "Network Security Concepts — Proficient",
+          "Social Engineering & Human-Factor Risk — Proficient",
+          "Organizational Security Posture Assessment — Familiar",
+          "OSINT Techniques — Familiar",
+          "Security Documentation & Reporting — Proficient"
         ]
       },
       {
-        "name": "Hard Skills",
-        "icon": "table",
-        "skills": [
-          "Advanced Microsoft Excel — Advanced",
-          "Data Cleaning & Structuring — Advanced",
-          "Pivot Tables & VLOOKUP — Advanced",
-          "Statistical Analysis & Reporting — Core",
-          "Survey Methodology & Design — Core",
-          "Business Intelligence Dashboards — Intermediate",
-          "Market Research Methodology — Core"
-        ]
-      },
-      {
-        "name": "Soft Skills",
+        "name": "Business & Strategy",
         "icon": "book",
+        "headline": "Applied in academic consulting simulations, marketing campaigns, and published research.",
         "skills": [
+          "Business Process Mapping & Analysis — Proficient",
+          "Integrated Marketing Communication — Advanced",
           "Consumer Behavior Analysis — Advanced",
           "Digital Marketing & SEO/SEM — Advanced",
-          "Integrated Marketing Communication — Core",
-          "Business Process Mapping — Core",
-          "Research Documentation & SOPs — Core",
-          "Interpersonal Communication — Core",
-          "Banking & Financial Services — Core"
+          "Financial Services & Banking Concepts — Proficient",
+          "Research Documentation & SOP Writing — Advanced",
+          "Stakeholder Communication — Advanced"
         ]
       }
     ]
