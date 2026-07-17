@@ -161,6 +161,37 @@
           "Statistical Analysis"
         ],
         "link": "https://drive.google.com/file/d/1qdopFzsvBypUMGcij5R9RpmIc16vmvEp/view?usp=drivesdk"
+      },
+      {
+        "index": "04",
+        "period": "July 2026",
+        "title": "LORE-V2: Digital Forensics Web Archive",
+        "description": "Designed and built an atmospheric digital mystery database. Developed a remote SQLite data pipeline with Turso, managed image fallback cascades, and optimized React Context state to prevent local storage overwrites and maintain full consistency across sessions.",
+        "tags": [
+          "React",
+          "Vite",
+          "Tailwind CSS",
+          "Turso DB",
+          "Node.js"
+        ],
+        "link": "https://github.com/Mr-Hkds/lore-v2",
+        "linkLabel": "View Repository"
+      },
+      {
+        "index": "05",
+        "period": "July 2026",
+        "title": "Portfolio Website & AI Admin Panel",
+        "description": "Created a live-editable portfolio database with a custom PBKDF2-encrypted settings backup, guided data entry system, and role-tailored ATS LaTeX resume generator. Solved layout issues and designed a premium capability grid with micro-interactions.",
+        "tags": [
+          "HTML5",
+          "CSS3",
+          "JavaScript",
+          "Gemini API",
+          "AES-GCM Encryption",
+          "GitHub API"
+        ],
+        "link": "https://github.com/Mr-Hkds/Portfolio-website",
+        "linkLabel": "View Repository"
       }
     ]
   },

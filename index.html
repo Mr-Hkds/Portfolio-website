@@ -783,15 +783,20 @@
       transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .skill-matrix-row:hover {
-      background: rgba(13, 27, 62, 0.04);
-      border-color: rgba(13, 27, 62, 0.12);
-      transform: translateY(-1px);
+      background: var(--navy);
+      border-color: var(--navy);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 27, 62, 0.12);
     }
 
     .skill-matrix-name {
       font-size: 0.76rem;
       font-weight: 500;
       color: var(--text);
+      transition: color 0.2s;
+    }
+    .skill-matrix-row:hover .skill-matrix-name {
+      color: var(--white);
     }
 
     /* Sharp, high-end rectangular badges */
@@ -805,6 +810,17 @@
       border-radius: 3px;
       line-height: 1;
       white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .skill-matrix-row:hover .skill-badge {
+      border-color: rgba(255, 255, 255, 0.25);
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .skill-matrix-row:hover .badge-certified {
+      border-color: #B8924A;
+      color: #B8924A;
+      background: rgba(184, 146, 74, 0.15);
     }
 
     /* Colors and borders for levels */
@@ -2620,7 +2636,7 @@
                   ${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}
                 </div>
                 <a href="${p.link}" target="_blank" class="project-link">
-                  View Report <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                  ${p.linkLabel || 'View Project'} <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                 </a>
               </div>
             `).join('');
