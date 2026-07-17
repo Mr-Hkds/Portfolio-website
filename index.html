@@ -2553,21 +2553,24 @@
               }
             };
             const levelMap = {
-              'certified':  { label: 'Certified',  dc: 'chip-certified',  lc: 'level-certified'  },
-              'advanced':   { label: 'Advanced',   dc: 'chip-advanced',   lc: 'level-advanced'   },
-              'proficient': { label: 'Proficient', dc: 'chip-proficient', lc: 'level-proficient' },
-              'familiar':   { label: 'Familiar',   dc: 'chip-familiar',   lc: 'level-familiar'   },
+              'certified':  { label: 'Certified',  cls: 'badge-certified'  },
+              'advanced':   { label: 'Advanced',   cls: 'badge-advanced'   },
+              'proficient': { label: 'Proficient', cls: 'badge-proficient' },
+              'familiar':   { label: 'Familiar',   cls: 'badge-familiar'   },
             };
 
             const catClasses = ['cat-technical', 'cat-hard', 'cat-soft'];
 
             skillsGrid.innerHTML = data.capabilities.categories.map((cat, idx) => {
-              const chips = cat.skills.map(sk => {
+              const rows = cat.skills.map(sk => {
                 const parts  = sk.split(' — ');
                 const name   = parts[0].trim();
                 const rawLvl = (parts[1] || 'proficient').trim().toLowerCase();
                 const meta   = levelMap[rawLvl] || levelMap['proficient'];
-                return `<span class="skill-chip ${meta.lc}" title="${meta.label}"><span class="chip-dot ${meta.dc}"></span>${name}</span>`;
+                return `<div class="skill-matrix-row">
+                  <span class="skill-matrix-name">${name}</span>
+                  <span class="skill-badge ${meta.cls}">${meta.label}</span>
+                </div>`;
               }).join('');
 
               const headline = cat.headline || '';
@@ -2581,13 +2584,7 @@
                   <h3>${cat.name}</h3>
                   ${headline ? `<p class="skill-cat-headline">${headline}</p>` : ''}
                 </div>
-                <div class="skill-chips">${chips}</div>
-                <div class="skill-legend">
-                  <span class="legend-item"><span class="legend-dot" style="background:#B8924A;"></span>Certified</span>
-                  <span class="legend-item"><span class="legend-dot" style="background:var(--cat-accent);opacity:0.9;"></span>Advanced</span>
-                  <span class="legend-item"><span class="legend-dot" style="background:var(--cat-accent);opacity:0.5;"></span>Proficient</span>
-                  <span class="legend-item"><span class="legend-dot" style="background:rgba(var(--cat-rgb),0.3);"></span>Familiar</span>
-                </div>
+                <div class="skill-matrix">${rows}</div>
               </div>`;
             }).join('');
           }
