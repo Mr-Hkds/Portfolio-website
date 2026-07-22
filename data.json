@@ -20,7 +20,7 @@
         "context": "Army Public School"
       },
       {
-        "num": "7",
+        "num": "8",
         "sup": "",
         "label": "Certifications",
         "context": "IBM · Microsoft · NPTEL · Google"
@@ -287,6 +287,12 @@
         "date": "July 2026",
         "name": "Full stack generative and Agentic AI with Python",
         "link": "https://udemy-certificate.s3.amazonaws.com/image/UC-9ff5592e-f1d9-4847-855f-a8809aa1f4de.jpg"
+      },
+      {
+        "issuer": "UPGRAD ",
+        "date": "2026",
+        "name": "Generative AI Foundations",
+        "link": "https://certificates.upgrad.com/72f6b24e-eecb-4458-bc5b-ce0570348f1e-Gen-AI-EjgGzVwhRNmduD5b.jpeg"
       },
       {
         "issuer": "NPTEL — IIT Kharagpur",
