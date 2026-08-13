@@ -33,12 +33,12 @@
       }
     ],
     "institution": {
-      "label": "Graduated From",
+      "label": "Currently Studying At",
       "name": "Army Institute of Management & Technology",
-      "sub": "Bachelor of Business Administration (BBA) · Marketing & Analytics",
+      "sub": "BBA — Marketing Specialization · Greater Noida, India",
       "tags": [
-        "Batch of 2026",
-        "CGPA: 9.49"
+        "2023 – Present",
+        "Business Analytics"
       ]
     }
   },
