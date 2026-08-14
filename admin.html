@@ -3674,37 +3674,15 @@ Do NOT wrap the response in markdown \`\`\`json blocks. Return only the raw JSON
     }
 
     function autoSyncHeroInstitution() {
-      const expItems = getExperienceFromDOM();
+      // Respect user inputs! Only auto-fill defaults if status card fields are completely empty.
+      const labelVal = (document.getElementById('inst-label').value || '').trim();
+      const nameVal = (document.getElementById('inst-name').value || '').trim();
       
-      let currentJob = null;
-      if (expItems && expItems.length > 0) {
-        currentJob = expItems.find(item => (item.period || '').toLowerCase().includes('present'));
-        if (!currentJob) currentJob = expItems[0];
-      }
-      
-      if (currentJob) {
-        document.getElementById('inst-label').value = 'Currently Working At';
-        document.getElementById('inst-name').value = currentJob.company || '';
-        document.getElementById('inst-sub').value = currentJob.role || '';
-        
-        let tagsText = currentJob.period || '';
-        if (currentJob.tags && currentJob.tags.length > 0) {
-          tagsText += `, ${currentJob.tags[0]}`;
-        }
-        document.getElementById('inst-tags').value = tagsText;
-      } else {
-        // Only auto-revert to studying if the status was currently working or empty
-        const currentLabel = (document.getElementById('inst-label').value || '').trim();
-        if (currentLabel === 'Currently Working At' || currentLabel === '' || currentLabel === 'Currently Studying At') {
-          // If the user selected Graduated or Seeking, keep it! Otherwise reset to studying default.
-          const isCustom = ['Graduated From', 'Currently Seeking', 'Seeking Roles'].includes(currentLabel);
-          if (!isCustom) {
-            document.getElementById('inst-label').value = 'Currently Studying At';
-            document.getElementById('inst-name').value = 'Army Institute of Management & Technology';
-            document.getElementById('inst-sub').value = 'BBA — Marketing Specialization · Greater Noida, India';
-            document.getElementById('inst-tags').value = '2023 – Present, Business Analytics';
-          }
-        }
+      if (!labelVal && !nameVal) {
+        document.getElementById('inst-label').value = 'Currently Studying At';
+        document.getElementById('inst-name').value = 'Army Institute of Management & Technology';
+        document.getElementById('inst-sub').value = 'Bachelor of Business Administration (BBA) · Marketing & Analytics';
+        document.getElementById('inst-tags').value = 'Batch of 2026, CGPA: 9.49';
       }
     }
 
