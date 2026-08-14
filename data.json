@@ -1,10 +1,10 @@
 {
-  "encryptedPat": "a5885bd60d6925103b56110f042f4ee1fbc4771d374430225e46c22e90702411c0858035a4ae76fb625bba78c3efce479d8b724a1331c6995f4cee10984cc32c54042c18f6a944de497c3ed5f41408614e0948717e70373351852bf6e87d7bf95e4fe10bb6bde6f14a854fb20e1157173e92e57cce393240b4d7bafe2103c625244df5d6235aa213820b513ec354fabbf65433a0f64dc5c6a6985a0d",
+  "encryptedPat": "69d46010238972a97530294e9ebe8b84a8f76ace62c71c1900782e924eed5bd9e52d3d6e91334c1e221445a37f12e95b1df3a5d429b439d8ad55489651c90c7b32576e71efc53c5cfabaaa36c400c8f203d8d9b00e9c842a46da3309cd6c50bc1329abc5b03e66a4c15f2e898f12d756ef91b14e531df0540b2c44fce709ca8fb2c8bef688638e07eb916fff8365181f7b2d2786141c04f9cadf4746",
   "hero": {
     "eyebrow": "Portfolio — Business Analytics & Cybersecurity",
     "name": "Harkamal Deep Singh",
     "description": "I analyze systems — consumer behavior, data patterns, and organizational processes — and translate findings into <strong>decisions that hold up under scrutiny.</strong> Building depth in cybersecurity alongside a strong foundation in analytics, market research, and business strategy.",
-    "resumeLink": "https://drive.google.com/uc?export=download&id=122145yHx4xeQIxKkrHlnPJVj78YM9K9L",
+    "resumeLink": "https://drive.google.com/uc?export=download&id=1wOO11EmowR66rMWnV6szgDec-pkIDWpc",
     "profileImage": "assets/photo.jpg",
     "stats": [
       {
@@ -20,7 +20,7 @@
         "context": "Army Public School"
       },
       {
-        "num": "8",
+        "num": "7",
         "sup": "",
         "label": "Certifications",
         "context": "IBM · Microsoft · NPTEL · Google"
@@ -28,17 +28,17 @@
       {
         "num": "5",
         "sup": "",
-        "label": "Research Projects",
-        "context": "Independent, end-to-end"
+        "label": "Projects & Studies",
+        "context": "Software & Research Builds"
       }
     ],
     "institution": {
-      "label": "Currently Studying At",
+      "label": "Graduated From",
       "name": "Army Institute of Management & Technology",
-      "sub": "BBA — Marketing Specialization · Greater Noida, India",
+      "sub": "Bachelor of Business Administration (BBA) · Marketing & Analytics",
       "tags": [
-        "2023 – Present",
-        "Business Analytics"
+        "Batch of 2026",
+        "CGPA: 9.49"
       ]
     }
   },
@@ -64,7 +64,7 @@
       },
       {
         "title": "Base Location",
-        "text": "Home: Hoshiarpur, Punjab. Available for opportunities across India."
+        "text": "Greater Noida, Uttar Pradesh. Home: Hoshiarpur, Punjab. Available for opportunities across India."
       }
     ]
   },
@@ -75,6 +75,7 @@
       {
         "name": "Data & Analytics",
         "icon": "table",
+        "headline": "Microsoft Certified Excel Associate & Generative AI builder. Built 12+ reports/dashboards.",
         "skills": [
           "Microsoft Excel Associate (MOS) — Certified",
           "Generative & Agentic AI (Python) — Certified",
@@ -88,6 +89,7 @@
       {
         "name": "Cybersecurity",
         "icon": "shield",
+        "headline": "IBM Certified in Cybersecurity Fundamentals. Coursework in threat modeling and defense.",
         "skills": [
           "Cybersecurity Fundamentals (IBM) — Certified",
           "Threat Awareness & Attack Modeling — Proficient",
@@ -101,6 +103,7 @@
       {
         "name": "Business & Strategy",
         "icon": "book",
+        "headline": "IIT & Bajaj Finserv Certified. Applied in consulting simulations and academic research.",
         "skills": [
           "Integrated Marketing Communication — Certified",
           "Banking, Finance & Insurance (CPBFI) — Certified",
@@ -133,8 +136,7 @@
         "linkLabel": "View Report",
         "category": "research",
         "impact": [
-          "1",
-          "000+ consumers surveyed",
+          "1,000+ consumers surveyed",
           "5 UPI platforms analyzed",
           "Actionable business report"
         ]
@@ -289,12 +291,6 @@
         "link": "https://udemy-certificate.s3.amazonaws.com/image/UC-9ff5592e-f1d9-4847-855f-a8809aa1f4de.jpg"
       },
       {
-        "issuer": "UPGRAD ",
-        "date": "2026",
-        "name": "Generative AI Foundations",
-        "link": "https://certificates.upgrad.com/72f6b24e-eecb-4458-bc5b-ce0570348f1e-Gen-AI-EjgGzVwhRNmduD5b.jpeg"
-      },
-      {
         "issuer": "NPTEL — IIT Kharagpur",
         "date": "April 2025",
         "name": "Integrated Marketing Communication",
@@ -328,7 +324,7 @@
         "issuer": "Google",
         "date": "2024",
         "name": "Google Ads for Beginners",
-        "link": "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fwww%2Ecoursera%2Eorg%2Faccount%2Faccomplishments%2Frecords%2FLZPYY1QCW34M&urlhash=Dnnv&mt=wxTGxLBRbzV_NqVNio9jP_vBpg1b5SiqCS3MZfsXiqCS3MZfsXi5G8fKzKucxdLU57M7Ex1u-Ffwx5EZEvhlZrlccJ_8dqoVzaZfSt&isSdui=true"
+        "link": "https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fwww%2Ecoursera%2Eorg%2Faccount%2Faccomplishments%2Frecords%2FLZPYY1QCW34M&urlhash=Dnnv&mt=wxTGxLBRbzV_NqVNio9jP_vBpg1b5SiqCS3MZfsXi5G8fKzKucxdLU57M7Ex1u-Ffwx5EZEvhlZrlccJ_8dqoVzaZfSt&isSdui=true"
       }
     ]
   },

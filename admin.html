@@ -2020,9 +2020,9 @@
 
     // Load dynamic data on entry
     async function loadData() {
-      const fetchUrl = isLocal ? '/api/data' : 'data.json';
+      const fetchUrl = isLocal ? '/api/data' : ('data.json?_t=' + Date.now());
       try {
-        const response = await fetch(fetchUrl);
+        const response = await fetch(fetchUrl, { cache: 'no-store' });
         if (!response.ok) throw new Error('Fetch failed');
         portfolioData = await response.json();
         populateForm();
@@ -2372,6 +2372,10 @@
               </select>
             </div>
           </div>
+          <div class="form-group">
+            <label>Category Headline / Proof Highlight</label>
+            <input type="text" class="skill-cat-headline-input" value="${cat.headline || ''}" placeholder="e.g. Microsoft Certified Excel Associate & Generative AI builder." />
+          </div>
           <div class="form-group" style="margin-bottom: 0;">
             <label>Skills (one per line. Add " — BadgeText" to include a badge)</label>
             <textarea class="skill-cat-items-input" style="font-family: monospace; min-height: 120px;" placeholder="e.g.&#10;Microsoft Excel — Advanced&#10;Pivot Tables&#10;Python — Learning">${(cat.skills || []).join('\n')}</textarea>
@@ -2384,12 +2388,14 @@
     function getSkillCategoriesFromDOM() {
       const nameEls = document.querySelectorAll('.skill-cat-name-input');
       const iconEls = document.querySelectorAll('.skill-cat-icon-input');
+      const headlineEls = document.querySelectorAll('.skill-cat-headline-input');
       const itemsEls = document.querySelectorAll('.skill-cat-items-input');
       const categories = [];
       nameEls.forEach((el, idx) => {
         categories.push({
           name: el.value,
           icon: iconEls[idx].value,
+          headline: headlineEls[idx] ? headlineEls[idx].value : '',
           skills: itemsEls[idx].value.split('\n').map(s => s.trim()).filter(s => s.length > 0)
         });
       });
@@ -2398,7 +2404,7 @@
 
     function addSkillCategory() {
       const categories = getSkillCategoriesFromDOM();
-      categories.push({ name: 'New Competency Area', icon: 'book', skills: ['Skill Item 1', 'Skill Item 2 — Learning'] });
+      categories.push({ name: 'New Competency Area', icon: 'book', headline: 'Proof of proficiency statement', skills: ['Skill Item 1', 'Skill Item 2 — Learning'] });
       portfolioData.capabilities.categories = categories;
       renderSkillCategories(categories);
     }
