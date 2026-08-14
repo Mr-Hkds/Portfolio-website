@@ -33,12 +33,11 @@
       }
     ],
     "institution": {
-      "label": "Currently Studying At",
-      "name": "Army Institute of Management & Technology",
-      "sub": "BBA — Marketing Specialization · Greater Noida, India",
+      "label": "Currently Working At",
+      "name": "Tata Consultancy Services (TCS)",
+      "sub": "",
       "tags": [
-        "2023 – Present",
-        "Business Analytics"
+        "2026 – Present"
       ]
     }
   },
