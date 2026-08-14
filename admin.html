@@ -2306,7 +2306,7 @@
 
     function addAboutCard() {
       const cards = getAboutCardsFromDOM();
-      cards.push({ title: 'New Focus Area', text: 'Describe this accomplishment or area of expertise.' });
+      cards.unshift({ title: 'New Focus Area', text: 'Describe this accomplishment or area of expertise.' });
       portfolioData.about.cards = cards;
       renderAboutCards(cards);
     }
@@ -2347,7 +2347,7 @@
     // HERO STATS HELPER
     function addStat() {
       const stats = getStatsFromDOM();
-      stats.push({ num: '0', sup: '', label: 'New Stat', context: 'Context Detail' });
+      stats.unshift({ num: '0', sup: '', label: 'New Stat', context: 'Context Detail' });
       portfolioData.hero.stats = stats;
       renderStatsList(stats);
     }
@@ -2404,7 +2404,7 @@
 
     function addSkillCategory() {
       const categories = getSkillCategoriesFromDOM();
-      categories.push({ name: 'New Competency Area', icon: 'book', headline: 'Proof of proficiency statement', skills: ['Skill Item 1', 'Skill Item 2 — Learning'] });
+      categories.unshift({ name: 'New Competency Area', icon: 'book', headline: 'Proof of proficiency statement', skills: ['Skill Item 1', 'Skill Item 2 — Learning'] });
       portfolioData.capabilities.categories = categories;
       renderSkillCategories(categories);
     }
@@ -2502,8 +2502,8 @@
 
     function addProject() {
       const projects = getProjectsFromDOM();
-      projects.push({
-        index: (projects.length + 1).toString().padStart(2, '0'),
+      projects.unshift({
+        index: '01',
         period: 'Jan 2026 – Present',
         title: 'New Research Project',
         description: 'Detail the methods used, demographics analyzed, and final recommendations.',
@@ -2512,6 +2512,9 @@
         linkLabel: 'View Project',
         category: 'research',
         impact: []
+      });
+      projects.forEach((p, idx) => {
+        p.index = (idx + 1).toString().padStart(2, '0');
       });
       portfolioData.projects.items = projects;
       renderProjectsList(projects);
@@ -2630,7 +2633,7 @@
 
     function addExperience() {
       const items = getExperienceFromDOM();
-      items.push({
+      items.unshift({
         period: '2026',
         duration: '3 months',
         company: 'Company/Organization Name',
@@ -2694,7 +2697,7 @@
 
     function addEducation() {
       const items = getEducationFromDOM();
-      items.push({
+      items.unshift({
         period: '2026',
         school: 'University or School Name',
         degree: 'Degree / Certificate Title',
@@ -2775,7 +2778,7 @@
 
     function addCertification() {
       const certs = getCertificationsFromDOM();
-      certs.push({ issuer: 'Google', date: '2026', name: 'New Certification Course Name', link: '' });
+      certs.unshift({ issuer: 'Google', date: '2026', name: 'New Certification Course Name', link: '' });
       portfolioData.certifications.items = certs;
       renderCertificationsList(certs);
     }
@@ -2827,7 +2830,7 @@
 
     function addBuildingItem() {
       const items = getBuildingItemsFromDOM();
-      items.push({ title: 'New Course/Topic', description: 'What you are studying, provider name, etc.', completed: false });
+      items.unshift({ title: 'New Course/Topic', description: 'What you are studying, provider name, etc.', completed: false });
       portfolioData.building.items = items;
       renderBuildingList(items);
     }
