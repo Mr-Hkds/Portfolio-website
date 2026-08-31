@@ -231,7 +231,20 @@
   "experience": {
     "title": "Professional Experience",
     "subtitle": "My professional history, internships, and roles.",
-    "items": []
+    "items": [
+      {
+        "period": "2026 - Present",
+        "duration": "",
+        "company": "Tata Consultancy Services",
+        "role": "Admin",
+        "description": "",
+        "tags": [
+          "Excel",
+          "Analytics",
+          "Critical Thinking"
+        ]
+      }
+    ]
   },
   "education": {
     "title": "Academic background",
