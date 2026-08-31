@@ -345,11 +345,6 @@
     "subtitle": "Ongoing areas of investment — not completed, not paused.",
     "items": [
       {
-        "title": "Python Programming",
-        "description": "Full Stack Generative & Agentic AI with Python — Hitesh Choudhary",
-        "completed": false
-      },
-      {
         "title": "Generative AI & AI Tooling",
         "description": "Prompt engineering, LLM workflows, AI-assisted productivity systems",
         "completed": false
