@@ -20,7 +20,7 @@
         "context": "Army Public School"
       },
       {
-        "num": "7",
+        "num": "9",
         "sup": "",
         "label": "Certifications",
         "context": "IBM · Microsoft · NPTEL · Google"
@@ -284,6 +284,18 @@
     "title": "Certifications",
     "subtitle": "Professional certifications across analytics, marketing, cybersecurity, and business.",
     "items": [
+      {
+        "issuer": "Udemy",
+        "date": "2026",
+        "name": " AI for Everyone: Understanding and Applying the Basics",
+        "link": "http://tcsglobal.udemy.com/certificate/UC-c4a885ae-0c12-4b8e-b078-0597403e0df6/"
+      },
+      {
+        "issuer": "Udemy",
+        "date": "2026",
+        "name": " Generative AI for Beginners: Fundamentals, Tools & Prompts",
+        "link": "https://tcsglobal.udemy.com/certificate/UC-3cc8033f-571a-4fe2-a6af-6c3ce61425ed/"
+      },
       {
         "issuer": "Hitesh Choudhary (Udemy)",
         "date": "July 2026",
